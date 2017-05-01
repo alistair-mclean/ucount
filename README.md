@@ -1,2 +1,4 @@
 # crappy-animals
-The private re
+The private repository for the game Crappy Animals
+
+Owned by Alistair McLean
