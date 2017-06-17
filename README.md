@@ -1,4 +1,4 @@
-# crappy-animals
-The private repository for the game Crappy Animals
+# virtual-laboratory
+The private repository for Virtual Laboratory. 
 
 Owned by Alistair McLean
