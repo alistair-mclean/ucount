@@ -7,8 +7,7 @@ public class singlePendulumSetup : MonoBehaviour {
 
 
   //Public
-  public GameObject pendulumBase;
-  public GameObject pendulumString;
+  public Rigidbody pendulumBase;
   public Rigidbody pendulumMass;
   public float forceModifer = 2.0f;
 
@@ -36,18 +35,15 @@ public class singlePendulumSetup : MonoBehaviour {
     _kineticEnergy = 0.5f * _momentum * pendulumMass.velocity.magnitude; // in Joules 
     _potentialEnergy = _mass * 9.81f * pendulumMass.transform.position.y;
 
-    //Calculate and apply tension
-    Vector3 tensionDir = (pendulumBase.transform.position - pendulumMass.transform.position).normalized;
-    Vector3 Tension = _mass * Physics.gravity.magnitude * _scale * tensionDir;
-    pendulumMass.AddForce(Tension);
-    _radius = pendulumMass.position - pendulumBase.transform.position;
+    int touchCount = 0;
+    foreach (Touch touch in Input.touches)
+    {
+      touchCount++;
+    }
+    Debug.Log("Touchcount = " + touchCount);  
     
-
-    //Vector3 Position = pendulumMass.transform.position;
-    //Position = Vector3.ClampMagnitude(Position, _radius.magnitude);
-
-
-    Debug.Log("mass = " + pendulumMass.mass + ", acceleration: " + _acceleration + ", Tension:" + Tension.magnitude);
   }
-    
+  
+
+
 }

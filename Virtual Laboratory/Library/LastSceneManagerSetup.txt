@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/singlePendulum.unity
+- path: Assets/_Scenes/Units and Measurements.unity
   isLoaded: 1
   isActive: 1
