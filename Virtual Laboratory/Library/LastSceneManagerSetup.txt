@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/Units and Measurements.unity
+- path: Assets/_Scenes/Newtons Laws.unity
   isLoaded: 1
   isActive: 1
