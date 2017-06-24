@@ -24,8 +24,8 @@ public class ObjectInformationValve : MonoBehaviour {
 
     // load a display chunk for each item in the list 
   }
-
-  private void LoadDisplayChunk(string whatToDisplay)
+  
+  public void LoadDisplayChunk(string whatToDisplay)
   {
     switch (whatToDisplay)
     {
