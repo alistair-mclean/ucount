@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class SendObjectVelocityMagnitude : MonoBehaviour {
-  // DESCRIPTION - Sends the magnitude of the velocity (rounded to the
-  // nearest whole number) to the assigned Velocity Magnitude
+  // DESCRIPTION - Sends the magnitude of the velocity 
+  // rounded to the nearest to the assigned Velocity 
   // Textbox in the External Display Canvas.
 
   private Text _textField;
@@ -29,7 +29,7 @@ public class SendObjectVelocityMagnitude : MonoBehaviour {
       }
     }
     if (_hasActiveObject) {
-      float valueToDisplay = Mathf.Round(_activeObject.velocity.magnitude);
+      float valueToDisplay = Mathf.Round(_activeObject.velocity.magnitude); 
       _textField.text = valueToDisplay.ToString();
     }
   }

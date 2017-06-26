@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BallBlock : MonoBehaviour {
   //DESCRIPTION - The script for a simple ball block 
   // setup with friction adjustment on the block and 
@@ -37,8 +38,11 @@ public class BallBlock : MonoBehaviour {
 
   // Adjusts the force modifier on the ball
   public void VLBallSliderControl(float val) {
-    Vector3 ballForceDirection = new Vector3(1.0f, 0.0f, 0.0f);
-    Ball.AddForce(ballForceDirection * val * BallForceConstant);
+    Vector3 ballForce = new Vector3(1.0f, 0.0f, 0.0f);
+    ballForce = ballForce * val * BallForceConstant;
+    Ball.AddForce(ballForce);
+    FreeBodyDiagram ballForceDiagram = Ball.GetComponent<FreeBodyDiagram>();
+    ballForceDiagram.NewForce("Applied Force", Ball.transform.position, ballForce);
   }
 
   // Adjusts the static friction coefficient of the block
