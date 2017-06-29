@@ -9,7 +9,7 @@ public class UserControls : MonoBehaviour {
   public GameObject DefaultObject;
 
   private GameObject _camera;
-  private GameObject _activeObject;
+  private Rigidbody _activeObject;
  
   private void Update()
   {
@@ -17,16 +17,17 @@ public class UserControls : MonoBehaviour {
     if (Input.touchCount > 0)    {
       Ray fingerRay = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
       RaycastHit hit;
+      Vector3 distanceFromCamera = new Vector3(0.0f, 0.0f, 0.0f);
       if (Physics.Raycast(fingerRay, out hit))
       {
-        Rigidbody selectedObject = hit.rigidbody;
+        _activeObject = hit.rigidbody;
+        distanceFromCamera = _activeObject.transform.position - Camera.main.transform.position;
       }
-      
-      if (Input.GetTouch(0).phase == TouchPhase.Moved)
+
+      if (Input.GetTouch(0).phase != TouchPhase.Ended)
       {
-        // Do some stuff if the finger has moved
+        _activeObject.position = Camera.main.transform.position + distanceFromCamera;
       }
-      
     }
 
     //Load the main menu if the back button is pressewd in - ANDROID ONLY
@@ -38,21 +39,5 @@ public class UserControls : MonoBehaviour {
 //#endif
   }
 
-  private void ActivateObject(Rigidbody obj)
-  {
-    if (obj.tag == "Interactable")
-    {
-      if (obj.gameObject.activeSelf)
-      {
-        return;
-      }
-      else
-     {
-        obj.gameObject.SetActive(true); // this wont work for obvious reasons... 
-      }
-    }
-    
-
-  }
   //
 }
