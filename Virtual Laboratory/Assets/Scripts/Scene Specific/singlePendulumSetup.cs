@@ -44,7 +44,7 @@ public class singlePendulumSetup : MonoBehaviour {
 
   private void TouchTranslation(Touch thisTouch)
   { 
-    TouchPhase phase = thisTouch.phase;            // Handle finger movements based on touch phase.
+    TouchPhase phase = thisTouch.phase; // Handle finger movements based on touch phase.
     switch (thisTouch.phase)
     {
       // Record initial touch position.

@@ -49,6 +49,7 @@ public class VectorComponent : MonoBehaviour {
     return _components;
   }
 
+  /* Old depreciated method
   public void NewVectorComponent(string newName, string newUnits, Transform newOrigin, Vector3 newComponents)
   {
     //Validity checks
@@ -79,7 +80,8 @@ public class VectorComponent : MonoBehaviour {
     differenceVector = new Vector3(differenceVector.x * _initialScaleMagnitude, differenceVector.y * _initialScaleMagnitude, differenceVector.z * _initialScaleMagnitude);
     _this.transform.localScale = differenceVector;
   }
-  
+  */
+
   // This is essentially a test method, and will likely not be used. 
   public void NewVector()
   {

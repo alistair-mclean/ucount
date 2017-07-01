@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/Test Scenes/Vector Test.unity
+- path: Assets/_Scenes/Experiment Lab Scenes/Buoyancy.unity
   isLoaded: 1
   isActive: 1
