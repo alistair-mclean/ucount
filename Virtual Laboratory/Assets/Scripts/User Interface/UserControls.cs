@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class UserControls : MonoBehaviour {
   // DESCRIPTION - Basic user controls 
 
+  // Public
   public GameObject DefaultObject;
   public Text ObjectIDTextBox;
   public Slider Slider1;
@@ -13,7 +14,7 @@ public class UserControls : MonoBehaviour {
   public Slider Slider2;
   public Text Slider2Text;
 
-  //Private
+  // Private
   private GameObject _camera;
   private Rigidbody _activeObject;
   private bool _hasActiveObject = false;
