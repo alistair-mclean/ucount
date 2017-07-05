@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
-// DESCRIPTION - This class controls the behavior of a liquid. 
-// Height control, and fluid density are controlled through this script. 
-
 public class Liquid : MonoBehaviour {
+  // DESCRIPTION - This class controls the behavior of a liquid. 
+  // Height control, and fluid density are controlled through this script. 
+
   // Public
   public float Density = 1000f; // in kg/m^3
-  public float DragCoefficient = 0.3f; // Arbitrary value (for now)
+  public float RiseTimeConstant = 0.3f; //Arbitrary constant to fine tune how quickly the liquid rises 
 
   // Private
   private Collider _liquidCollider;
@@ -43,6 +42,7 @@ public class Liquid : MonoBehaviour {
   private void OnTriggerEnter(Collider other)
   {
     GameObject collidingObject = other.gameObject;
+    Debug.Log(collidingObject.name + " Colliding with Liquid");
     if (collidingObject.GetComponent<Buoyancy>() == null)
     {
       Debug.Log("Non-Buoyant object triggering liquid");
@@ -55,6 +55,7 @@ public class Liquid : MonoBehaviour {
       }
       Buoyancy buoyantObject = collidingObject.GetComponent<Buoyancy>();
     }
+
   }
 
   private void OnTriggerExit(Collider other)
@@ -85,32 +86,10 @@ public class Liquid : MonoBehaviour {
     totalVolume += totalSubmergedVolume;
     _liquidVolume = totalVolume;
     float newHeight = totalVolume / (_initialDimensions.x * _initialDimensions.y);
-//    Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume); //DEBUG
+    Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume);
     newDimensions = _initialDimensions;
     newDimensions.z += newHeight;
-    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * 2) ;
-  }
-
-  private void AddDragToObjectsInList()
-  {
-    foreach (GameObject submergedObject in _collidingObjects)
-    {
-      if(submergedObject.GetComponent<Rigidbody>() == null)
-      {
-        Debug.Log("Submerged object: " + submergedObject.name + " is not a rigid body. Will not apply drag.");
-        return;
-      }
-      Rigidbody submergedRigidBody = submergedObject.GetComponent<Rigidbody>();
-      if(submergedObject.GetComponent<Buoyancy>() == null)
-      {
-        Debug.Log("Submerged object: " + submergedObject.name + " is not buoyant. Will not apply drag.");
-        return;
-      }
-      Buoyancy buoyantObject = submergedObject.GetComponent<Buoyancy>();
-      float objectDensity = buoyantObject.ObjectDensity;
-      submergedRigidBody.drag = (Density / objectDensity) * buoyantObject.GetSubmergedVolume();
-      Debug.Log("Liquid.cs - Submerged object: " + submergedObject.name + " has drag: " + submergedRigidBody.drag); // DEBUG
-    }
+    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * RiseTimeConstant) ;
   }
   
   public float GetLiquidVolume()

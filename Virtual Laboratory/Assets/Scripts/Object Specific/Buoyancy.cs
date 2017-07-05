@@ -1,27 +1,32 @@
-///<summary>
-/// DESCRIPTION - Adds buoyancy to the assigned object. Calculates an Archimedes force on
-/// a list of voxels that are created from the colliding mesh component.
-/// 
-/// AUTHORS - Alex Zhdankin, Alistair McLean
-/// </summary>
-
+// Buoyancy.cs
+// by Alex Zhdankin
+// edited by Alistair McLean
+// Version 2.1
+//
+// http://forum.unity3d.com/threads/72974-Buoyancy-script
+//
+// Terms of use: do whatever you like. <- Thanks Alex
 
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Buoyancy : MonoBehaviour
 {
+  // DESCRIPTION - Adds buoyancy to the assigned object. Calculates an Archimedes force on a list of voxels that are 
+  // created. These voxels are a good way to create a robust buoyancy for a complicated mesh
+
   // Public
-  public const float DAMPFER = 0.4f;
   public GameObject Liquid; // This must be assigned by the developer 
-  public float ObjectDensity = 500; 
+	public float ObjectDensity = 500;
   public float LiquidDensity = 1000; //Default density of water 
   public float SubmergedVolume = 0;
 	public int SlicesPerAxis = 2;
 	public bool IsConcave = false;
+  public bool BuoyancyIsActive = true;
 	public int VoxelsLimit = 16;
 
   // Private 
+	private const float _DAMPFER = 0.1f;
   private float _maximumSubmergedVolume = 0;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;
@@ -60,8 +65,6 @@ public class Buoyancy : MonoBehaviour
 		_isMeshCollider = GetComponent<MeshCollider>() != null;
 
     var bounds = GetComponent<Collider>().bounds;
-    // Add call to maximum submerge volume calculation
-
     _maximumSubmergedVolume = bounds.size.magnitude;
     if (bounds.size.x < bounds.size.y)
 		{
@@ -275,40 +278,42 @@ public class Buoyancy : MonoBehaviour
 	private void FixedUpdate()
 	{
 		_forces.Clear(); // For drawing force gizmos
+    if (BuoyancyIsActive)
+    {
+      foreach (var point in _voxels)
+      {
+        var wp = transform.TransformPoint(point);
+        float waterLevel = GetWaterLevel(wp.x, wp.z);
 
-		foreach (var point in _voxels)
-		{
-			var wp = transform.TransformPoint(point);
-			float waterLevel = GetWaterLevel(wp.x, wp.z);
+        //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
+        if (waterLevel <= 0)
+          return;
+        // hack end
+        if (wp.y - _voxelHalfHeight < waterLevel)
+        {
+          float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
+          if (k > 1)
+          {
+            k = 1f;
+          }
+          else if (k < 0)
+          {
+            k = 0f;
+          }
+          if (SubmergedVolume < _maximumSubmergedVolume)
+            SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
+          var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
+          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
+          var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
+          GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
 
-      //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
-      if (waterLevel <= 0)
-        return; 
-      // hack end
-			if (wp.y - _voxelHalfHeight < waterLevel)
-			{
-				float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
-				if (k > 1)
-				{
-					k = 1f;
-				}
-				else if (k < 0)
-				{
-					k = 0f;
-				}
-        if (SubmergedVolume < _maximumSubmergedVolume)
-          SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
-				var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-				var localDampingForce = -velocity * DAMPFER * GetComponent<Rigidbody>().mass;
-				var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
-				GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
+          _forces.Add(new[] { wp, force }); // For drawing force gizmos
+        }
+      }
+    }
+  }
 
-				_forces.Add(new[] { wp, force }); // For drawing force gizmos
-			}
-		}
-	}
-
-  // TEMPORARY 
+  // TEMPORARY
   public float GetSubmergedVolume()
   {
     return SubmergedVolume;
