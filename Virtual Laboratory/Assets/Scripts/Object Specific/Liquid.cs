@@ -84,7 +84,8 @@ public class Liquid : MonoBehaviour {
       totalSubmergedVolume += submergedObject.GetComponent<Buoyancy>().GetSubmergedVolume();
       objectCounter++;
     }
-    Debug.Log("number of objects in liquid: " + objectCounter);
+    Debug.Log("Liquid.cs - Number of objects in liquid: " + objectCounter);
+    Debug.Log("Liquid.cs - Total Submerged Volume: " + totalSubmergedVolume);
     totalVolume += totalSubmergedVolume;
     _liquidVolume = totalVolume;
     float newHeight = totalVolume / (_initialDimensions.x * _initialDimensions.y);
@@ -112,7 +113,7 @@ public class Liquid : MonoBehaviour {
       Buoyancy buoyantObject = submergedObject.GetComponent<Buoyancy>();
       float objectDensity = buoyantObject.ObjectDensity;
       submergedRigidBody.drag = (Density / objectDensity) * buoyantObject.GetSubmergedVolume();
-      Debug.Log("Submerged object: " + submergedObject.name + " has drag: " + submergedRigidBody.drag); // DEBUG
+      Debug.Log("Liquid.cs - Submerged object: " + submergedObject.name + " has drag: " + submergedRigidBody.drag); // DEBUG
     }
   }
   

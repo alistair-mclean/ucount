@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿// DESCRIPTION - This class controls the prefab to display the liquid's volume. 
+// 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class LiquidVolumeDisplay : MonoBehaviour {
-  // DESCRIPTION - This class controls the prefab to display the liquid's volume. 
-  // 
-
+  
   // Public
   public GameObject Liquid;
   public Text VolumeText;
@@ -26,7 +26,8 @@ public class LiquidVolumeDisplay : MonoBehaviour {
 	
 	void LateUpdate () {
     _liquidVolume = Liquid.GetComponent<Liquid>().GetLiquidVolume();
-    _currentText = _liquidVolume.ToString() + " Liters";
+;
+    _currentText = _liquidVolume.ToString("F3") + " Liters";
     VolumeText.text = _currentText;
   }
 }
