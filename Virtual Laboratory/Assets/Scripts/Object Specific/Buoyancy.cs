@@ -12,9 +12,9 @@ using UnityEngine;
 public class Buoyancy : MonoBehaviour
 {
   // Public
+  public const float DAMPFER = 0.4f;
   public GameObject Liquid; // This must be assigned by the developer 
-  public const float _DAMPFER = 0.4f;
-  public float ObjectDensity = 500;
+  public float ObjectDensity = 500; 
   public float LiquidDensity = 1000; //Default density of water 
   public float SubmergedVolume = 0;
 	public int SlicesPerAxis = 2;
@@ -299,7 +299,7 @@ public class Buoyancy : MonoBehaviour
         if (SubmergedVolume < _maximumSubmergedVolume)
           SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
 				var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-				var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
+				var localDampingForce = -velocity * DAMPFER * GetComponent<Rigidbody>().mass;
 				var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
 				GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
 
@@ -308,7 +308,7 @@ public class Buoyancy : MonoBehaviour
 		}
 	}
 
-  // TEMPORARY
+  // TEMPORARY 
   public float GetSubmergedVolume()
   {
     return SubmergedVolume;
@@ -342,15 +342,4 @@ public class Buoyancy : MonoBehaviour
 			Gizmos.DrawLine(force[0], force[0] + force[1] / GetComponent<Rigidbody>().mass);
 		}
 	}
-
-  void CalculateMaximumSubmergedVolume(Collider other)
-  {
-    float maximumVolume = 0.0f;
-    
-    //Calculate the volume for the correct shape. Complicated meshes are approximated! 
-    if(other.GetType() == typeof(SphereCollider))
-    {
-
-    }
-  }
 }

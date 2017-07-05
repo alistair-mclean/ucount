@@ -78,21 +78,17 @@ public class Liquid : MonoBehaviour {
     float totalSubmergedVolume = 0.0f;
     float totalVolume = _initialVolume;
     Vector3 newDimensions = new Vector3();
-    int objectCounter = 0; // DEBUG
     foreach (GameObject submergedObject in _collidingObjects)
     {
       totalSubmergedVolume += submergedObject.GetComponent<Buoyancy>().GetSubmergedVolume();
-      objectCounter++;
     }
-    Debug.Log("Liquid.cs - Number of objects in liquid: " + objectCounter);
-    Debug.Log("Liquid.cs - Total Submerged Volume: " + totalSubmergedVolume);
     totalVolume += totalSubmergedVolume;
     _liquidVolume = totalVolume;
     float newHeight = totalVolume / (_initialDimensions.x * _initialDimensions.y);
 //    Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume); //DEBUG
     newDimensions = _initialDimensions;
     newDimensions.z += newHeight;
-    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime) ;
+    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * 2) ;
   }
 
   private void AddDragToObjectsInList()
