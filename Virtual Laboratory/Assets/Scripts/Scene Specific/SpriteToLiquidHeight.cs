@@ -12,14 +12,14 @@ public class SpriteToLiquidHeight : MonoBehaviour {
   private float _height = 0.5f;
 
 	void Start () {
-    float newHeight = 2 * Liquid.transform.localScale.z; //BECAUSE OF BLENDER - MUST ADDRESS SOON 
+    float newHeight = Liquid.transform.localScale.z; //BECAUSE OF BLENDER - MUST ADDRESS SOON 
     _height = newHeight;
     transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
   }
 	
 	void LateUpdate ()
   {
-    float newHeight = 2 * Liquid.transform.localScale.z; //BECAUSE OF BLENDER - MUST ADDRESS SOON 
+    float newHeight = Liquid.transform.localScale.z; //BECAUSE OF BLENDER - MUST ADDRESS SOON 
     _height = newHeight;
     transform.position = new Vector3(transform.position.x, newHeight, transform.position.z);
   }

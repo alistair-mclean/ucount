@@ -1,23 +1,20 @@
-// Buoyancy.cs
-// by Alex Zhdankin
-// edited by Alistair McLean
-// Version 2.1
-//
-// http://forum.unity3d.com/threads/72974-Buoyancy-script
-//
-// Terms of use: do whatever you like. <- Thanks Alex
+///<summary>
+/// DESCRIPTION - Adds buoyancy to the assigned object. Calculates an Archimedes force on
+/// a list of voxels that are created from the colliding mesh component.
+/// 
+/// AUTHORS - Alex Zhdankin, Alistair McLean
+/// </summary>
+
 
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Buoyancy : MonoBehaviour
 {
-  // DESCRIPTION - Adds buoyancy to the assigned object. Calculates an Archimedes force on a list of voxels that are 
-  // created. These voxels are a good way to create a robust buoyancy for a complicated mesh
-
   // Public
   public GameObject Liquid; // This must be assigned by the developer 
-	public float ObjectDensity = 500;
+  public const float _DAMPFER = 0.4f;
+  public float ObjectDensity = 500;
   public float LiquidDensity = 1000; //Default density of water 
   public float SubmergedVolume = 0;
 	public int SlicesPerAxis = 2;
@@ -25,7 +22,6 @@ public class Buoyancy : MonoBehaviour
 	public int VoxelsLimit = 16;
 
   // Private 
-	private const float _DAMPFER = 0.1f;
   private float _maximumSubmergedVolume = 0;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;
@@ -64,6 +60,8 @@ public class Buoyancy : MonoBehaviour
 		_isMeshCollider = GetComponent<MeshCollider>() != null;
 
     var bounds = GetComponent<Collider>().bounds;
+    // Add call to maximum submerge volume calculation
+
     _maximumSubmergedVolume = bounds.size.magnitude;
     if (bounds.size.x < bounds.size.y)
 		{
@@ -344,4 +342,15 @@ public class Buoyancy : MonoBehaviour
 			Gizmos.DrawLine(force[0], force[0] + force[1] / GetComponent<Rigidbody>().mass);
 		}
 	}
+
+  void CalculateMaximumSubmergedVolume(Collider other)
+  {
+    float maximumVolume = 0.0f;
+    
+    //Calculate the volume for the correct shape. Complicated meshes are approximated! 
+    if(other.GetType() == typeof(SphereCollider))
+    {
+
+    }
+  }
 }

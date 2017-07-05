@@ -26,7 +26,7 @@ public class LiquidVolumeDisplay : MonoBehaviour {
 	
 	void LateUpdate () {
     _liquidVolume = Liquid.GetComponent<Liquid>().GetLiquidVolume();
-    _currentText = _liquidVolume.ToString() + " L";
+    _currentText = _liquidVolume.ToString() + " Liters";
     VolumeText.text = _currentText;
   }
 }
