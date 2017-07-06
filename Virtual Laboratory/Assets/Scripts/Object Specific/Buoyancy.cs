@@ -1,21 +1,15 @@
-// Buoyancy.cs
-// by Alex Zhdankin
-// edited by Alistair McLean
-// Version 2.1
-//
-// http://forum.unity3d.com/threads/72974-Buoyancy-script
-//
-// Terms of use: do whatever you like. <- Thanks Alex
-
+///<summary>
+/// Buoyancy.cs - Adds buoyancy to the assigned object. Calculates an Archimedes force on a list of voxels that are 
+/// created. These voxels are a good way to create a robust buoyancy for a complicated mesh
+/// </summary>
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Buoyancy : MonoBehaviour
 {
-  // DESCRIPTION - Adds buoyancy to the assigned object. Calculates an Archimedes force on a list of voxels that are 
-  // created. These voxels are a good way to create a robust buoyancy for a complicated mesh
 
   // Public
+  public const float DAMPFER = 0.2f;
   public GameObject Liquid; // This must be assigned by the developer 
 	public float ObjectDensity = 500;
   public float LiquidDensity = 1000; //Default density of water 
@@ -26,7 +20,6 @@ public class Buoyancy : MonoBehaviour
 	public int VoxelsLimit = 16;
 
   // Private 
-	private const float _DAMPFER = 0.2f;
   private float _maximumSubmergedVolume = 0;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;
@@ -303,7 +296,7 @@ public class Buoyancy : MonoBehaviour
           if (SubmergedVolume < _maximumSubmergedVolume)
             SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
           var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
+          var localDampingForce = -velocity * DAMPFER * GetComponent<Rigidbody>().mass;
           var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
           GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
 

@@ -10,6 +10,8 @@ public class Liquid : MonoBehaviour {
   // Public
   public float Density = 1000f; // in kg/m^3
   public float RiseTimeConstant = 0.3f; //Arbitrary constant to fine tune how quickly the liquid rises 
+  public float DragCoefficient = 1.3f;
+  public float AngularDragCoefficient = 1.2f;
 
   // Private
   private Collider _liquidCollider;
@@ -55,6 +57,15 @@ public class Liquid : MonoBehaviour {
       }
       Buoyancy buoyantObject = collidingObject.GetComponent<Buoyancy>();
     }
+    if (collidingObject.GetComponent<Rigidbody>() == null)
+    {
+      Debug.Log("Non-rigidbody triggering liquid");
+    }
+    else
+    {
+      collidingObject.GetComponent<Rigidbody>().drag = DragCoefficient;
+      collidingObject.GetComponent<Rigidbody>().angularDrag = AngularDragCoefficient;
+    }
 
   }
 
@@ -64,6 +75,8 @@ public class Liquid : MonoBehaviour {
     GameObject collidedObject = other.gameObject;
     if (_collidingObjects.Contains(collidedObject))
     {
+      collidedObject.GetComponent<Rigidbody>().drag = 0;
+      collidedObject.GetComponent<Rigidbody>().angularDrag = 0;
       _collidingObjects.Remove(collidedObject);
     }
   }
