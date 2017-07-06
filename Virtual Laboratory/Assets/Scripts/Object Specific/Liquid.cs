@@ -9,6 +9,7 @@ public class Liquid : MonoBehaviour {
 
   // Public
   public float Density = 1000f; // in kg/m^3
+  public float RiseTimeConstant = 0.3f; //Arbitrary constant to fine tune how quickly the liquid rises 
 
   // Private
   private Collider _liquidCollider;
@@ -67,7 +68,7 @@ public class Liquid : MonoBehaviour {
     }
   }
 
-  private void Update()
+  private void FixedUpdate()
   {
     CalculateLiquidDimensions();
   }
@@ -88,7 +89,7 @@ public class Liquid : MonoBehaviour {
     Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume);
     newDimensions = _initialDimensions;
     newDimensions.z += newHeight;
-    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime) ;
+    transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * RiseTimeConstant) ;
   }
   
   public float GetLiquidVolume()

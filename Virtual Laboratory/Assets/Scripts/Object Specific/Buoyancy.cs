@@ -22,10 +22,11 @@ public class Buoyancy : MonoBehaviour
   public float SubmergedVolume = 0;
 	public int SlicesPerAxis = 2;
 	public bool IsConcave = false;
+  public bool BuoyancyIsActive = true;
 	public int VoxelsLimit = 16;
 
   // Private 
-	private const float _DAMPFER = 0.1f;
+	private const float _DAMPFER = 0.2f;
   private float _maximumSubmergedVolume = 0;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;
@@ -277,38 +278,40 @@ public class Buoyancy : MonoBehaviour
 	private void FixedUpdate()
 	{
 		_forces.Clear(); // For drawing force gizmos
+    if (BuoyancyIsActive)
+    {
+      foreach (var point in _voxels)
+      {
+        var wp = transform.TransformPoint(point);
+        float waterLevel = GetWaterLevel(wp.x, wp.z);
 
-		foreach (var point in _voxels)
-		{
-			var wp = transform.TransformPoint(point);
-			float waterLevel = GetWaterLevel(wp.x, wp.z);
+        //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
+        if (waterLevel <= 0)
+          return;
+        // hack end
+        if (wp.y - _voxelHalfHeight < waterLevel)
+        {
+          float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
+          if (k > 1)
+          {
+            k = 1f;
+          }
+          else if (k < 0)
+          {
+            k = 0f;
+          }
+          if (SubmergedVolume < _maximumSubmergedVolume)
+            SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
+          var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
+          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
+          var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
+          GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
 
-      //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
-      if (waterLevel <= 0)
-        return; 
-      // hack end
-			if (wp.y - _voxelHalfHeight < waterLevel)
-			{
-				float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
-				if (k > 1)
-				{
-					k = 1f;
-				}
-				else if (k < 0)
-				{
-					k = 0f;
-				}
-        if (SubmergedVolume < _maximumSubmergedVolume)
-          SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
-				var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-				var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
-				var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
-				GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
-
-				_forces.Add(new[] { wp, force }); // For drawing force gizmos
-			}
-		}
-	}
+          _forces.Add(new[] { wp, force }); // For drawing force gizmos
+        }
+      }
+    }
+  }
 
   // TEMPORARY
   public float GetSubmergedVolume()
