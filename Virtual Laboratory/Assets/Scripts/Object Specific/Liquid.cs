@@ -68,7 +68,7 @@ public class Liquid : MonoBehaviour {
     }
   }
 
-  private void Update()
+  private void FixedUpdate()
   {
     CalculateLiquidDimensions();
   }

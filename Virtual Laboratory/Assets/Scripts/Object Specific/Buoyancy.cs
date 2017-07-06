@@ -26,7 +26,7 @@ public class Buoyancy : MonoBehaviour
 	public int VoxelsLimit = 16;
 
   // Private 
-	private const float _DAMPFER = 0.1f;
+	private const float _DAMPFER = 0.2f;
   private float _maximumSubmergedVolume = 0;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;

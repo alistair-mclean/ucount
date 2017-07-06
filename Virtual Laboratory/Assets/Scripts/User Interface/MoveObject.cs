@@ -50,19 +50,19 @@ public class MoveObject : MonoBehaviour
             // If the finger has moved on screen, translate the object relative to the local coordinates
             if (deltaTouchPos.x < 0)
             {
-              touchedObject.transform.Translate(Vector3.left * 5 * Time.deltaTime);
+              touchedObject.transform.Translate(Vector3.left * 10 * Time.deltaTime);
             }
             else if (deltaTouchPos.x > 0)
             {
-              touchedObject.transform.Translate(Vector3.right * 5 * Time.deltaTime);
+              touchedObject.transform.Translate(Vector3.right * 10 * Time.deltaTime);
             }
             if (deltaTouchPos.y < 0)
             {
-              touchedObject.transform.Translate(Vector3.down * 5 * Time.deltaTime);
+              touchedObject.transform.Translate(Vector3.down * 10 * Time.deltaTime);
             }
             else if (deltaTouchPos.y > 0)
             {
-              touchedObject.transform.Translate(Vector3.up * 5 * Time.deltaTime);
+              touchedObject.transform.Translate(Vector3.up * 10 * Time.deltaTime);
             }
             // Move the object relative to the camera as the camera moves around 
             Vector3 deltaCameraPos = camera.transform.position - _cameraPosition;
