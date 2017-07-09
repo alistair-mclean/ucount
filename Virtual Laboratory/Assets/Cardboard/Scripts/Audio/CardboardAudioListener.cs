@@ -1,4 +1,4 @@
-// Copyright 2016 Google Inc. All rights reserved.
+// Copyright 2015 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,35 +15,40 @@
 using UnityEngine;
 using System.Collections;
 
-/// GVR audio listener component that enhances AudioListener to provide advanced spatial audio
+/// Cardboard audio listener component that enhances AudioListener to provide advanced spatial audio
 /// features.
 ///
 /// There should be only one instance of this which is attached to the AudioListener's game object.
-[AddComponentMenu("GoogleVR/Audio/GvrAudioListener")]
-public class GvrAudioListener : MonoBehaviour {
+[RequireComponent(typeof(AudioListener))]
+[AddComponentMenu("Cardboard/Audio/CardboardAudioListener")]
+public class CardboardAudioListener : MonoBehaviour {
   /// Global gain in decibels to be applied to the processed output.
   public float globalGainDb = 0.0f;
 
-  /// Global layer mask to be used in occlusion detection.
-  public LayerMask occlusionMask = -1;
+  /// Global scale of the real world with respect to the Unity environment.
+  public float worldScale = 1.0f;
 
   /// Audio rendering quality of the system.
   [SerializeField]
-  private GvrAudio.Quality quality = GvrAudio.Quality.High;
+  private CardboardAudio.Quality quality = CardboardAudio.Quality.Medium;
 
   void Awake () {
-    GvrAudio.Initialize(this, quality);
+    CardboardAudio.Initialize(this, quality);
   }
 
   void OnEnable () {
-    GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
+    CardboardAudio.UpdateAudioListener(globalGainDb, worldScale);
   }
 
   void OnDestroy () {
-    GvrAudio.Shutdown(this);
+    CardboardAudio.Shutdown(this);
   }
 
   void Update () {
-    GvrAudio.UpdateAudioListener(globalGainDb, occlusionMask);
+    CardboardAudio.UpdateAudioListener(globalGainDb, worldScale);
+  }
+
+  void OnAudioFilterRead (float[] data, int channels) {
+    CardboardAudio.ProcessAudioListener(data, data.Length);
   }
 }

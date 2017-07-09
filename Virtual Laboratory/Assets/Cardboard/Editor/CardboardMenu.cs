@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All rights reserved.
+﻿// Copyright 2015 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,44 +14,47 @@
 
 using UnityEngine;
 using UnityEditor;
+using System.Collections;
 
-public class GvrMenu {
-  [MenuItem("GoogleVR/Documentation/Developers Site", false, 100)]
+public class CardboardMenu {
+  // Setup wizard
+  //[MenuItem("Cardboard/Cardboard Setup...", false, 20)]
+  private static void ModifyExistingCamera() {
+    // Show helper dialog.
+    CardboardSetup.ShowWindow();
+  }
+
+  [MenuItem("Cardboard/Documentation/Developers Site", false, 100)]
   private static void OpenDocumentation() {
-    Application.OpenURL("https://developers.google.com/vr");
+    Application.OpenURL("https://developers.google.com/cardboard");
   }
 
-  [MenuItem("GoogleVR/Documentation/Unity Guide", false, 100)]
+  [MenuItem("Cardboard/Documentation/Unity Guide", false, 100)]
   private static void OpenUnityGuide() {
-    Application.OpenURL("https://developers.google.com/vr/unity/guide");
+    Application.OpenURL("https://developers.google.com/cardboard/unity/guide");
   }
 
-  [MenuItem("GoogleVR/Documentation/Release Notes", false, 100)]
+  [MenuItem("Cardboard/Documentation/Release Notes", false, 100)]
   private static void OpenReleaseNotes() {
-    Application.OpenURL("https://developers.google.com/vr/unity/release-notes");
+    Application.OpenURL("https://developers.google.com/cardboard/unity/release-notes");
   }
 
-  [MenuItem("GoogleVR/Documentation/Known Issues", false, 100)]
+  [MenuItem("Cardboard/Documentation/Known Issues", false, 100)]
   private static void OpenKnownIssues() {
-    Application.OpenURL("https://developers.google.com/vr/unity/release-notes#known_issues");
+    Application.OpenURL("https://developers.google.com/cardboard/unity/release-notes#known_issues");
   }
 
-  [MenuItem("GoogleVR/Editor Settings", false, 100)]
-  private static void OpenEditorSettings() {
-    EditorWindow.GetWindow(typeof(GvrEditorSettings));
-  }
-
-  [MenuItem("GoogleVR/Report Bug", false, 100)]
+  [MenuItem("Cardboard/Report Bug", false, 100)]
   private static void OpenReportBug() {
     Application.OpenURL("https://github.com/googlesamples/cardboard-unity/issues");
   }
 
-  [MenuItem("GoogleVR/About Google VR", false, 200)]
+  [MenuItem("Cardboard/About Cardboard", false, 200)]
   private static void OpenAbout() {
-    EditorUtility.DisplayDialog("Google VR SDK for Unity",
-        "Version: " + GvrUnitySdkVersion.GVR_SDK_VERSION + "\n\n"
-        + "Licenses: Apache 2.0, MIT\n"
-        + "Copyright: ©2017 Google Inc. All rights reserved.\n"
+    EditorUtility.DisplayDialog("Cardboard SDK for Unity",
+        "Version: " + Cardboard.CARDBOARD_SDK_VERSION + "\n\n"
+        + "License: Apache 2.0\n"
+        + "Copyright: ©2015 Google Inc. All rights reserved.\n"
         + "See LICENSE for additional license information.",
         "OK");
   }

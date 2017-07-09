@@ -14,7 +14,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-Shader "GoogleVR/Reticle" {
+Shader "Cardboard/CardboardReticle" {
   Properties {
     _Color  ("Color", Color) = ( 1, 1, 1, 1 )
     _InnerDiameter ("InnerDiameter", Range(0, 10.0)) = 1.5
@@ -64,7 +64,7 @@ Shader "GoogleVR/Reticle" {
       }
 
       fixed4 frag(fragmentInput i) : SV_Target {
-        fixed4 ret = _Color;
+        fixed4 ret = fixed4(_Color.x, _Color.y, _Color.z, 1.0);
         return ret;
       }
 

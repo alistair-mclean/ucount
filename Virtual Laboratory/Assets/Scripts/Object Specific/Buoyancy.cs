@@ -5,10 +5,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-[RequireComponent(typeof(MeshCollider))]
-
-  
 public class Buoyancy : MonoBehaviour
 {
 
@@ -86,16 +82,22 @@ public class Buoyancy : MonoBehaviour
       _voxelHalfHeight = bounds.size.z;
     }
     _voxelHalfHeight /= 2 * SlicesPerDimension;
-    
+
+    // The object must have a RidigBody
+    if (GetComponent<Rigidbody>() == null)
+    {
+      gameObject.AddComponent<Rigidbody>();
+      Debug.LogWarning(string.Format("[Buoyancy.cs] Object \"{0}\" had no Rigidbody. Rigidbody has been added.", name));
+    }
     gameObject.GetComponent<Rigidbody>().mass = _volume * ObjectDensity;
     GetComponent<Rigidbody>().centerOfMass = new Vector3(0, -bounds.extents.y * 0f, 0) + transform.InverseTransformPoint(bounds.center);
 
     switch (CoordinateSystem) {
       case (CoordinateType.Cartesian):
-        _voxels = CartesianSliceIntoVoxels(IsConcave);
+        _voxels = CartesianSliceIntoVoxels(_isMeshCollider && IsConcave);
         break;
       case (CoordinateType.Spherical):
-        _voxels = SphericalSliceIntoVoxels(IsConcave);
+        _voxels = SphericalSliceIntoVoxels(_isMeshCollider && IsConcave);
         break;
         //Add cylindrical, obviously
     };
@@ -199,7 +201,7 @@ public class Buoyancy : MonoBehaviour
       //float maxRadius = bounds.max.magnitude;
 
       // Phi
-      float maxRadius = transform.localScale.magnitude / 4;
+      float maxRadius = bounds.max.magnitude;
       float numberOfSlices = (float)SlicesPerDimension; //float conversion
       float phi = -(3.0f / 2.0f) * Mathf.PI;
       Debug.Log("phi = " + phi + " number of slices = " + numberOfSlices + " max radius = " + maxRadius);
@@ -209,7 +211,7 @@ public class Buoyancy : MonoBehaviour
         for (float theta = 0.0f; theta <= 360.0f; theta += 360.0f / numberOfSlices)
         {
           // This loop needs to the radius coming inwards
-          for (float radius = 0; radius < maxRadius; radius += maxRadius / numberOfSlices)
+          for (float radius = 0; radius <= maxRadius; radius += maxRadius / numberOfSlices)
           {
             Vector3 centerOfObject = transform.position;
             float x = (bounds.center.x + radius) * Mathf.Cos(phi) * Mathf.Sin(theta);
@@ -230,7 +232,7 @@ public class Buoyancy : MonoBehaviour
     {
       Bounds bounds = GetComponent<Collider>().bounds;
       Vector3 maxRadiusVector = bounds.max - bounds.min;
-      float maxRadius = transform.localScale.magnitude / 2 ;
+      float maxRadius = maxRadiusVector.magnitude;
       //float maxRadius = Mathf.Pow(_volume * (3.0f / (4.0f * Mathf.PI)), (1.0f / 3.0f));
       float numberOfSlices = (float)SlicesPerDimension; //float conversion
       float phi = -(3.0f / 2.0f) * Mathf.PI;
