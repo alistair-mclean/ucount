@@ -1,4 +1,4 @@
-﻿// Copyright 2015 Google Inc. All rights reserved.
+// Copyright 2017 Google Inc. All rights reserved.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,110 +11,97 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#if UNITY_ANDROID
 
 using UnityEngine;
+using System;
+using System.Collections.Generic;
 
-public class CardboardAndroidDevice : BaseCardboardDevice {
-  private const string ActivityListenerClass =
-      "com.google.vr.platform.unity.UnityVrActivityListener";
+using Gvr.Internal;
 
-  private static AndroidJavaObject activityListener;
+/// Provides mouse-controlled head tracking emulation in the Unity editor.
+public class GvrEditorEmulator : MonoBehaviour {
+  private const string AXIS_MOUSE_X = "Mouse X";
+  private const string AXIS_MOUSE_Y = "Mouse Y";
 
-  public override void Init() {
-    SetApplicationState();
-    base.Init();
-    ConnectToActivity();
-  }
+#if UNITY_EDITOR && UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_IOS)
+  // Simulated neck model.  Vector from the neck pivot point to the point between the eyes.
+  private static readonly Vector3 m_neckOffset = new Vector3(0, 0.075f, 0.08f);
 
-  protected override void ConnectToActivity() {
-    base.ConnectToActivity();
-    if (androidActivity != null && activityListener == null) {
-      activityListener = Create(ActivityListenerClass);
+  // Use mouse to emulate head in the editor.
+  // These variables must be static so that head pose is maintained between scene changes,
+  // as it is on device.
+  private static float m_mouseX = 0;
+  private static float m_mouseY = 0;
+  private static float m_mouseZ = 0;
+
+  private bool m_isRecenterOnlyController = false;
+#endif
+
+  [Tooltip("Camera to track")]
+  public Camera m_camera;
+
+#if UNITY_EDITOR && UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_IOS)
+  void Start()
+  {
+    GvrRecenterOnlyController controllerOnlyRecenter =
+      FindObjectOfType<GvrRecenterOnlyController>();
+    if (controllerOnlyRecenter != null)
+    {
+      m_isRecenterOnlyController = true;
+    }
+    if (m_camera == null)
+    {
+      m_camera = Camera.main;
     }
   }
 
-  // Returns landscape orientation display metrics.
-  public override DisplayMetrics GetDisplayMetrics() {
-    using (var listenerClass = GetClass(ActivityListenerClass)) {
-      // Sadly some Android devices still don't report accurate values.  If this
-      // doesn't work correctly on your device, comment out this function to try
-      // the Unity implementation.
-      float[] metrics = listenerClass.CallStatic<float[]>("getDisplayMetrics");
-      // Always return landscape orientation.
-      int width, height;
-      if (metrics[0] > metrics[1]) {
-        width = (int)metrics[0];
-        height = (int)metrics[1];
-      } else {
-        width = (int)metrics[1];
-        height = (int)metrics[0];
-      }
-      // DPI-x (metrics[2]) on Android appears to refer to the narrow dimension of the screen.
-      return new DisplayMetrics { width = width, height = height, xdpi = metrics[3], ydpi = metrics[2] };
+  void Update()
+  {
+    if (GvrController.Recentered)
+    {
+      Recenter();
     }
-  }
 
-  public override void SetUILayerEnabled(bool enabled) {
-    CallObjectMethod(activityListener, "setUILayerEnabled", enabled);
-  }
-
-  public override void SetVRModeEnabled(bool enabled) {
-    CallObjectMethod(activityListener, "setVRModeEnabled", enabled);
-  }
-
-  public override void SetSettingsButtonEnabled(bool enabled) {
-    CallObjectMethod(activityListener, "setSettingsButtonEnabled", enabled);
-  }
-
-  public override void SetAlignmentMarkerEnabled(bool enabled) {
-    CallObjectMethod(activityListener, "setAlignmentMarkerEnabled", enabled);
-  }
-
-  public override void SetVRBackButtonEnabled(bool enabled) {
-    CallObjectMethod(activityListener, "setVRBackButtonEnabled", enabled);
-  }
-
-  public override void SetShowVrBackButtonOnlyInVR(bool only) {
-    CallObjectMethod(activityListener, "setShowVrBackButtonOnlyInVR", only);
-  }
-
-  public override void SetTapIsTrigger(bool enabled) {
-    CallObjectMethod(activityListener, "setTapIsTrigger", enabled);
-  }
-
-  public override void SetTouchCoordinates(int x, int y) {
-    CallObjectMethod(activityListener, "setTouchCoordinates", x, y);
-  }
-
-  public override void ShowSettingsDialog() {
-    CallObjectMethod(activityListener, "launchConfigureActivity");
-  }
-
-  protected override void ProcessEvents() {
-    base.ProcessEvents();
-    if (!Cardboard.SDK.TapIsTrigger) {
-      if (triggered) {
-        CallObjectMethod(activityListener, "injectSingleTap");
+    Quaternion rot;
+    bool rolled = false;
+    if (Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt)) {
+      m_mouseX += Input.GetAxis(AXIS_MOUSE_X) * 5;
+      if (m_mouseX <= -180) {
+        m_mouseX += 360;
+      } else if (m_mouseX > 180) {
+        m_mouseX -= 360;
       }
-      if (backButtonPressed) {
-        CallObjectMethod(activityListener, "injectKeyPress", 111);  // Escape key.
-      }
+      m_mouseY -= Input.GetAxis(AXIS_MOUSE_Y) * 2.4f;
+      m_mouseY = Mathf.Clamp(m_mouseY, -85, 85);
+    } else if (Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) {
+      rolled = true;
+      m_mouseZ += Input.GetAxis(AXIS_MOUSE_X) * 5;
+      m_mouseZ = Mathf.Clamp(m_mouseZ, -85, 85);
     }
-  }
-
-  public override void OnPause(bool pause) {
-    base.OnPause(pause);
-    CallObjectMethod(activityListener, "onPause", pause);
-  }
-
-  private void SetApplicationState() {
-    if (activityListener == null) {
-      using (var listenerClass = GetClass(ActivityListenerClass)) {
-        CallStaticMethod(listenerClass, "setUnityApplicationState");
-      }
+    if (!rolled) {
+      // People don't usually leave their heads tilted to one side for long.
+      m_mouseZ = Mathf.Lerp(m_mouseZ, 0, Time.deltaTime / (Time.deltaTime + 0.1f));
     }
+    rot = Quaternion.Euler(m_mouseY, m_mouseX, m_mouseZ);
+    var neck = (rot * m_neckOffset - m_neckOffset.y * Vector3.up) * m_camera.transform.lossyScale.y;
+
+    Vector3 camPosition = m_camera.transform.position;
+    camPosition.y = neck.y;
+    m_camera.transform.localPosition = neck;
+    m_camera.transform.localRotation = rot;
+  }
+#endif  // UNITY_EDITOR && UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_IOS)
+
+  public void Recenter()
+  {
+#if UNITY_EDITOR && UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_IOS)
+    if (m_isRecenterOnlyController)
+    {
+      return;
+    }
+    m_mouseX = m_mouseZ = 0;  // Do not reset pitch, which is how it works on the phone.
+    m_camera.transform.localPosition = Vector3.zero;
+    m_camera.transform.localRotation = new Quaternion(m_mouseX, m_mouseY, m_mouseZ, 1);
+#endif  // UNITY_EDITOR && UNITY_HAS_GOOGLEVR && (UNITY_ANDROID || UNITY_IOS)
   }
 }
-
-#endif
