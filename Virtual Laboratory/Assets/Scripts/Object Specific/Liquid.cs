@@ -41,12 +41,8 @@ public class Liquid : MonoBehaviour {
   private void OnTriggerEnter(Collider other)
   {
     GameObject collidingObject = other.gameObject;
-    Debug.Log(collidingObject.name + " Colliding with Liquid");
-    if (collidingObject.GetComponent<Buoyancy>() == null)
-    {
-      Debug.Log("Non-Buoyant object triggering liquid");
-    }
-    else
+    // If the colliding object is buoyant, add it to the list to later calculate how much to raise the water level
+    if (collidingObject.GetComponent<Buoyancy>() != null)
     {
       if (!_collidingObjects.Contains(collidingObject))
       {
@@ -54,12 +50,7 @@ public class Liquid : MonoBehaviour {
       }
       Buoyancy buoyantObject = collidingObject.GetComponent<Buoyancy>();
     }
-    if (collidingObject.GetComponent<Rigidbody>() == null)
-    {
-      Debug.Log("Non-rigidbody triggering liquid");
-    }
-    else
-    {
+    if (collidingObject.GetComponent<Rigidbody>() != null) {
       collidingObject.GetComponent<Rigidbody>().drag = DragCoefficient;
       collidingObject.GetComponent<Rigidbody>().angularDrag = AngularDragCoefficient;
     }
@@ -81,7 +72,6 @@ public class Liquid : MonoBehaviour {
   private void FixedUpdate()
   {
     CalculateLiquidDimensions();
-    Debug.Log("My liquid density is: " + Density);
   }
 
   // Calculate the new liquid level each frame. 

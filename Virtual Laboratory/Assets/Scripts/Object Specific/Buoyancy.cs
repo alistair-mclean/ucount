@@ -98,7 +98,7 @@ public class Buoyancy : MonoBehaviour
 		float archimedesForceMagnitude = LiquidDensity * Mathf.Abs(Physics.gravity.y) * _volume;
 		_localArchimedesForce = new Vector3(0, archimedesForceMagnitude, 0) / _voxels.Count;
 
-		Debug.Log(string.Format("[Buoyancy.cs] Name=\"{0}\" volume={1:0.0}, mass={2:0.0}, density={3:0.0}", name, _volume, GetComponent<Rigidbody>().mass, ObjectDensity));
+		//Debug.Log(string.Format("[Buoyancy.cs] Name=\"{0}\" volume={1:0.0}, mass={2:0.0}, density={3:0.0}", name, _volume, GetComponent<Rigidbody>().mass, ObjectDensity));
 	}
 
 	/// <summary>
@@ -360,7 +360,6 @@ public class Buoyancy : MonoBehaviour
 	private void FixedUpdate()
   {
     LiquidDensity = Liquid.GetComponent<Liquid>().Density;
-    Debug.Log("Liquid Fixedupdate Denisty = " + LiquidDensity);
     _acceleration = transform.position - _lastPosition / Time.deltaTime; // Calculate instantaneous acceleration of object
     _netBuoyantForce = 0.0f;
 		_forces.Clear(); // For drawing force gizmos

@@ -51,15 +51,15 @@ public class MoveObject : MonoBehaviour
           
             // lerp and set the position of the current object to that of the touch, but smoothly over time.
           }
-          if (Input.GetTouch(0).phase == TouchPhase.Moved)
+          if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).phase == TouchPhase.Moved)
           {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector2 deltaTouchPos = touchPosition - _lastTouchPosition;
+            Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
 
             touchedObject.transform.Translate(Camera.main.transform.right * 100 * horizontalInput * Time.deltaTime);
             touchedObject.transform.Translate(Camera.main.transform.up * 100 * verticalInput * Time.deltaTime);         // get the touch position from the screen touch to world point
-            Vector3 touchedPos = Camera.main.ScreenToWorldPoint(new Vector3(touch.position.x, touch.position.y, touchedObject.transform.position.z));
+            Vector3 touchedPos = Camera.main.ScreenToWorldPoint(new Vector3(touchedObject.transform.position.x, touch.position.y, touch.position.x));
             touchedObject.transform.position = Vector3.Lerp(touchedObject.transform.position, touchedPos, Time.deltaTime);
 
 

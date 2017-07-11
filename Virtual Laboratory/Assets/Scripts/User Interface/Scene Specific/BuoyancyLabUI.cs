@@ -50,7 +50,8 @@ public class BuoyancyLabUI : MonoBehaviour {
     }
     SaveUI();
     _liquid.SetLiquidDensity(LiquidDensitySlider.value);
-    _activeObject.mass = float.Parse(MassInputField.text);
+    if(_objectSelected)
+      _activeObject.mass = float.Parse(MassInputField.text);
   }
 
   private void SaveUI()
