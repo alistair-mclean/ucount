@@ -493,10 +493,9 @@ public class Buoyancy : MonoBehaviour
   {
     float waterLevel = GetWaterLevel(transform.position.x, transform.position.y);
     float submergedLevel = 0.0f;
-    float topOfObject = transform.position.y + transform.localScale.y / 2;
     float bottomOfObject = transform.position.y - transform.localScale.y / 2;
     submergedLevel = waterLevel - bottomOfObject;
-    if (submergedLevel >= transform.localScale.y)
+    if (submergedLevel >= transform.localScale.y + transform.position.y)
       submergedLevel = transform.localScale.y;
     switch (CoordinateSystem)
     {
