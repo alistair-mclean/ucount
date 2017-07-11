@@ -5,6 +5,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(MeshCollider))]
+
 public class Buoyancy : MonoBehaviour
 {
 
@@ -15,17 +18,20 @@ public class Buoyancy : MonoBehaviour
   public GameObject Liquid; // This must be assigned by the developer 
 	public float ObjectDensity = 500;
   public float LiquidDensity = 1000; //Default density of water 
-  public float SubmergedVolume = 0;
 	public int SlicesPerDimension = 2;
 	public bool IsConcave = false;
   public bool BuoyancyIsActive = true;
 	public int VoxelsLimit = 16;
 
   // Private 
-  private float _maximumSubmergedVolume = 0;
+  private float _maximumSubmergedVolume = 0.0f;
+  private float _submergedVolume = 0;
+  private float _netBuoyantForce = 0.0f;
   private float _volume;
   private float _voxelHalfHeight;
 	private Vector3 _localArchimedesForce;
+  private Vector3 _acceleration;
+  private Vector3 _lastPosition;
 	private List<Vector3> _voxels;
 	private bool _isMeshCollider;
 	private List<Vector3[]> _forces; // For drawing force gizmos
@@ -35,9 +41,9 @@ public class Buoyancy : MonoBehaviour
   /// </summary>
   private void Start()
   {
+    _lastPosition = transform.position;
+    _acceleration = Vector3.zero;
     CalculateInitialObjectVolume();
-
-    Debug.Log(gameObject.name + " has volume: " + _volume + " m^3.");
     if (Liquid.GetComponent<Liquid>() == null)
     {
       Debug.LogError("Error in Buoyancy Component for " + gameObject.name + " NO LIQUID COMPONENT IN LIQUID.");
@@ -45,7 +51,6 @@ public class Buoyancy : MonoBehaviour
     else
     {
       LiquidDensity = Liquid.GetComponent<Liquid>().Density;
-      Debug.Log("Detected liquid Density = " + LiquidDensity);
     }
     _forces = new List<Vector3[]>(); // For drawing force gizmos
 
@@ -55,20 +60,8 @@ public class Buoyancy : MonoBehaviour
     transform.rotation = Quaternion.identity;
     transform.position = Vector3.zero;
 
-    // The object must have a collider
-    if (GetComponent<Collider>() == null)
-    {
-      gameObject.AddComponent<MeshCollider>();
-      Debug.LogWarning(string.Format("[Buoyancy.cs] Object \"{0}\" had no collider. MeshCollider has been added.", name));
-    }
-    _isMeshCollider = GetComponent<MeshCollider>() != null;
 
     var bounds = GetComponent<Collider>().bounds;
-    // DEBUG BEGIN
-    float value = bounds.max.x - bounds.min.x;
-    Debug.Log("bounds.size( " + bounds.size.x + ", " + bounds.size.y + ", " + bounds.size.z + " ), value = " + value);
-
-    // DEBUG END
     if (bounds.size.x < bounds.size.y)
     {
       _voxelHalfHeight = bounds.size.x;
@@ -83,21 +76,15 @@ public class Buoyancy : MonoBehaviour
     }
     _voxelHalfHeight /= 2 * SlicesPerDimension;
 
-    // The object must have a RidigBody
-    if (GetComponent<Rigidbody>() == null)
-    {
-      gameObject.AddComponent<Rigidbody>();
-      Debug.LogWarning(string.Format("[Buoyancy.cs] Object \"{0}\" had no Rigidbody. Rigidbody has been added.", name));
-    }
     gameObject.GetComponent<Rigidbody>().mass = _volume * ObjectDensity;
     GetComponent<Rigidbody>().centerOfMass = new Vector3(0, -bounds.extents.y * 0f, 0) + transform.InverseTransformPoint(bounds.center);
 
     switch (CoordinateSystem) {
       case (CoordinateType.Cartesian):
-        _voxels = CartesianSliceIntoVoxels(_isMeshCollider && IsConcave);
+        _voxels = CartesianSliceIntoVoxels(IsConcave);
         break;
       case (CoordinateType.Spherical):
-        _voxels = SphericalSliceIntoVoxels(_isMeshCollider && IsConcave);
+        _voxels = SphericalSliceIntoVoxels(IsConcave);
         break;
         //Add cylindrical, obviously
     };
@@ -188,7 +175,6 @@ public class Buoyancy : MonoBehaviour
   private List<Vector3> SphericalSliceIntoVoxels(bool concave)
   {
     List<Vector3> points = new List<Vector3>(SlicesPerDimension * SlicesPerDimension * SlicesPerDimension);
-    Debug.Log("Pre conditional");
     if (concave)
     {
       MeshCollider meshCol = GetComponent<MeshCollider>();
@@ -204,14 +190,13 @@ public class Buoyancy : MonoBehaviour
       float maxRadius = bounds.max.magnitude;
       float numberOfSlices = (float)SlicesPerDimension; //float conversion
       float phi = -(3.0f / 2.0f) * Mathf.PI;
-      Debug.Log("phi = " + phi + " number of slices = " + numberOfSlices + " max radius = " + maxRadius);
       for (; phi <= Mathf.PI / 2.0f; phi += Mathf.PI / numberOfSlices)
       {
         // This loop needs to do the radial 
         for (float theta = 0.0f; theta <= 360.0f; theta += 360.0f / numberOfSlices)
         {
           // This loop needs to the radius coming inwards
-          for (float radius = 0; radius <= maxRadius; radius += maxRadius / numberOfSlices)
+          for (float radius = 0; radius <= maxRadius/2.0f; radius += maxRadius / numberOfSlices)
           {
             Vector3 centerOfObject = transform.position;
             float x = (bounds.center.x + radius) * Mathf.Cos(phi) * Mathf.Sin(theta);
@@ -219,7 +204,6 @@ public class Buoyancy : MonoBehaviour
             float z = (bounds.center.z + radius) * Mathf.Cos(phi);
 
             Vector3 newPoint = transform.InverseTransformPoint(new Vector3(x, y, z));
-            Debug.Log("Spherical object: " + gameObject.name + " new point: " + newPoint.x + ", " + newPoint.y + ", " + newPoint.z + " ) ");
             if (PointIsInsideMeshCollider(meshCol, newPoint))
             {
               points.Add(newPoint);
@@ -236,7 +220,6 @@ public class Buoyancy : MonoBehaviour
       //float maxRadius = Mathf.Pow(_volume * (3.0f / (4.0f * Mathf.PI)), (1.0f / 3.0f));
       float numberOfSlices = (float)SlicesPerDimension; //float conversion
       float phi = -(3.0f / 2.0f) * Mathf.PI;
-      Debug.Log("phi = " + phi + " number of slices = " + numberOfSlices + " max radius = " + maxRadius);
       // Phi loop
       for (; phi <= Mathf.PI / 2.0f; phi += Mathf.PI / numberOfSlices)
       {
@@ -254,7 +237,6 @@ public class Buoyancy : MonoBehaviour
             float z = bounds.center.z + radius * Mathf.Cos(phi);
 
             Vector3 newPoint = transform.InverseTransformPoint(new Vector3(x, y, z));
-            Debug.Log("Spherical object: " + gameObject.name + " new point: " + newPoint.x + ", " + newPoint.y + ", " + newPoint.z + " ) ");
             points.Add(newPoint);
             
           }
@@ -376,7 +358,11 @@ public class Buoyancy : MonoBehaviour
 	/// Calculates physics.
 	/// </summary>
 	private void FixedUpdate()
-	{
+  {
+    LiquidDensity = Liquid.GetComponent<Liquid>().Density;
+    Debug.Log("Liquid Fixedupdate Denisty = " + LiquidDensity);
+    _acceleration = transform.position - _lastPosition / Time.deltaTime; // Calculate instantaneous acceleration of object
+    _netBuoyantForce = 0.0f;
 		_forces.Clear(); // For drawing force gizmos
     if (BuoyancyIsActive)
     {
@@ -400,23 +386,23 @@ public class Buoyancy : MonoBehaviour
           {
             k = 0f;
           }
-          if (SubmergedVolume < _maximumSubmergedVolume)
-            SubmergedVolume += Mathf.Pow(_voxelHalfHeight, 3);
+          CalculateApparentSubmergedVolume();  
           var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
           var localDampingForce = -velocity * DAMPFER * GetComponent<Rigidbody>().mass;
           var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
           GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
-
+          _netBuoyantForce += force.y; // Sum up the overall vertical buoyant force for each object on each frame
           _forces.Add(new[] { wp, force }); // For drawing force gizmos
         }
       }
     }
+    _lastPosition = transform.position;
   }
 
   // TEMPORARY
   public float GetSubmergedVolume()
   {
-    return SubmergedVolume;
+    return _submergedVolume;
   }
 
 
@@ -448,9 +434,8 @@ public class Buoyancy : MonoBehaviour
 		}
 	}
   /// <summary>
-  /// Calculate the initial volume based on the object type.
+  /// Calculate the initial volume based on the object type. 
   /// </summary>
-  /// <param name="type"></param>
   private void CalculateInitialObjectVolume()
   {
     switch (CoordinateSystem)
@@ -490,15 +475,46 @@ public class Buoyancy : MonoBehaviour
       // Approximate max volume as a sphere 
       case (CoordinateType.Spherical):
         // Approximate a radius from the root mean square of the initial dimensions
-        float x = Mathf.Pow(transform.localScale.x, 2);
-        float y = Mathf.Pow(transform.localScale.y, 2);
-        float z = Mathf.Pow(transform.localScale.z, 2);
+        float x = Mathf.Pow(transform.localScale.x, 2.0f);
+        float y = Mathf.Pow(transform.localScale.y, 2.0f);
+        float z = Mathf.Pow(transform.localScale.z, 2.0f);
         float temp = (1.0f / 3.0f) * (x + y + z);
-        Debug.Log("temp value for polar object: " + temp);
         radius = Mathf.Pow(temp, 0.5f);
-        Debug.Log("approx. radius = " + radius);
         _volume = (4.0f / 3.0f) * Mathf.PI * Mathf.Pow(radius, 3);
-        Debug.Log("approx. _volume = " + _volume);
+        break;
+    }
+  }
+
+ 
+  /// <summary>
+  /// Calculates the apparent submerged volume of the object. This is not by any means accurate. 
+  /// This can very much be improved! 
+  /// </summary>
+  private void CalculateApparentSubmergedVolume()
+  {
+    float waterLevel = GetWaterLevel(transform.position.x, transform.position.y);
+    float submergedLevel = 0.0f;
+    float topOfObject = transform.position.y + transform.localScale.y / 2;
+    float bottomOfObject = transform.position.y - transform.localScale.y / 2;
+    submergedLevel = waterLevel - bottomOfObject;
+    if (submergedLevel >= transform.localScale.y)
+      submergedLevel = transform.localScale.y;
+    switch (CoordinateSystem)
+    {
+      case (CoordinateType.Cartesian):
+        float crossSection = transform.localScale.x * transform.localScale.z;
+        _submergedVolume = crossSection * submergedLevel;
+        break;
+
+      case (CoordinateType.Spherical):
+        // Approximate a radius from the root mean square of the submerged height
+        float rms = Mathf.Pow(submergedLevel, 2.0f);
+        float tempRadius = (1.0f / 3.0f) * (3.0f*rms);
+        _submergedVolume = (4.0f / 3.0f) * Mathf.PI * Mathf.Pow(tempRadius, 3.0f);
+        break;
+
+      case (CoordinateType.Cylindrical):
+        // Soon to be aded ;)
         break;
     }
   }

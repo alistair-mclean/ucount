@@ -1,11 +1,12 @@
-﻿using System.Collections;
+﻿// DESCRIPTION - This class controls the behavior of a liquid. 
+// Height control, and fluid density are controlled through this script. 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Collider))]
 public class Liquid : MonoBehaviour {
-  // DESCRIPTION - This class controls the behavior of a liquid. 
-  // Height control, and fluid density are controlled through this script. 
 
   // Public
   public float Density = 1000f; // in kg/m^3
@@ -36,11 +37,7 @@ public class Liquid : MonoBehaviour {
     _liquidVolume = _initialVolume;
   }
 
-  private void OnCollisionEnter(Collision collision)
-  {
-    GameObject collidingObject = collision.gameObject;
-  }
-
+  // When an object enters the liquid, add it to the list of collidingobjects
   private void OnTriggerEnter(Collider other)
   {
     GameObject collidingObject = other.gameObject;
@@ -84,6 +81,7 @@ public class Liquid : MonoBehaviour {
   private void FixedUpdate()
   {
     CalculateLiquidDimensions();
+    Debug.Log("My liquid density is: " + Density);
   }
 
   // Calculate the new liquid level each frame. 
@@ -99,7 +97,6 @@ public class Liquid : MonoBehaviour {
     totalVolume += totalSubmergedVolume;
     _liquidVolume = totalVolume;
     float newHeight = totalVolume / (_initialDimensions.x * _initialDimensions.y);
-    Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume);
     newDimensions = _initialDimensions;
     newDimensions.z += newHeight;
     transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * RiseTimeConstant) ;
@@ -109,5 +106,9 @@ public class Liquid : MonoBehaviour {
   {
     return _liquidVolume;
   }
-
+  
+  public void SetLiquidDensity(float newDensity)
+  {
+    Density = newDensity;
+  }
 }

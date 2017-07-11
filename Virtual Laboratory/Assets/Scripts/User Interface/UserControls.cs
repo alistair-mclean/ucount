@@ -40,7 +40,6 @@ public class UserControls : MonoBehaviour {
       {
         if (hit.collider.tag == "Interactable")
           _activeObject = hit.rigidbody;
-        UpdateUI();
       }
 
       if (Slider2.IsActive())
@@ -61,37 +60,6 @@ public class UserControls : MonoBehaviour {
     }
 #endif
   }
-  private void UpdateUI()
-  {
-    ObjectIDTextBox.text = "Active Object: " + _activeObject.name;
-    if(_activeObject.GetComponent<Rigidbody>())
-    {
-      Slider1.gameObject.SetActive(true);
-      Slider1Text.text = "Mass";
-      Slider1.minValue = _activeObject.mass * 0.01f;
-      Slider1.maxValue = _activeObject.mass * 10.0f;
-      Slider1.value = _activeObject.mass;
-    }
-    if (_activeObject.GetComponent<Buoyancy>())
-    {
-      Buoyancy buoyantObject = _activeObject.GetComponent<Buoyancy>();
-      Slider2.gameObject.SetActive(true);
-      Slider2Text.text = "Object Density";
-      Slider2.minValue = buoyantObject.ObjectDensity / 2;
-      Slider2.maxValue = 1.5f * buoyantObject.ObjectDensity;
-      Slider2.value = buoyantObject.ObjectDensity;
-    }
-    //else if(_activeObject.GetComponent<Liquid>())
-    //{
-    //  Liquid liquidObject = _activeObject.GetComponent<Liquid>();
-    //  Slider2.gameObject.SetActive(true);
-    //  Slider2Text.text = "Liquid Density";
-    //  Slider2.minValue = liquidObject.Density / 2;
-    //  Slider2.maxValue = 1.5f * liquidObject.Density;
-    // // This is not working. It crashes the application!!!!!
-    //}
- 
-    }
   }
 
  
