@@ -17,11 +17,23 @@ public class MoveObject : MonoBehaviour
   private Vector2 _lastTouchPosition = new Vector2();
   private Vector3 _cameraPosition = new Vector3();
 
-  void Update() {
+  Ray GenerateTouchRay()
+  {
+    Touch touch = Input.GetTouch(0);
+    Vector3 touchPosNear = new Vector3(touch.position.x, touch.position.y, Camera.main.nearClipPlane);
+    Vector3 touchPosFar= new Vector3(touch.position.x, touch.position.y, Camera.main.farClipPlane);
+
+    Ray touchRay = new Ray(touchPosNear, touchPosFar - touchPosNear);
+
+    return touchRay;
+  }
+
+  void LateUpdate() {
     Camera camera = Camera.main;
     if (Input.touchCount > 0)
     {
-      Ray fingerRay = camera.ScreenPointToRay(Input.GetTouch(0).position);
+      //      Ray fingerRay = camera.ScreenPointToRay(Input.GetTouch(0).position);
+      Ray fingerRay = GenerateTouchRay();    
       RaycastHit hit;
       if (Physics.Raycast(fingerRay, out hit))
       {
@@ -31,52 +43,33 @@ public class MoveObject : MonoBehaviour
         if (touchedObject.tag == "Interactable")
         {
 
-          if (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved)
+          if (Input.GetTouch(0).phase == TouchPhase.Began)
           {
-            //start hotfix
-            //if (touchedObject.GetComponent<Buoyancy>() != null)
-            //{
-            //  touchedObject.GetComponent<Buoyancy>().BuoyancyIsActive = false;
-            //}
-            //touchedObject.useGravity = false;
-            //end hotfix
 
             Debug.Log("Touched object = " + touchedObject.name);
             float clampMagnitude = (touchedObject.transform.position - Camera.main.transform.position).magnitude;
+          
+            // lerp and set the position of the current object to that of the touch, but smoothly over time.
+          }
+          if (Input.GetTouch(0).phase == TouchPhase.Began && Input.GetTouch(0).phase == TouchPhase.Moved)
+          {
             float horizontalInput = Input.GetAxis("Horizontal");
             float verticalInput = Input.GetAxis("Vertical");
-            Vector2 deltaTouchPos = touchPosition - _lastTouchPosition;
+            Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
 
-            // If the finger has moved on screen, translate the object relative to the local coordinates
-            if (deltaTouchPos.x < 0)
-            {
-              touchedObject.transform.Translate(Vector3.left * 10 * Time.deltaTime);
-            }
-            else if (deltaTouchPos.x > 0)
-            {
-              touchedObject.transform.Translate(Vector3.right * 10 * Time.deltaTime);
-            }
-            if (deltaTouchPos.y < 0)
-            {
-              touchedObject.transform.Translate(Vector3.down * 10 * Time.deltaTime);
-            }
-            else if (deltaTouchPos.y > 0)
-            {
-              touchedObject.transform.Translate(Vector3.up * 10 * Time.deltaTime);
-            }
-            // Move the object relative to the camera as the camera moves around 
-            Vector3 deltaCameraPos = camera.transform.position - _cameraPosition;
-            touchedObject.transform.position = touchedObject.transform.position + deltaCameraPos;
+            touchedObject.transform.Translate(Camera.main.transform.right * 100 * horizontalInput * Time.deltaTime);
+            touchedObject.transform.Translate(Camera.main.transform.up * 100 * verticalInput * Time.deltaTime);         // get the touch position from the screen touch to world point
+            Vector3 touchedPos = Camera.main.ScreenToWorldPoint(new Vector3(touchedObject.transform.position.x, touch.position.y, touch.position.x));
+            touchedObject.transform.position = Vector3.Lerp(touchedObject.transform.position, touchedPos, Time.deltaTime);
+
+
           }
 
-          //if (Input.GetTouch(0).phase == TouchPhase.Ended)
-          //{
-          //  if (touchedObject.GetComponent<Buoyancy>() != null)
-          //  {
-          //    touchedObject.GetComponent<Buoyancy>().BuoyancyIsActive = true;
-          //  }
-          //  touchedObject.useGravity = true;
-          //}
+
+          if (Input.GetTouch(0).phase == TouchPhase.Ended)
+          {
+            // Maybe do something????
+          }
         }
         _lastTouchPosition = touchPosition;
       }

@@ -1,15 +1,18 @@
-﻿using System.Collections;
+﻿// DESCRIPTION - This class controls the behavior of a liquid. 
+// Height control, and fluid density are controlled through this script. 
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Collider))]
 public class Liquid : MonoBehaviour {
-  // DESCRIPTION - This class controls the behavior of a liquid. 
-  // Height control, and fluid density are controlled through this script. 
 
   // Public
   public float Density = 1000f; // in kg/m^3
   public float RiseTimeConstant = 0.3f; //Arbitrary constant to fine tune how quickly the liquid rises 
+  public float DragCoefficient = 1.3f;
+  public float AngularDragCoefficient = 1.2f;
 
   // Private
   private Collider _liquidCollider;
@@ -34,26 +37,22 @@ public class Liquid : MonoBehaviour {
     _liquidVolume = _initialVolume;
   }
 
-  private void OnCollisionEnter(Collision collision)
-  {
-    GameObject collidingObject = collision.gameObject;
-  }
-
+  // When an object enters the liquid, add it to the list of collidingobjects
   private void OnTriggerEnter(Collider other)
   {
     GameObject collidingObject = other.gameObject;
-    Debug.Log(collidingObject.name + " Colliding with Liquid");
-    if (collidingObject.GetComponent<Buoyancy>() == null)
-    {
-      Debug.Log("Non-Buoyant object triggering liquid");
-    }
-    else
+    // If the colliding object is buoyant, add it to the list to later calculate how much to raise the water level
+    if (collidingObject.GetComponent<Buoyancy>() != null)
     {
       if (!_collidingObjects.Contains(collidingObject))
       {
         _collidingObjects.Add(collidingObject);
       }
       Buoyancy buoyantObject = collidingObject.GetComponent<Buoyancy>();
+    }
+    if (collidingObject.GetComponent<Rigidbody>() != null) {
+      collidingObject.GetComponent<Rigidbody>().drag = DragCoefficient;
+      collidingObject.GetComponent<Rigidbody>().angularDrag = AngularDragCoefficient;
     }
 
   }
@@ -64,6 +63,8 @@ public class Liquid : MonoBehaviour {
     GameObject collidedObject = other.gameObject;
     if (_collidingObjects.Contains(collidedObject))
     {
+      collidedObject.GetComponent<Rigidbody>().drag = 0;
+      collidedObject.GetComponent<Rigidbody>().angularDrag = 0;
       _collidingObjects.Remove(collidedObject);
     }
   }
@@ -86,7 +87,6 @@ public class Liquid : MonoBehaviour {
     totalVolume += totalSubmergedVolume;
     _liquidVolume = totalVolume;
     float newHeight = totalVolume / (_initialDimensions.x * _initialDimensions.y);
-    Debug.Log("New hegiht = " + newHeight + ", totalVolume = " + totalVolume);
     newDimensions = _initialDimensions;
     newDimensions.z += newHeight;
     transform.localScale = Vector3.Lerp(_initialDimensions, newDimensions, Time.deltaTime * RiseTimeConstant) ;
@@ -96,5 +96,9 @@ public class Liquid : MonoBehaviour {
   {
     return _liquidVolume;
   }
-
+  
+  public void SetLiquidDensity(float newDensity)
+  {
+    Density = newDensity;
+  }
 }
