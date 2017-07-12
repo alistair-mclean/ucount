@@ -87,14 +87,6 @@ public class CardboardOnGUI : MonoBehaviour {
   // Texture that captures the OnGUI rendering.
   private RenderTexture guiScreen;
 
-  void Awake() {
-    if (!SystemInfo.supportsRenderTextures) {
-      Debug.LogWarning("CardboardOnGUI disabled.  RenderTextures are not supported, "
-                       + "either due to license or platform.");
-      enabled = false;
-    }
-  }
-
   void Start() {
     Create();
   }

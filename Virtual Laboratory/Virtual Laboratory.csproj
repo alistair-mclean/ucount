@@ -27,7 +27,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;VUFORIA_ANDROID_SETTINGS;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;VUFORIA_ANDROID_SETTINGS;CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_HAS_GOOGLEVR</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -37,7 +37,7 @@
     <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;VUFORIA_ANDROID_SETTINGS;UNITY_HAS_GOOGLEVR</DefineConstants>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_ANDROID;ENABLE_SUBSTANCE;UNITY_ANDROID_API;ENABLE_EGL;ENABLE_NETWORK;ENABLE_RUNTIME_GI;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;PLATFORM_SUPPORTS_ADS_ID;UNITY_CAN_SHOW_SPLASH_SCREEN;ENABLE_VR;ENABLE_UNITYADS_RUNTIME;UNITY_UNITYADS_API;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;UNITY_TEAM_LICENSE;ENABLE_VSTU;VUFORIA_ANDROID_SETTINGS;CROSS_PLATFORM_INPUT;MOBILE_INPUT;UNITY_HAS_GOOGLEVR</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
@@ -76,83 +76,116 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="Vuforia.UnityExtensions">
-      <HintPath>Assets\Vuforia\Scripts\Internal\Vuforia.UnityExtensions.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUI.cs" />
+    <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUIMouse.cs" />
+    <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUIWindow.cs" />
+    <Compile Include="Assets\Cardboard\Legacy\Scripts\SkyboxMesh.cs" />
+    <Compile Include="Assets\Cardboard\Legacy\Scripts\StereoLensFlare.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Audio\CardboardAudio.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Audio\CardboardAudioListener.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Audio\CardboardAudioRoom.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Audio\CardboardAudioSource.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Cardboard.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\CardboardEye.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\CardboardHead.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\CardboardPostRender.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\CardboardPreRender.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\CardboardProfile.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\GazeInputModule.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\Pose3D.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\StereoController.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\StereoRenderEffect.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\UI\CardboardReticle.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\UI\ICardboardPointer.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\BaseAndroidDevice.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\BaseCardboardDevice.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\BaseVRDevice.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\CardboardAndroidDevice.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\CardboardiOSDevice.cs" />
+    <Compile Include="Assets\Cardboard\Scripts\VRDevices\UnityEditorDevice.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\AbstractTargetFollower.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\AutoCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\FreeLookCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\HandHeldCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\LookatTarget.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\PivotBasedCameraRig.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\ProtectCameraFromWallClip.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\TargetFieldOfView.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\RigidbodyFirstPersonController.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\VRRigidbodyFirstPersonController.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\MouseLook.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\CameraSwitch.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\Joystick.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\LevelReset.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\TiltInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\TouchPad.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ActivateTrigger.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\AutoMobileShaderSwitch.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\AutoMoveAndRotate.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\CameraRefocus.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\CurveControlledBob.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\DragRigidbody.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\DynamicShadowSettings.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FOVKick.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FPSCounter.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FollowTarget.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ForcedReset.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\LerpControlledBob.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ObjectResetter.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ParticleSystemDestroyer.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\PlatformSpecificContent.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\SimpleActivatorMenu.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\SimpleMouseRotator.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\TimedObjectActivator.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\TimedObjectDestructor.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\Scripts\Object Specific\Buoyancy.cs" />
     <Compile Include="Assets\Scripts\Object Specific\InitialForce.cs" />
     <Compile Include="Assets\Scripts\Object Specific\Liquid.cs" />
+    <Compile Include="Assets\Scripts\Object Specific\ObjectState.cs" />
     <Compile Include="Assets\Scripts\Object Specific\PhysicalObject.cs" />
     <Compile Include="Assets\Scripts\Object Specific\ResetPosition.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\BallBlock.cs" />
+    <Compile Include="Assets\Scripts\Scene Specific\Buoyancy\LiquidVolumeDisplay.cs" />
+    <Compile Include="Assets\Scripts\Scene Specific\Buoyancy\SpriteToLiquidHeight.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\FlipTextForCamera.cs" />
-    <Compile Include="Assets\Scripts\Scene Specific\LiquidVolumeDisplay.cs" />
-    <Compile Include="Assets\Scripts\Scene Specific\SpriteToLiquidHeight.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\singlePendulumSetup.cs" />
     <Compile Include="Assets\Scripts\Test Scripts\TestAddForceToBall.cs" />
     <Compile Include="Assets\Scripts\Test Scripts\TestLineDrawing.cs" />
     <Compile Include="Assets\Scripts\User Interface\GetObjectID.cs" />
     <Compile Include="Assets\Scripts\User Interface\LoadLevel.cs" />
+    <Compile Include="Assets\Scripts\User Interface\MouseMoveObject.cs" />
     <Compile Include="Assets\Scripts\User Interface\MoveObject.cs" />
+    <Compile Include="Assets\Scripts\User Interface\ReadLiquidDensity.cs" />
+    <Compile Include="Assets\Scripts\User Interface\Scene Specific\BuoyancyLabUI.cs" />
+    <Compile Include="Assets\Scripts\User Interface\Scene Specific\ProjectileMotionUI.cs" />
     <Compile Include="Assets\Scripts\User Interface\SendObjectVelocityMagnitude.cs" />
     <Compile Include="Assets\Scripts\User Interface\UserControls.cs" />
     <Compile Include="Assets\Scripts\Vector stuff\Force.cs" />
     <Compile Include="Assets\Scripts\Vector stuff\FreeBodyDiagram.cs" />
     <Compile Include="Assets\Scripts\Vector stuff\PhysicsConstants.cs" />
     <Compile Include="Assets\Scripts\Vector stuff\VectorComponent.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\BackgroundPlaneBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\CloudRecoBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\CylinderTargetBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\DefaultInitializationErrorHandler.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\DefaultSmartTerrainEventHandler.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\DefaultTrackableEventHandler.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\GLErrorHandler.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\HideExcessAreaBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\ImageTargetBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Internal\AndroidUnityPlayer.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Internal\ComponentFactoryStarterBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Internal\IOSUnityPlayer.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Internal\VuforiaBehaviourComponentFactory.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Internal\WSAUnityPlayer.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\MaskOutBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\MultiTargetBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\ObjectTargetBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\PropBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\ReconstructionBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\ReconstructionFromTargetBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\SurfaceBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\TextRecoBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\TurnOffBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\TurnOffWordBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\UserDefinedTargetBuildingBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\Utilities\VRIntegrationHelper.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VideoBackgroundBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VirtualButtonBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VuMarkBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VuforiaBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VuforiaConfiguration.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\VuforiaRuntimeInitialization.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\WireframeBehaviour.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\WireframeTrackableEventHandler.cs" />
-    <Compile Include="Assets\Vuforia\Scripts\WordBehaviour.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
-    <None Include="Assets\Plugins\iOS\Vuforia.UnityExtensions.iOS.XML" />
+    <None Include="Assets\Cardboard\Distortion\CardboardDistortion.cginc" />
+    <None Include="Assets\Cardboard\Resources\SkyboxMesh.shader" />
+    <None Include="Assets\Cardboard\Resources\SolidColor.shader" />
+    <None Include="Assets\Cardboard\Resources\UI\CardboardReticleShader.shader" />
+    <None Include="Assets\Cardboard\Resources\UnlitTexture.shader" />
+    <None Include="Assets\SampleAssets\Cameras\CameraGuidelines.txt" />
+    <None Include="Assets\SampleAssets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\StreamingAssets\QCAR\test.xml" />
-    <None Include="Assets\Vuforia\Editor\Scripts\Vuforia.UnityExtensions.Editor.XML" />
-    <None Include="Assets\Vuforia\Editor\WebcamProfiles\profiles.xml" />
-    <None Include="Assets\Vuforia\Scripts\Internal\Vuforia.UnityExtensions.XML" />
-    <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
-    <None Include="Assets\Vuforia\Shaders\ClippingMask.shader" />
-    <None Include="Assets\Vuforia\Shaders\ColoredLines.shader" />
-    <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
-    <None Include="Assets\Vuforia\Shaders\RenderVideoBackground.shader" />
-    <None Include="Assets\Vuforia\Shaders\Text3D.shader" />
-    <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />
-    <None Include="Assets\Vuforia\Shaders\VideoBackground.shader" />
     <None Include="Assets\license_3rdpartynotice.txt" />
     <None Include="Assets\link.xml" />
     <None Include="Assets\readme_SDK.txt" />
