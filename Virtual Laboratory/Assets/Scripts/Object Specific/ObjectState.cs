@@ -49,7 +49,7 @@ public class ObjectState : MonoBehaviour {
   {
     _objectState = State.Idle;
     // Re-enable the buoyancy (if applicable) 
-    if (_object.GetComponent<Buoyancy>() != null)
+    if (_object.GetComponent<Buoyancy>() != null || _object.GetComponent<Buoyancy>().enabled == false)
     {
       _object.GetComponent<Buoyancy>().enabled = true;
     }

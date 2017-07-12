@@ -7,12 +7,9 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(MeshCollider))]
-
 public class Buoyancy : MonoBehaviour
 {
-
   // Public
-  public const float DAMPFER = 0.2f;
   public enum CoordinateType {Cartesian, Cylindrical, Spherical}; //Enumerator for the type of coordinate system to apply to an object
   public CoordinateType CoordinateSystem; // The assigned coordinate system 
   public GameObject Liquid; // This must be assigned by the developer 
@@ -24,6 +21,7 @@ public class Buoyancy : MonoBehaviour
 	public int VoxelsLimit = 16;
 
   // Private 
+  private const float _DAMPFER = 0.2f;
   private float _maximumSubmergedVolume = 0.0f;
   private float _submergedVolume = 0;
   private float _netBuoyantForce = 0.0f;
@@ -237,7 +235,8 @@ public class Buoyancy : MonoBehaviour
             float z = bounds.center.z + radius * Mathf.Cos(phi);
 
             Vector3 newPoint = transform.InverseTransformPoint(new Vector3(x, y, z));
-            points.Add(newPoint);
+            if (PointIsInsideMeshCollider(GetComponent<Collider>(), newPoint)) 
+              points.Add(newPoint);
             
           }
         }
@@ -387,7 +386,7 @@ public class Buoyancy : MonoBehaviour
           }
           CalculateApparentSubmergedVolume();  
           var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-          var localDampingForce = -velocity * DAMPFER * GetComponent<Rigidbody>().mass;
+          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
           var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
           GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
           _netBuoyantForce += force.y; // Sum up the overall vertical buoyant force for each object on each frame
