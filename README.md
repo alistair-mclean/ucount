@@ -1,4 +1,4 @@
 # virtual-laboratory
 The private repository for Virtual Laboratory. 
 
-Owned by Alistair McLean
+Owned by Alistair McLean, Founder of VARIAL Studios LLC
