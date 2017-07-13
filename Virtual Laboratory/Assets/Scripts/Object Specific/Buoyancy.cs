@@ -84,7 +84,8 @@ public class Buoyancy : MonoBehaviour
       case (CoordinateType.Spherical):
         _voxels = SphericalSliceIntoVoxels(IsConcave);
         break;
-        //Add cylindrical, obviously
+      case (CoordinateType.Cylindrical):
+        break;
     };
 		// Restore original rotation and position
 		transform.rotation = originalRotation;
@@ -100,7 +101,8 @@ public class Buoyancy : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Slices the object into number of voxels represented by their center points.
+	/// Slices the object into number of voxels based on a cartesian 
+  /// system coordinate represented by their center points.
 	/// <param name="concave">Whether the object have a concave shape.</param>
 	/// <returns>List of voxels represented by their center points.</returns>
 	/// </summary>
@@ -168,10 +170,16 @@ public class Buoyancy : MonoBehaviour
 		return points;
 	}
 
-  // IN CONSTRUCTION - BEGIN 
-  // This needs some thinking
+  /// <summary>
+  /// Slice the mesh into a series of voxels based on a spherical coordinate 
+  /// system. 
+  /// </summary>
+  /// <param name="concave"></param>
+  /// <returns></returns>
   private List<Vector3> SphericalSliceIntoVoxels(bool concave)
-  {
+  { 
+    // IN CONSTRUCTION - BEGIN 
+    // This needs some thinking
     List<Vector3> points = new List<Vector3>(SlicesPerDimension * SlicesPerDimension * SlicesPerDimension);
     if (concave)
     {
@@ -181,11 +189,10 @@ public class Buoyancy : MonoBehaviour
       convexValue = false;
 
       Bounds bounds = GetComponent<Collider>().bounds;
-      //float maxRadius = Mathf.Pow(_volume * (3.0f / (4.0f * Mathf.PI)), (1.0f / 3.0f));
-      //float maxRadius = bounds.max.magnitude;
-
+      
       // Phi
-      float maxRadius = bounds.max.magnitude;
+      //float maxRadius = bounds.max.magnitude;
+      float maxRadius = transform.localScale.y / 2;
       float numberOfSlices = (float)SlicesPerDimension; //float conversion
       float phi = -(3.0f / 2.0f) * Mathf.PI;
       for (; phi <= Mathf.PI / 2.0f; phi += Mathf.PI / numberOfSlices)
@@ -201,7 +208,8 @@ public class Buoyancy : MonoBehaviour
             float y = (bounds.center.y + radius) * Mathf.Sin(phi) * Mathf.Sin(theta);
             float z = (bounds.center.z + radius) * Mathf.Cos(phi);
 
-            Vector3 newPoint = transform.InverseTransformPoint(new Vector3(x, y, z));
+            //Vector3 newPoint = transform.InverseTransformPoint(new Vector3(x, y, z));
+            Vector3 newPoint = new Vector3(x, y, z);
             if (PointIsInsideMeshCollider(meshCol, newPoint))
             {
               points.Add(newPoint);
@@ -384,7 +392,9 @@ public class Buoyancy : MonoBehaviour
           {
             k = 0f;
           }
-          CalculateApparentSubmergedVolume();  
+          CalculateApparentSubmergedVolume();
+          float archimedesForceMagnitude = LiquidDensity * Mathf.Abs(Physics.gravity.y) * _volume;
+          _localArchimedesForce = new Vector3(0, archimedesForceMagnitude, 0) / _voxels.Count;
           var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
           var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
           var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
@@ -505,9 +515,8 @@ public class Buoyancy : MonoBehaviour
 
       case (CoordinateType.Spherical):
         // Approximate a radius from the root mean square of the submerged height
-        float rms = Mathf.Pow(submergedLevel, 2.0f);
-        float tempRadius = (1.0f / 3.0f) * (3.0f*rms);
-        _submergedVolume = (4.0f / 3.0f) * Mathf.PI * Mathf.Pow(tempRadius, 3.0f);
+        float tempRadius = Mathf.Pow(submergedLevel, 2.0f);
+        _submergedVolume = (4.0f / 3.0f) * Mathf.PI * Mathf.Pow(tempRadius/2, 3.0f);
         break;
 
       case (CoordinateType.Cylindrical):

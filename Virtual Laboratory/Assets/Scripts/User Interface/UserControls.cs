@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿///<summary>
+/// UserControls.cs - Container class for general user controls. 
+/// 
+/// Copyright - VARIAL Studios LLC 
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

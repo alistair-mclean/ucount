@@ -1,5 +1,7 @@
 ﻿///<summary>
 /// BuoyancyLabUI - Scene specific UI control for the Buoyancy Lab
+/// 
+/// Copyright - VARIAL Studios LLC
 ///</summary>
 
 using System.Collections;

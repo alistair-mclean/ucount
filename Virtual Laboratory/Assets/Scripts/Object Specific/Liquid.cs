@@ -1,5 +1,9 @@
-﻿// DESCRIPTION - This class controls the behavior of a liquid. 
-// Height control, and fluid density are controlled through this script. 
+﻿///<summary>
+/// Liquid.cs - Controls liquid parameters, and interactions with buoyant objects.
+/// 
+/// Copyright - VARIAL Studios LLC 
+///</summary>
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

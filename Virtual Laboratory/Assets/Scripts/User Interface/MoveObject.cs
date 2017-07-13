@@ -1,6 +1,8 @@
-﻿
-// DESCRIPTION - This class controls object manipulation. 
-// Temporarliy writing it here to not completely jumble the UserControls.cs
+﻿///<summary>
+/// MoveObject.cs - Controls object manipulation.
+/// 
+/// Copyright - VARIAL Studios LLC 
+///</summary>
 
 using System.Collections;
 using System.Collections.Generic;
@@ -46,7 +48,7 @@ public class MoveObject : MonoBehaviour
           if (Input.GetTouch(0).phase == TouchPhase.Began)
           {
             initialTouchPos = Input.GetTouch(0).position;
-            _selectedObject.GetComponent<ObjectState>().SetActive();
+            _selectedObject.GetComponent<ObjectState>().SetStateActive();
             _objectSelected = true;
           }
 
@@ -55,9 +57,7 @@ public class MoveObject : MonoBehaviour
           {
             Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
             Vector2 movedTouchPos = Input.GetTouch(0).position;
-            //Vector3 newPos = new Vector3(fingerRay.origin.x + deltaTouchPos.x * MovementConstant, 
-            //                             fingerRay.origin.y + deltaTouchPos.y * MovementConstant, 
-            //                             _selectedObject.transform.position.z);
+            // This needs to be rethought. 
             Vector3 newPos = new Vector3(_selectedObject.transform.position.x,
                              fingerRay.origin.y + deltaTouchPos.y * MovementConstant,
                               fingerRay.origin.x + deltaTouchPos.x * MovementConstant);
@@ -65,29 +65,18 @@ public class MoveObject : MonoBehaviour
             _selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, newPos, Time.deltaTime * TimeConstant);
           }
 
-          // User has stopped touching, return the object to it's idle (default) state
-          if (Input.GetTouch(0).phase == TouchPhase.Ended)
-          {
-            touchedObject.GetComponent<ObjectState>().SetIdle();
-            _objectSelected = false;
-            _selectedObject = null;
-          }
+          
         }
       }
-
-      if (_objectSelected)
+      // User has stopped touching, return the object to it's idle (default) state
+      if (Input.GetTouch(0).phase == TouchPhase.Ended)
       {
-        Debug.Log("Object is selected!");
-        Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
-        Vector2 movedTouchPos = Input.GetTouch(0).position;
-        Vector3 newPos = new Vector3(fingerRay.origin.x + deltaTouchPos.x * MovementConstant, fingerRay.origin.y + deltaTouchPos.y * MovementConstant, _selectedObject.transform.position.z);
-        _selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, newPos, Time.deltaTime * TimeConstant);
-
+        _selectedObject.GetComponent<ObjectState>().SetStateIdle();
+        _objectSelected = false;
+        _selectedObject = null;
       }
     }
   }
-
-
 }
 
   

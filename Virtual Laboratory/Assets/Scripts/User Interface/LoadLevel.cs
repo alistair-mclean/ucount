@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿///<summary>
+/// LoadLevel.cs - Loads the enumerated level controlled by the Scenemanager.
+/// 
+/// Copyright - VARIAL Studios LLC
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class LoadLevel : MonoBehaviour {
-  // DESCRIPTION - This class controls loading scenes. 
-  
+public class LoadLevel : MonoBehaviour {  
   // Public
   public Scene FirstLevel;
   public Scene SceondLevel;
