@@ -58,11 +58,12 @@ public class MoveObject : MonoBehaviour
             Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
             Vector2 movedTouchPos = Input.GetTouch(0).position;
             // This needs to be rethought. 
-            Vector3 newPos = new Vector3(_selectedObject.transform.position.x,
-                             fingerRay.origin.y + deltaTouchPos.y * MovementConstant,
-                              fingerRay.origin.x + deltaTouchPos.x * MovementConstant);
+            //Vector3 newPos = new Vector3(_selectedObject.transform.position.x,
+            //                 fingerRay.origin.y + deltaTouchPos.y * MovementConstant,
+            //                  fingerRay.origin.x + deltaTouchPos.x * MovementConstant);
 
-            _selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, newPos, Time.deltaTime * TimeConstant);
+            //_selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, newPos, Time.deltaTime * TimeConstant);
+
           }
 
           
