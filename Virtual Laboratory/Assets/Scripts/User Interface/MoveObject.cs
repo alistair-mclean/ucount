@@ -53,24 +53,16 @@ public class MoveObject : MonoBehaviour
           }
 
           // In-transition state
-          if (Input.GetTouch(0).phase == TouchPhase.Moved)
+          if (Input.GetTouch(0).phase == TouchPhase.Moved || Input.GetTouch(0).phase == TouchPhase.Stationary)
           {
             Vector2 deltaTouchPos = Input.GetTouch(0).deltaPosition;
             Vector2 movedTouchPos = Input.GetTouch(0).position;
-            // This needs to be rethought. 
-            //Vector3 newPos = new Vector3(_selectedObject.transform.position.x,
-            //                 fingerRay.origin.y + deltaTouchPos.y * MovementConstant,
-            //                  fingerRay.origin.x + deltaTouchPos.x * MovementConstant);
-
-            //_selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, newPos, Time.deltaTime * TimeConstant);
-
+            
           }
-
-          
         }
       }
       // User has stopped touching, return the object to it's idle (default) state
-      if (Input.GetTouch(0).phase == TouchPhase.Ended)
+      if (Input.GetTouch(0).phase == TouchPhase.Ended && _objectSelected)
       {
         _selectedObject.GetComponent<ObjectState>().SetStateIdle();
         _objectSelected = false;
