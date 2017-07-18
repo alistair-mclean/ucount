@@ -133,7 +133,6 @@
     <Compile Include="Assets\Cardboard\Editor\CardboardMenu.cs" />
     <Compile Include="Assets\Cardboard\Editor\CardboardSetup.cs" />
     <Compile Include="Assets\Cardboard\Editor\StereoControllerEditor.cs" />
-    <Compile Include="Assets\Editor\MapGeneratorEditor.cs" />
     <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\Editor\CrossPlatformInputInitialize.cs" />
     <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\Editor\InputAxisScrollbarCI.cs" />
   </ItemGroup>

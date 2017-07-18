@@ -525,4 +525,13 @@ public class Buoyancy : MonoBehaviour
     }
   }
 
+  public void SetObjectDensity(float newDensity)
+  {
+    ObjectDensity = newDensity;
+  }
+
+  public float GetObjectDensity()
+  {
+    return ObjectDensity;
+  }
 }

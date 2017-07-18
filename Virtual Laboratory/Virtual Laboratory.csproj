@@ -151,6 +151,8 @@
     <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\Scripts\Camera Controls\SmoothCameraOrbit.cs" />
+    <Compile Include="Assets\Scripts\Interface\controlSwitcher.cs" />
+    <Compile Include="Assets\Scripts\Interface\inGameMenuScript.cs" />
     <Compile Include="Assets\Scripts\Object Specific\Buoyancy.cs" />
     <Compile Include="Assets\Scripts\Object Specific\InitialForce.cs" />
     <Compile Include="Assets\Scripts\Object Specific\Liquid.cs" />
@@ -162,11 +164,6 @@
     <Compile Include="Assets\Scripts\Scene Specific\Buoyancy\SpriteToLiquidHeight.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\FlipTextForCamera.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\singlePendulumSetup.cs" />
-    <Compile Include="Assets\Scripts\Test Scripts\MapDisplay.cs" />
-    <Compile Include="Assets\Scripts\Test Scripts\MapGenerator.cs" />
-    <Compile Include="Assets\Scripts\Test Scripts\MeshGenerator.cs" />
-    <Compile Include="Assets\Scripts\Test Scripts\Noise.cs" />
-    <Compile Include="Assets\Scripts\Test Scripts\TextureGenerator.cs" />
     <Compile Include="Assets\Scripts\User Interface\GetObjectID.cs" />
     <Compile Include="Assets\Scripts\User Interface\LoadLevel.cs" />
     <Compile Include="Assets\Scripts\User Interface\MoveObject.cs" />
