@@ -61,7 +61,7 @@ public class SmoothCameraOrbit : MonoBehaviour {
       _x += Input.GetAxisRaw("Mouse X") * rotationalSpeed;
       _y += Input.GetAxisRaw("Mouse Y") * rotationalSpeed;
     }
-    else if(Input.touchCount == 1 && Input.GetTouch(0).phase == TouchPhase.Moved)
+    else if(Input.touchCount == 3 && Input.GetTouch(0).phase == TouchPhase.Moved)
     { //also missing the event system for this 
       _x += Input.GetTouch(0).deltaPosition.x * rotationalSpeed;
       _y += Input.GetTouch(0).deltaPosition.y * rotationalSpeed;
