@@ -55,9 +55,6 @@ public class MoveObject : MonoBehaviour
             _selectedObject.GetComponent<Rigidbody>().velocity = Vector3.zero;
             _selectedObject.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
-            //Vector3 initialPosition = Input.GetTouch(0).position;
-            //initialPosition.z = distanceFromObject.magnitude;
-            //_selectedObject.transform.position = Camera.main.ScreenToWorldPoint(initialPosition);
           }
 
         }
@@ -67,7 +64,6 @@ public class MoveObject : MonoBehaviour
       if (Input.GetTouch(0).phase == TouchPhase.Moved && _objectSelected)
       {
         Vector3 movePosition = Input.GetTouch(0).position;
-        Debug.Log("Move position = (" + movePosition.x + " , " + movePosition.y + " , " + movePosition.z + ") ");
         movePosition.z = _relativeObjectDistance.magnitude;
         _selectedObject.transform.position = Vector3.Lerp(_selectedObject.transform.position, Camera.main.ScreenToWorldPoint(movePosition), TimeConstant);
       }

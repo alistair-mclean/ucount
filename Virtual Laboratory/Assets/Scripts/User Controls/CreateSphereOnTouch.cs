@@ -24,7 +24,6 @@ public class CreateSphereOnTouch : MonoBehaviour {
         Vector2 touchDistance = secodTouchPosition - firstTouchPosition;
         float sphereRadius = touchDistance.magnitude * ReductionFactor; //perhaps combined with the product of some other number and itself. 
 
-
         Vector3 sphereSpawnPosition = new Vector3(firstTouchPosition.x, firstTouchPosition.y, SphereSpawnDistance);
         sphereSpawnPosition = Camera.main.ScreenToWorldPoint(sphereSpawnPosition);
 
@@ -43,17 +42,17 @@ public class CreateSphereOnTouch : MonoBehaviour {
   {
     _sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
 
+    //Add the neccessary components to make the object properly interactable
     _sphere.AddComponent<Rigidbody>();
     _sphere.GetComponent<Rigidbody>().useGravity = false;
 
     _sphere.AddComponent<ObjectState>();
-    _sphere.GetComponent<ObjectState>().SetStateIdle();
 
     _sphere.transform.localScale = new Vector3(radius / 2f, radius / 2f, radius / 2f);
     _sphere.transform.position = spawnPosition;
+
     _sphere.tag = "Interactable";
-    _sphere.name = "Derp";
-   // Instantiate(_sphere);
+    _sphere.name = "DERP";
     _sphereExists = true;
   }
 }
