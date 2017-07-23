@@ -147,6 +147,8 @@
     <None Include="Assets\Cardboard\Resources\UnlitTexture.shader" />
     <None Include="Assets\SampleAssets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\SampleAssets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Shaders\self_illuminated_outlined_diffuse_113.shader" />
+    <None Include="Assets\Shaders\test1.shader" />
     <None Include="Assets\StreamingAssets\QCAR\test.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

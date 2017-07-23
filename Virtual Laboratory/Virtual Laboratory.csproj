@@ -153,19 +153,20 @@
     <Compile Include="Assets\Scripts\Camera Controls\SmoothCameraOrbit.cs" />
     <Compile Include="Assets\Scripts\Interface\controlSwitcher.cs" />
     <Compile Include="Assets\Scripts\Interface\inGameMenuScript.cs" />
-    <Compile Include="Assets\Scripts\Object Specific\Buoyancy.cs" />
     <Compile Include="Assets\Scripts\Object Specific\FrictionRamp.cs" />
     <Compile Include="Assets\Scripts\Object Specific\InitialForce.cs" />
-    <Compile Include="Assets\Scripts\Object Specific\Liquid.cs" />
     <Compile Include="Assets\Scripts\Object Specific\ObjectState.cs" />
     <Compile Include="Assets\Scripts\Object Specific\PhysicalObject.cs" />
+    <Compile Include="Assets\Scripts\Object Specific\Physics\Buoyancy.cs" />
+    <Compile Include="Assets\Scripts\Object Specific\Physics\Liquid.cs" />
     <Compile Include="Assets\Scripts\Object Specific\ResetPosition.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\BallBlock.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\Buoyancy\LiquidVolumeDisplay.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\Buoyancy\SpriteToLiquidHeight.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\FlipTextForCamera.cs" />
     <Compile Include="Assets\Scripts\Scene Specific\singlePendulumSetup.cs" />
-    <Compile Include="Assets\Scripts\User Controls\CreateSphereOnTouch.cs" />
+    <Compile Include="Assets\Scripts\User Controls\Creation\CreateSphereOnTouch.cs" />
+    <Compile Include="Assets\Scripts\User Controls\Creation\PaintGM.cs" />
     <Compile Include="Assets\Scripts\User Controls\MoveObject.cs" />
     <Compile Include="Assets\Scripts\User Controls\UserControls.cs" />
     <Compile Include="Assets\Scripts\User Interface\GetObjectID.cs" />
@@ -187,6 +188,8 @@
     <None Include="Assets\Cardboard\Resources\UnlitTexture.shader" />
     <None Include="Assets\SampleAssets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\SampleAssets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Shaders\self_illuminated_outlined_diffuse_113.shader" />
+    <None Include="Assets\Shaders\test1.shader" />
     <None Include="Assets\StreamingAssets\QCAR\test.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
