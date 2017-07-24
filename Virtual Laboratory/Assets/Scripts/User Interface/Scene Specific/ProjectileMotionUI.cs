@@ -1,4 +1,10 @@
-﻿using System.Collections;
+﻿///<summary>
+/// ProjectileMotionUI - Scene specific user interface control for the projectile motion lab
+/// 
+/// Copyright - VARIAL Studios LLC 
+/// </summary>
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;

@@ -1,5 +1,7 @@
 ﻿///<summary>
 /// BuoyancyLabUI - Scene specific UI control for the Buoyancy Lab
+/// 
+/// Copyright - VARIAL Studios LLC
 ///</summary>
 
 using System.Collections;
@@ -10,10 +12,12 @@ public class BuoyancyLabUI : MonoBehaviour {
   // Public :
   public GameObject EnvironmentLiquid;
   public Text LiquidDensityText;
-  public GameObject ObjectPanel;
   public Slider LiquidDensitySlider;
   public Text ObjectIDText;
-  public InputField MassInputField;
+  public GameObject ObjectPanel;
+  public Text ObjectMassText;
+  public Text ObjectDensityText;
+  public Slider ObjectDensitySlider;
 
   // Private :
   private Liquid _liquid;
@@ -50,8 +54,6 @@ public class BuoyancyLabUI : MonoBehaviour {
     }
     SaveUI();
     _liquid.SetLiquidDensity(LiquidDensitySlider.value);
-    if(_objectSelected)
-      _activeObject.mass = float.Parse(MassInputField.text);
   }
 
   private void SaveUI()
@@ -59,8 +61,13 @@ public class BuoyancyLabUI : MonoBehaviour {
     if (_objectSelected)
     {
       ObjectPanel.SetActive(true);
-      MassInputField.text = _activeObject.mass.ToString();
+      ObjectMassText.text = "Mass = " + _activeObject.mass.ToString() + " kg";
       ObjectIDText.text = _activeObject.name;
+      float objectDensity = _activeObject.GetComponent<Buoyancy>().GetObjectDensity();
+      ObjectDensityText.text = "Density = " + objectDensity.ToString("N1") + " kg/m^3";
+      ObjectDensitySlider.minValue = objectDensity / 2f;
+      ObjectDensitySlider.maxValue = objectDensity * 1.5f;
+      ObjectDensitySlider.value = objectDensity;
     }
     float liquidDensity = _liquid.Density;
     LiquidDensityText.text = "Density = " + liquidDensity.ToString("N1") + " kg/m^3";
