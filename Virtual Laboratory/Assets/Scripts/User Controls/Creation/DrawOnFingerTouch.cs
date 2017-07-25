@@ -56,10 +56,7 @@ public class DrawOnFingerTouch : MonoBehaviour {
     tex.Apply();
     RenderTexture.active = null;
     baseMaterial.mainTexture = tex; //Put the painted texture as the base
-    foreach (Transform child in brushContainer.transform)
-    {//Clear brushes
-      Destroy(child.gameObject);
-    }
+    
     //StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
     Invoke("ShowCursor", 0.1f);
   }
