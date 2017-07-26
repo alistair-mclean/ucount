@@ -25,6 +25,7 @@ a9ceaad7d51aada88335b5bf9c0e71a4 Assembly-CSharp.dll:Vuforia.ReconstructionBehav
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Vuforia.GLErrorHandler
 4289e096a6999235d52a40441f7c4fef Assembly-CSharp.dll:.CardboardOnGUIWindow
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:Vuforia.ComponentFactoryStarterBehaviour
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackToMainMenu
 8fdb2a442c66d695715811a4f2b5f96b Assembly-CSharp.dll:.ContentManager
 43086202e38c7e5578e3e9c98ce5148c Assembly-CSharp.dll:Vuforia.PropBehaviour
 a35dc9cca2faebc5f5f1aeb9e8e47bbe UnityEngine.UI.dll:UnityEngine.UI.AspectRatioFitter
@@ -193,7 +194,7 @@ c70b17dda2d4b966f689f5aab4655905 Assembly-CSharp.dll:.UDTEventHandler
 e02bd0b0ac9d98b5a88f80ba368c2d3b Assembly-CSharp.dll:.FrictionRamp
 74f8c860a0156c590ce2e7bae1a029b1 Assembly-CSharp.dll:.CreateSphereOnTouch
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MenuOptions
-31a8aca59455f0160fdd90565eb48232 Assembly-CSharp.dll:.SmoothCameraOrbit
+4e251e2480652212cfac8bf3b1c73859 Assembly-CSharp.dll:.SmoothCameraOrbit
 387ef655a40a5a09b4b289e4961f5583 Assembly-CSharp.dll:Vuforia.CylinderTargetBehaviour
 67b48974ce9eba2f5f42615d194258b7 Assembly-CSharp.dll:Vuforia.MaskOutBehaviour
 1180521602d02f9d29717cd691bc97e1 Assembly-CSharp.dll:.VirtualButtonEventHandler
@@ -284,4 +285,3 @@ cf576a0f2e9f42b3e1dd8ff8a15fb1c8 Assembly-CSharp.dll:.StereoController
 69d7d01d14b2cb1bf7ea22ff94f3abfc Assembly-CSharp.dll:.STEventHandler
 8300a5eeb1af34f182cf2e246ffc120f Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMobileShaderSwitch
 7cac06ac0eaa7257b831c29e4455ce1b Assembly-CSharp.dll:Vuforia.VuforiaConfiguration
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BackToMainMenu
