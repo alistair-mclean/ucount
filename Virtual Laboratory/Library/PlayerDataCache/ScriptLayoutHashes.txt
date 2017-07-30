@@ -1,4 +1,5 @@
 Android
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.DrawingManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.SamplesNavigationHandler
 5a1588ff59703e3fcc1c803be8ad7499 Assembly-CSharp.dll:.inGameMenuScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.LevelReset
@@ -273,7 +274,7 @@ f5af5c84053e4c60cfab7dc4dcd45e13 Assembly-UnityScript.dll:.smoothCameraOrbit
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.TargetBuilderUIHandler
 3dbae7eb0912a33e98b26cd84527cc41 Assembly-CSharp.dll:UnitySampleAssets.Characters.FirstPerson.VRRigidbodyFirstPersonController
 1f8ee9e685c05d2d9f09b7d2681dddc5 Assembly-CSharp.dll:.CardboardOnGUI
-486f8016654a833a5f1d23ac857e9f25 Assembly-CSharp.dll:.DrawOnFingerTouch
+4b53d83b5b0fd5d67e39ea84bb9a77c6 Assembly-CSharp.dll:.DrawOnFingerTouch
 e75a1ecfaa6a93f2adbeb7ea0a5dc9b0 Assembly-CSharp.dll:.CardboardAudioSource
 d2a2bd333db22f480a8589e167314ecc Assembly-CSharp.dll:Vuforia.UserDefinedTargetBuildingBehaviour
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.STMenuOptions
@@ -285,3 +286,6 @@ cf576a0f2e9f42b3e1dd8ff8a15fb1c8 Assembly-CSharp.dll:.StereoController
 69d7d01d14b2cb1bf7ea22ff94f3abfc Assembly-CSharp.dll:.STEventHandler
 8300a5eeb1af34f182cf2e246ffc120f Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMobileShaderSwitch
 7cac06ac0eaa7257b831c29e4455ce1b Assembly-CSharp.dll:Vuforia.VuforiaConfiguration
+e413587f31dac63648e20e756993519b Assembly-CSharp.dll:.CameraCapture
+6593053727ce4f22a143b3f423adc857 Assembly-CSharp.dll:.PhoneCamera
+d487ef56021271dbc8fbfc0fa5df7536 Assembly-CSharp.dll:.EditModeControlManager

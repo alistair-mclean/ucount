@@ -1,6 +1,6 @@
 ///<summary>
 /// Buoyancy.cs - Adds buoyancy to the assigned object. Calculates an Archimedes force on a list of voxels that are 
-/// created. These voxels are a good way to create a robust buoyancy for a complicated mesh
+/// created based on the assigned coordinate system. These voxels are a good way to create a robust buoyancy for a complicated mesh.
 /// </summary>
 using System.Collections.Generic;
 using UnityEngine;
