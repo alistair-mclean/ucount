@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public enum EditMode { Idle, Draw, Camera };
 
@@ -15,8 +16,8 @@ public class EditModeControlManager : MonoBehaviour {
 
   public GameObject CameraFeedPanel;
   public GameObject ButtonsPanel;
-  public GameObject DrawButton;
-  public GameObject EraseButton;
+  public Button DrawButton;
+  public Button EraseButton;
 
   private EditMode _userEditMode;
 
@@ -37,13 +38,16 @@ public class EditModeControlManager : MonoBehaviour {
     }
     switch (newMode)
     {
+      // THERE IS AN ISSUE IN IDLE WHERE THE BUTTONS ARE NOT GETTING TURNED ON PROPERLY
       case (0):
         if (_userEditMode == EditMode.Idle)
           return;
         _userEditMode = EditMode.Idle;
         if (!DrawingPlane.activeInHierarchy)
           DrawingPlane.SetActive(true);
-        EraseButton.SetActive(false);
+        //EraseButton.SetActive(false);
+        EraseButton.interactable = false;
+
         CameraFeedPanel.SetActive(false);
         GetComponent<DrawOnFingerTouch>().SetDrawMode(0);
         GetComponent<PhoneCamera>().CameraIsOn = false;
@@ -57,7 +61,7 @@ public class EditModeControlManager : MonoBehaviour {
           DrawingPlane.SetActive(true);
 
         CameraFeedPanel.SetActive(false);
-        EraseButton.SetActive(true);
+        //EraseButton.gameObject.SetActive(true);
 
         GetComponent<DrawOnFingerTouch>().SetDrawMode(1);
       break;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
 public class DrawOnFingerTouch : MonoBehaviour {
   // Public
   public enum DrawMode { Draw, Erase, Idle };
@@ -18,6 +19,7 @@ public class DrawOnFingerTouch : MonoBehaviour {
   private int brushCounter = 0, MAX_BRUSH_COUNT = 1000; //To avoid having millions of brushes
   private DrawMode _drawMode;
   private Color _drawColor; // Black for draw, White for Erase
+  private Vector2 _lastTouchPos;
 
   private void Start()
   {
@@ -29,6 +31,10 @@ public class DrawOnFingerTouch : MonoBehaviour {
   {
     if (!Input.GetMouseButton(0))
       return;
+
+
+
+
     if (_drawMode == DrawMode.Idle)
       return;
     if (!EventSystem.current.IsPointerOverGameObject())
@@ -54,14 +60,20 @@ public class DrawOnFingerTouch : MonoBehaviour {
       {
         for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
         {
-          if (tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null) //if the pixel exists, then we change it
-            tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
+          if (tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _lastTouchPos != null)
+          {
+            //if the pixel exists, then we change it
+            // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
+            Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
+            LineDrawer.DrawLine(tex, drawPoint, _lastTouchPos, Color.black);
+          }
         }
       }
+
       tex.Apply();
     }
   }
-  
+
   //Sets the base material with a our canvas texture, then removes all our brushes
   void SaveTexture()
   {
@@ -73,7 +85,7 @@ public class DrawOnFingerTouch : MonoBehaviour {
     tex.Apply();
     RenderTexture.active = null;
     baseMaterial.mainTexture = tex; //Put the painted texture as the base
-    
+
     //StartCoroutine ("SaveTextureToFile"); //Do you want to save the texture? This is your method!
     Invoke("ShowCursor", 0.1f);
   }
@@ -100,6 +112,8 @@ public class DrawOnFingerTouch : MonoBehaviour {
         break;
     }
   }
+
+
 
   IEnumerator SaveTextureToFile(Texture2D savedTexture)
   {

@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿///<summary>
+/// PhoneCamera.cs - 
+/// </summary>
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
