@@ -22,7 +22,8 @@ public class SmoothCameraOrbit : MonoBehaviour {
   public float SmoothTime = 0.3f;
   public float PerspectiveZoomSpeed = 0.5f;
   public float OrthographicZoomSpeed = 0.5f;
-  public float LookSensitivity = 1.3f;
+  public float LookSensitivity = 2f;
+  public float RotationSpeedConstant = 1.5f;
 
   // Private
   private float _x = 0.0f;
@@ -31,13 +32,12 @@ public class SmoothCameraOrbit : MonoBehaviour {
   private float _ySmooth = 0.0f;
   private float _xVelocity = 0.0f;
   private float _yVelocity = 0.0f;
-  private float _rotationSpeedConstant = 0.0f; 
   private Vector3 _posSmooth = Vector3.zero; // WHAT IS THIS??
   private Vector3 _posVelocity = Vector3.zero;
 
   
   
-	void Start () {
+	void Start () { 
     Vector3 angles = transform.eulerAngles;
     _x = angles.y;
     _y = angles.x;
@@ -46,7 +46,7 @@ public class SmoothCameraOrbit : MonoBehaviour {
       GetComponent<Rigidbody>().freezeRotation = true;
 
 #if MOBILE_INPUT
-    _rotationSpeedConstant = 8.0f;
+    RotationSpeedConstant = 8.0f;
 #else
     _rotationSpeedConstant = 20.0f;
 #endif
@@ -54,14 +54,14 @@ public class SmoothCameraOrbit : MonoBehaviour {
 
 	
 	void LateUpdate () {
-    float rotationalSpeed = LookSensitivity * _rotationSpeedConstant;
+    float rotationalSpeed = LookSensitivity * RotationSpeedConstant;
 
     if (Input.GetMouseButton(0) && Input.touchCount == 0)
     { //missing the event system to go along with this
       _x += Input.GetAxisRaw("Mouse X") * rotationalSpeed;
       _y += Input.GetAxisRaw("Mouse Y") * rotationalSpeed;
     }
-    else if(Input.touchCount == 3 && Input.GetTouch(0).phase == TouchPhase.Moved)
+    else if((Input.touchCount >= 3 && Input.GetTouch(0).phase == TouchPhase.Moved) || Input.GetKeyDown(KeyCode.Mouse1))
     { //also missing the event system for this 
       _x += Input.GetTouch(0).deltaPosition.x * rotationalSpeed;
       _y += Input.GetTouch(0).deltaPosition.y * rotationalSpeed;
