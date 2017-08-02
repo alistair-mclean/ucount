@@ -1,6 +1,8 @@
 ﻿/// <summary>
 /// EditModeControlManager.cs - Container for all user controls, enabling 
 /// and disabling components when neccessary. 
+/// 
+/// Copyright - VARIAL Studios LLC
 /// </summary>
 using System.Collections;
 using System.Collections.Generic;
@@ -12,10 +14,11 @@ public enum EditMode { Idle, Draw, Camera };
 
 public class EditModeControlManager : MonoBehaviour {
   // Public
-  public GameObject DrawingPlane;
-
-  public GameObject CameraFeedPanel;
-  public GameObject ButtonsPanel;
+  public GameObject DrawingPlane; // The object plane the user draws on.
+  public GameObject DefaultModePanel; // The UI panel containing the default mode controls 
+  public GameObject CameraFeedPanel; // The object plane the camera feed is displayed on. 
+  public GameObject DrawModePanel; // The UI panel containing the draw mode controls
+  public GameObject CameraModePanel; // The UI panel containing the camera mode controls/display
   public Button DrawButton;
   public Button EraseButton;
 
@@ -38,48 +41,52 @@ public class EditModeControlManager : MonoBehaviour {
     }
     switch (newMode)
     {
-      // THERE IS AN ISSUE IN IDLE WHERE THE BUTTONS ARE NOT GETTING TURNED ON PROPERLY
+      //DEFAULT MODE
       case (0):
         if (_userEditMode == EditMode.Idle)
           return;
         _userEditMode = EditMode.Idle;
         if (!DrawingPlane.activeInHierarchy)
           DrawingPlane.SetActive(true);
-        //EraseButton.SetActive(false);
-        EraseButton.interactable = false;
 
+        EraseButton.interactable = false;
+        DrawModePanel.SetActive(false);
         CameraFeedPanel.SetActive(false);
-        GetComponent<DrawOnFingerTouch>().SetDrawMode(0);
+
+        GetComponent<DrawModeControlManager>().SetDrawMode(false);
         GetComponent<PhoneCamera>().CameraIsOn = false;
         break;
 
+      //DRAW MODE
       case (1):
         if (_userEditMode == EditMode.Draw)
           return;
         _userEditMode = EditMode.Draw;
+
         if (!DrawingPlane.activeInHierarchy) //may be redundant
           DrawingPlane.SetActive(true);
-
+        DrawModePanel.SetActive(true);
+        DefaultModePanel.SetActive(false);
         CameraFeedPanel.SetActive(false);
-        //EraseButton.gameObject.SetActive(true);
 
-        GetComponent<DrawOnFingerTouch>().SetDrawMode(1);
+        GetComponent<DrawModeControlManager>().SetDrawMode(true);
       break;
 
+      //CAMERA MODE
       case (2):
         if (_userEditMode == EditMode.Camera)
           return;
         _userEditMode = EditMode.Camera;
-
-        ButtonsPanel.SetActive(false);
+        
         CameraFeedPanel.SetActive(true);
+        DefaultModePanel.SetActive(false);  
         DrawingPlane.SetActive(false);
 
-        GetComponent<DrawOnFingerTouch>().SetDrawMode(0);
         GetComponent<PhoneCamera>().CameraIsOn = true;
         break;
     } 
   }
+
   private void Update()
   {
     if(Input.GetKeyDown(KeyCode.Escape))

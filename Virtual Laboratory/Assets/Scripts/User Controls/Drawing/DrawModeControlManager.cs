@@ -11,11 +11,15 @@ using UnityEngine.UI;
 
 public class DrawModeControlManager : MonoBehaviour {
   // Public
-  public enum DrawMode { Draw, Erase, Idle };
+  public enum DrawMode { Draw, Idle };
 
   [Range(2, 10)]
   public int BrushSize = 2;
   public RenderTexture canvasTexture; // Render Texture that looks at our Base Texture and the painted brushes
+  public Button DrawingDotButton; // The button to switch between colors - may not be needed 
+  public Button UndoButton; // The undo button for the 
+  public Button RedoButton; // 
+  public Button FinishedButton;
   public Material baseMaterial;       // The material of our base texture (Were we will save the painted texture)
   public Material CanvasMaterial;     // The canvas that you draw on 
   public Image DrawIconImage;         // The draw icon image for the draw button 
@@ -25,9 +29,12 @@ public class DrawModeControlManager : MonoBehaviour {
   private DrawMode _drawMode;
   private Color _drawColor; // Black for draw, White for Erase
   private Vector2 _touchStartPosition; 
-  private Stack<Stroke> _strokeStack;
+  private Stack<Stroke> _strokeStack = new Stack<Stroke>();
+  private Stack<Stroke> _redoStack = new Stack<Stroke>(); // a stack of strokes for holding on to when a user undoes an action, that way we can add it back with redo
   private Material _blankCanvas; // Saved canvas for starting a new drawing. 
   private int _drawColorEnum = 0; // 0 - black, 1 - white, 2 - red, 3 - green, 4 - blue 
+  private Texture2D _tex;
+  private bool _hasUndoneAction = false;
 
   private void Start()
   {
@@ -37,6 +44,7 @@ public class DrawModeControlManager : MonoBehaviour {
 
   void Update()
   {
+
     if (!Input.GetMouseButton(0))
       return;
     if (_drawMode == DrawMode.Idle)
@@ -52,12 +60,12 @@ public class DrawModeControlManager : MonoBehaviour {
       if (rend == null || rend.sharedMaterial == null || rend.sharedMaterial.mainTexture == null || meshCollider == null)
         return;
 
-      Texture2D tex = rend.material.mainTexture as Texture2D;
+      _tex = rend.material.mainTexture as Texture2D;
       Vector2 pixelUV = hit.textureCoord;
-      pixelUV.x *= tex.width;
-      pixelUV.y *= tex.height;
-      Color[] textureColorArray = tex.GetPixels();
-      Stroke newStroke;
+      pixelUV.x *= _tex.width;
+      pixelUV.y *= _tex.height;
+      Color[] textureColorArray = _tex.GetPixels();
+      Stroke newStroke = new Stroke();
       newStroke.StrokeID = _brushCounter;
 
       if (Input.GetTouch(0).phase == TouchPhase.Began)
@@ -68,48 +76,30 @@ public class DrawModeControlManager : MonoBehaviour {
 
       if (Input.GetTouch(0).phase == TouchPhase.Moved)
       {
-
+        for (int i = -BrushSize / 2; i <= BrushSize / 2; ++i)
+        {
+          for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
+          {
+            if (_tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _touchStartPosition != null)
+            {
+              //if the pixel exists, then we change it
+              // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
+              Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
+              LineDrawer.DrawLine(_tex, drawPoint, _touchStartPosition, Color.black);
+              newStroke.StrokeUpdateCoords.Add(drawPoint);
+            }
+          }
+        }
       }
 
       if (Input.GetTouch(0).phase == TouchPhase.Ended)
       {
-
+        _strokeStack.Push(newStroke);
         _brushCounter++;
       }
-
-      for (int i = -BrushSize / 2; i <= BrushSize / 2; ++i)
-      {
-        for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
-        {
-          if (tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _touchStartPosition != null)
-          {
-            //if the pixel exists, then we change it
-            // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
-            Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
-            LineDrawer.DrawLine(tex, drawPoint, _touchStartPosition, Color.black);
-          }
-        }
-      }
-      tex.Apply();
+      Debug.Log("_strokeStack size = " + _strokeStack.Count);
+      _tex.Apply();
     }
-
-
-
-    //RaycastHit hit;
-    //if (!Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit))
-    //  return;
-    //Renderer rend = hit.transform.GetComponent<Renderer>();
-    //MeshCollider meshCollider = hit.collider as MeshCollider;
-
-    //if (rend == null || rend.sharedMaterial == null || rend.sharedMaterial.mainTexture == null || meshCollider == null)
-    //  return;
-
-    //Texture2D tex = rend.material.mainTexture as Texture2D;
-    //Vector2 pixelUV = hit.textureCoord;
-    //pixelUV.x *= tex.width;
-    //pixelUV.y *= tex.height;
-    //Color[] textureColorArray = tex.GetPixels();
-
 
   }
   
@@ -130,26 +120,17 @@ public class DrawModeControlManager : MonoBehaviour {
     Invoke("ShowCursor", 0.1f);
   }
 
-  public void SetDrawMode(int newMode)
+  /// <summary>
+  /// Sets whether the draw mode is on or off. 
+  /// </summary>
+  /// <param name="isOn"> true = On, false = Off</param>
+  public void SetDrawMode(bool isOn)
   {
-    if (newMode < 0 || newMode > 2)
-    {
-      Debug.LogError("Error in DrawOnFingerTouch.SetDrawMode: New Mode out of range! Set values between 0 and 2.");
-    }
-
-    switch (newMode)
-    {
-      case (0):
+   if(!isOn)
         _drawMode = DrawMode.Idle;
-        break;
-      case (1):
+        
+   else { 
         _drawMode = DrawMode.Draw;
-        _drawColor = Color.black;
-        break;
-      case (2):
-        _drawMode = DrawMode.Erase;
-        _drawColor = Color.white;
-        break;
     }
   }
 
@@ -181,4 +162,23 @@ public class DrawModeControlManager : MonoBehaviour {
     }
     DrawIconImage.color = _drawColor;
   }
+
+  // THIS NEEDS TO BE CREATED!!
+  public void UndoLastStroke()
+  {
+    // Leave if the stack is empty
+    if (_strokeStack.Count == 0)
+      return;
+    int size = _strokeStack.Count;
+    Stroke undoneStroke = _strokeStack.Pop();
+    _redoStack.Push(undoneStroke); //Take the last 
+  }
+
+
+  // This seems pretty verbose... maybe I should think of something else.. - 8/1/2017
+  public void SetBrushSize(int newSize)
+  {
+    BrushSize = newSize;
+  }
+
 }
