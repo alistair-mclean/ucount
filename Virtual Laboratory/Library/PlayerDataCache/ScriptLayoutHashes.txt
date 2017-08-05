@@ -99,7 +99,7 @@ f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 28668a8de3c49c9ab5d28bafb358c580 Assembly-CSharp.dll:UnitySampleAssets.Cameras.AutoCam
 6593053727ce4f22a143b3f423adc857 Assembly-CSharp.dll:.PhoneCamera
 57a6815572027869e23decb5efd8f26b Assembly-CSharp.dll:Vuforia.VirtualButtonBehaviour
-97c18659d4b7298c4575f0aa195f96d4 Assembly-CSharp.dll:.DrawModeControlManager
+d862223a222129281ee98853796dacfb Assembly-CSharp.dll:.DrawModeControlManager
 03bbed44bf0809da9eb453e702673301 Assembly-CSharp.dll:.CardboardAudioRoom
 96dfd1fe3f4a3e7ca08bded4a3d21f20 Assembly-CSharp.dll:.ModelViewControls
 73b39a1aec5114629dfe4753df8d87ae Assembly-CSharp.dll:.singlePendulumSetup

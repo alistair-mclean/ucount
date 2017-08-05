@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public struct Stroke  {
-    public int StrokeID;
-    public List<Vector2> StrokeUpdateCoords;
+  public int StrokeID;
+  public int BrushStrokeSize;
+  public Color BrushColor;
+  public List<Vector2> StrokeUpdateCoords;
 }

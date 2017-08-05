@@ -48,8 +48,7 @@ public class EditModeControlManager : MonoBehaviour {
         _userEditMode = EditMode.Idle;
         if (!DrawingPlane.activeInHierarchy)
           DrawingPlane.SetActive(true);
-
-        EraseButton.interactable = false;
+        
         DrawModePanel.SetActive(false);
         CameraFeedPanel.SetActive(false);
 

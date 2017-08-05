@@ -12,10 +12,10 @@ using UnityEngine.UI;
 public class DrawModeControlManager : MonoBehaviour {
   // Public
   public enum DrawMode { Draw, Idle };
-
   [Range(2, 10)]
   public int BrushSize = 2;
   public RenderTexture canvasTexture; // Render Texture that looks at our Base Texture and the painted brushes
+  public Slider BrushSizeSlider;
   public Button DrawingDotButton; // The button to switch between colors - may not be needed 
   public Button UndoButton; // The undo button for the 
   public Button RedoButton; // 
@@ -27,7 +27,7 @@ public class DrawModeControlManager : MonoBehaviour {
   // Private 
   private int _brushCounter = 0, MAX_BRUSH_COUNT = 1000; //To avoid having millions of brushes
   private DrawMode _drawMode;
-  private Color _drawColor; // Black for draw, White for Erase
+  private Color _brushColor; // Black for draw, White for Erase
   private Vector2 _touchStartPosition; 
   private Stack<Stroke> _strokeStack = new Stack<Stroke>();
   private Stack<Stroke> _redoStack = new Stack<Stroke>(); // a stack of strokes for holding on to when a user undoes an action, that way we can add it back with redo
@@ -39,16 +39,22 @@ public class DrawModeControlManager : MonoBehaviour {
   private void Start()
   {
     _drawMode = DrawMode.Idle;
-    _drawColor = Color.white;
+    _brushColor = Color.black;
+    BrushSizeSlider.minValue = 2;
+    BrushSizeSlider.maxValue = 12;
+    BrushSizeSlider.value = BrushSize;
   }
 
   void Update()
   {
+    BrushSize = (int)BrushSizeSlider.value;
 
     if (!Input.GetMouseButton(0))
       return;
     if (_drawMode == DrawMode.Idle)
       return;
+    if (_brushCounter > 0 && !UndoButton.gameObject.activeInHierarchy)
+      UndoButton.gameObject.SetActive(true);
     if (Input.touchCount > 0)
     {
       RaycastHit hit;
@@ -66,39 +72,39 @@ public class DrawModeControlManager : MonoBehaviour {
       pixelUV.y *= _tex.height;
       Color[] textureColorArray = _tex.GetPixels();
       Stroke newStroke = new Stroke();
+      List<Vector2> newStrokeDrawPointList = new List<Vector2>();
       newStroke.StrokeID = _brushCounter;
-
-      if (Input.GetTouch(0).phase == TouchPhase.Began)
+      newStroke.BrushStrokeSize = BrushSize;
+      newStroke.BrushColor = _brushColor;
+      if (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved)
       {
         _touchStartPosition = pixelUV;
-
       }
 
-      if (Input.GetTouch(0).phase == TouchPhase.Moved)
+      Debug.Log("Touch Count = " + Input.touchCount);
+      for (int i = -BrushSize / 2; i <= BrushSize / 2; ++i)
       {
-        for (int i = -BrushSize / 2; i <= BrushSize / 2; ++i)
+        for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
         {
-          for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
+          if (_tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _touchStartPosition != null)
           {
-            if (_tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _touchStartPosition != null)
-            {
-              //if the pixel exists, then we change it
-              // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
-              Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
-              LineDrawer.DrawLine(_tex, drawPoint, _touchStartPosition, Color.black);
-              newStroke.StrokeUpdateCoords.Add(drawPoint);
-            }
+            //if the pixel exists, then we change it
+            // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
+            Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
+            LineDrawer.DrawLine(_tex, drawPoint, _touchStartPosition, _brushColor);
+            newStrokeDrawPointList.Add(drawPoint);
           }
         }
       }
-
       if (Input.GetTouch(0).phase == TouchPhase.Ended)
       {
+        newStroke.StrokeUpdateCoords = newStrokeDrawPointList;
         _strokeStack.Push(newStroke);
         _brushCounter++;
+        Debug.Log("Stroke count = " + _strokeStack.Count);
       }
-      Debug.Log("_strokeStack size = " + _strokeStack.Count);
       _tex.Apply();
+      _touchStartPosition = pixelUV;
     }
 
   }
@@ -137,7 +143,7 @@ public class DrawModeControlManager : MonoBehaviour {
   /// <summary>
   /// Iterates to the next color as the user presses on the draw icon button
   /// </summary>
-  public void NextDrawColor()
+  public void NextBrushColor()
   {
     _drawColorEnum++;
     if (_drawColorEnum > 4)
@@ -145,25 +151,24 @@ public class DrawModeControlManager : MonoBehaviour {
     switch (_drawColorEnum)
     {
       case (0):
-        _drawColor = Color.black;
+        _brushColor = Color.black;
         break;
       case (1):
-        _drawColor = Color.white;
+        _brushColor = Color.white;
         break;
       case (2):
-        _drawColor = Color.red;
+        _brushColor = Color.red;
         break;
       case (3):
-        _drawColor = Color.green;
+        _brushColor = Color.green;
         break;
       case (4):
-        _drawColor = Color.blue;
+        _brushColor = Color.blue;
         break;
     }
-    DrawIconImage.color = _drawColor;
+    DrawIconImage.color = _brushColor;
   }
-
-  // THIS NEEDS TO BE CREATED!!
+  
   public void UndoLastStroke()
   {
     // Leave if the stack is empty
@@ -171,7 +176,29 @@ public class DrawModeControlManager : MonoBehaviour {
       return;
     int size = _strokeStack.Count;
     Stroke undoneStroke = _strokeStack.Pop();
-    _redoStack.Push(undoneStroke); //Take the last 
+    //Set the pixels back
+    foreach (Vector2 point in undoneStroke.StrokeUpdateCoords)
+      _tex.SetPixel((int)point.x, (int)point.y, Color.white);
+    _redoStack.Push(undoneStroke); //Take the popped stroke and put it into the redo stack
+    _brushCounter--;
+    //Activate the redo button
+    RedoButton.gameObject.SetActive(true);
+    if (_brushCounter == 0)
+      UndoButton.gameObject.SetActive(false);
+  }
+
+  public void RedoLastStroke()
+  {
+    if (_redoStack.Count == 0)
+      return;
+    //Put the pixels back to their color. 
+    Stroke redoneStroke = _redoStack.Pop();
+    foreach (Vector2 point in redoneStroke.StrokeUpdateCoords)
+      _tex.SetPixel((int)point.x, (int)point.y, redoneStroke.BrushColor);
+    _strokeStack.Push(redoneStroke);
+    _brushCounter++;
+    if (_redoStack.Count == 0)
+      RedoButton.gameObject.SetActive(false);
   }
 
 
