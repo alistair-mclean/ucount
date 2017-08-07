@@ -212,6 +212,7 @@
     <Compile Include="Assets\Scripts\User Controls\Drawing\CreateSphereOnTouch.cs" />
     <Compile Include="Assets\Scripts\User Controls\Drawing\DrawModeControlManager.cs" />
     <Compile Include="Assets\Scripts\User Controls\Drawing\DrawOnFingerTouch.cs" />
+    <Compile Include="Assets\Scripts\User Controls\Drawing\GLLineTest.cs" />
     <Compile Include="Assets\Scripts\User Controls\Drawing\LineDrawer.cs" />
     <Compile Include="Assets\Scripts\User Controls\Drawing\Stroke.cs" />
     <Compile Include="Assets\Scripts\User Controls\Drawing\SwipePaintTrail.cs" />

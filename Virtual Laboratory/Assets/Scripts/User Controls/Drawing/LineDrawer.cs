@@ -3,18 +3,57 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public static class LineDrawer {
-
-  public static void DrawLine(Texture2D tex, Vector2 p1, Vector2 p2, Color col)
+  
+  public static void DrawLine(Texture2D tex, Vector2 endPos, Vector2 startPos, Color col)
   {
-    Vector2 t = p1;
-    float frac = 1 / Mathf.Sqrt(Mathf.Pow(p2.x - p1.x, 2) + Mathf.Pow(p2.y - p1.y, 2));
-    float ctr = 0;
+    int x0 = (int)startPos.x;
+    int y0 = (int)startPos.y;
+    int x1 = (int)endPos.x;
+    int y1 = (int)endPos.y;
 
-    while ((int)t.x != (int)p2.x || (int)t.y != (int)p2.y)
+    int dy = (int)(y1 - y0);
+    int dx = (int)(x1 - x0);
+    int stepx, stepy;
+
+    if (dy < 0) { dy = -dy; stepy = -1; }
+    else { stepy = 1; }
+    if (dx < 0) { dx = -dx; stepx = -1; }
+    else { stepx = 1; }
+    dy <<= 1;
+    dx <<= 1;
+
+    float fraction = 0;
+
+    tex.SetPixel(x0, y0, col);
+    if (dx > dy)
     {
-      t = Vector2.Lerp(p1, p2, ctr);
-      ctr += frac;
-      tex.SetPixel((int)t.x, (int)t.y, col);
+      fraction = dy - (dx >> 1);
+      while (Mathf.Abs(x0 - x1) > 1)
+      {
+        if (fraction >= 0)
+        {
+          y0 += stepy;
+          fraction -= dx;
+        }
+        x0 += stepx;
+        fraction += dy;
+        tex.SetPixel(x0, y0, col);
+      }
+    }
+    else
+    {
+      fraction = dx - (dy >> 1);
+      while (Mathf.Abs(y0 - y1) > 1)
+      {
+        if (fraction >= 0)
+        {
+          x0 += stepx;
+          fraction -= dy;
+        }
+        y0 += stepy;
+        fraction += dx;
+        tex.SetPixel(x0, y0, col);
+      }
     }
   }
 }

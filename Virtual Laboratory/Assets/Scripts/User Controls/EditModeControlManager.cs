@@ -95,7 +95,4 @@ public class EditModeControlManager : MonoBehaviour {
       SetUserEditMode(0); // Go back to idle if in any other mode
     }
   }
-
-
-
 }
