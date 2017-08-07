@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/Test Scenes/drawing test2.unity
+- path: Assets/_Scenes/BUILD scenes/mainMode.unity
   isLoaded: 1
   isActive: 1
