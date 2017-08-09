@@ -115,17 +115,4 @@ public class DrawOnFingerTouch : MonoBehaviour {
 
 
 
-  IEnumerator SaveTextureToFile(Texture2D savedTexture)
-  {
-    brushCounter = 0;
-    string fullPath = System.IO.Directory.GetCurrentDirectory() + "\\UserCanvas\\";
-    System.DateTime date = System.DateTime.Now;
-    string fileName = "CanvasTexture.png";
-    if (!System.IO.Directory.Exists(fullPath))
-      System.IO.Directory.CreateDirectory(fullPath);
-    var bytes = savedTexture.EncodeToPNG();
-    System.IO.File.WriteAllBytes(fullPath + fileName, bytes);
-    Debug.Log("<color=orange>Saved Successfully!</color>" + fullPath + fileName);
-    yield return null;
-  }
 }

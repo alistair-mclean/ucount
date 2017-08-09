@@ -7,6 +7,5 @@ using UnityEngine;
 public struct Stroke  {
   public int StrokeID;
   public int BrushStrokeSize;
-  public Color BrushColor;
   public List<Vector2> StrokeUpdateCoords;
 }

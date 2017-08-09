@@ -361,52 +361,6 @@ public class Buoyancy : MonoBehaviour
       return 0.0f;
 	}
 
-	/// <summary>
-	/// Calculates physics.
-	/// </summary>
-	private void FixedUpdate()
-  {
-    LiquidDensity = Liquid.GetComponent<Liquid>().Density;
-    _acceleration = transform.position - _lastPosition / Time.deltaTime; // Calculate instantaneous acceleration of object
-    _netBuoyantForce = 0.0f;
-		_forces.Clear(); // For drawing force gizmos
-    if (BuoyancyIsActive)
-    {
-      foreach (var point in _voxels)
-      {
-        var wp = transform.TransformPoint(point);
-        float waterLevel = GetWaterLevel(wp.x, wp.z);
-
-        //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
-        if (waterLevel <= 0)
-          return;
-        // hack end
-        if (wp.y - _voxelHalfHeight < waterLevel)
-        {
-          float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
-          if (k > 1)
-          {
-            k = 1f;
-          }
-          else if (k < 0)
-          {
-            k = 0f;
-          }
-          CalculateApparentSubmergedVolume();
-          float archimedesForceMagnitude = LiquidDensity * Mathf.Abs(Physics.gravity.y) * _volume;
-          _localArchimedesForce = new Vector3(0, archimedesForceMagnitude, 0) / _voxels.Count;
-          var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
-          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
-          var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
-          GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
-          _netBuoyantForce += force.y; // Sum up the overall vertical buoyant force for each object on each frame
-          _forces.Add(new[] { wp, force }); // For drawing force gizmos
-        }
-      }
-    }
-    _lastPosition = transform.position;
-  }
-
   // TEMPORARY
   public float GetSubmergedVolume()
   {
@@ -534,4 +488,51 @@ public class Buoyancy : MonoBehaviour
   {
     return ObjectDensity;
   }
+
+  /// <summary>
+  /// Calculates physics.
+  /// </summary>
+  private void FixedUpdate()
+  {
+    LiquidDensity = Liquid.GetComponent<Liquid>().Density;
+    _acceleration = transform.position - _lastPosition / Time.deltaTime; // Calculate instantaneous acceleration of object
+    _netBuoyantForce = 0.0f;
+    _forces.Clear(); // For drawing force gizmos
+    if (BuoyancyIsActive)
+    {
+      foreach (var point in _voxels)
+      {
+        var wp = transform.TransformPoint(point);
+        float waterLevel = GetWaterLevel(wp.x, wp.z);
+
+        //HACK TO FIX THE OBJECT FROM FLOATING OUTSIDE OF THE BOUNDS - Alistair
+        if (waterLevel <= 0)
+          return;
+        // hack end
+        if (wp.y - _voxelHalfHeight < waterLevel)
+        {
+          float k = (waterLevel - wp.y) / (2 * _voxelHalfHeight) + 0.5f;
+          if (k > 1)
+          {
+            k = 1f;
+          }
+          else if (k < 0)
+          {
+            k = 0f;
+          }
+          CalculateApparentSubmergedVolume();
+          float archimedesForceMagnitude = LiquidDensity * Mathf.Abs(Physics.gravity.y) * _volume;
+          _localArchimedesForce = new Vector3(0, archimedesForceMagnitude, 0) / _voxels.Count;
+          var velocity = GetComponent<Rigidbody>().GetPointVelocity(wp);
+          var localDampingForce = -velocity * _DAMPFER * GetComponent<Rigidbody>().mass;
+          var force = localDampingForce + Mathf.Sqrt(k) * _localArchimedesForce;
+          GetComponent<Rigidbody>().AddForceAtPosition(force, wp);
+          _netBuoyantForce += force.y; // Sum up the overall vertical buoyant force for each object on each frame
+          _forces.Add(new[] { wp, force }); // For drawing force gizmos
+        }
+      }
+    }
+    _lastPosition = transform.position;
+  }
+
 }

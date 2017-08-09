@@ -4,6 +4,37 @@ using UnityEngine;
 
 public static class LineDrawer {
   
+  public static void DrawLine(Texture2D tex, int brushSize)
+  {
+    Vector2 startPosition;
+    Vector2 endPosition;
+    bool touchEnded = false; // touch has ended
+    if (Input.GetTouch(0).phase == TouchPhase.Began)
+    {
+      startPosition = Input.GetTouch(0).position;
+//      Debug.Log("AAAAA Touchphase began!");
+    }
+
+    if (Input.GetTouch(0).phase == TouchPhase.Moved)
+    {
+//      Debug.Log("BBBBB Touchphase moved!");
+    }
+
+    if (Input.touchCount == 0)
+    {
+      touchEnded = true;
+    }
+    else
+      touchEnded = false;
+
+    if (Input.GetTouch(0).phase == TouchPhase.Ended)
+    {
+      Debug.Log("CCCCC Touchphase ended!!!!!!!!!!");
+      endPosition = Input.GetTouch(0).position;
+    }
+    
+  }
+
   public static void DrawLine(Texture2D tex, Vector2 endPos, Vector2 startPos, Color col)
   {
     int x0 = (int)startPos.x;

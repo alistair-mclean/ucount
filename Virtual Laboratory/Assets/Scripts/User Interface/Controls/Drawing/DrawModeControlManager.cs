@@ -1,5 +1,7 @@
 ﻿///<summary>
 /// DrawModeControlManager.cs - This class contains all of the user functionality for the draw mode. 
+/// 
+/// Copyright - VARIAL Studios LLC
 ///</summary>
 using System.Collections;
 using System.Collections.Generic;
@@ -27,33 +29,39 @@ public class DrawModeControlManager : MonoBehaviour {
   public GameObject DrawingPlane;     // Drawing plane prefab
 
   // Private 
-  private int _brushCounter = 0, MAX_BRUSH_COUNT = 1000; //To avoid having millions of brushes
-  private DrawMode _drawMode; // The current draw mode for the UI. 
-  private Color _brushColor; // Black for draw, White for Erase
-  private Vector2 _touchStartPosition; 
-  private Stack<Stroke> _strokeStack = new Stack<Stroke>();
-  private Stack<Stroke> _redoStack = new Stack<Stroke>(); // a stack of strokes for holding on to when a user undoes an action, that way we can add it back with redo
-  private Material _blankCanvas; // Saved canvas for starting a new drawing. 
-  private int _drawColorEnum = 0; // 0 - black, 1 - white, 2 - red, 3 - green, 4 - blue 
-  private Texture2D _tex;
-  private bool _hasUndoneAction = false;
-  private GameObject _copyPlane;
+  private const int MAX_BRUSH_COUNT = 1000;                 //To avoid having millions of brushes
+  private int _brushCounter = 0;
+  private DrawMode _drawMode;                               // The current draw mode for the UI. 
+  private Vector2 _touchStartPosition;                      // Touch start position 
+  private Stack<Stroke> _strokeStack = new Stack<Stroke>(); // A stack of brush strokes from the user
+  private Stack<Stroke> _redoStack = new Stack<Stroke>();   // A stack of strokes for holding on to the undone strokes 
+  private Material _blankCanvas;                            // Saved canvas for starting a new drawing. 
+  private int _drawColorEnum = 0;                           // 0 - black, 1 - white, 2 - red, 3 - green, 4 - blue 
+  private Texture2D _tex;                                   // The Texture of the copy plane that you draw on.
+  private bool _hasUndoneAction = false;                    // The boolean is for activating the undone button 
+  private GameObject _copyPlane;                            // The copy object (so we don't overwright the original)
+  private string _fileName;                                 // The name of the saved file
   
 private void Start()
   {
     _drawMode = DrawMode.Idle;
-    _brushColor = Color.black;
     
     // Initialize the brush slider, and set the values 
     BrushSizeSlider.minValue = 2;
     BrushSizeSlider.maxValue = 12;
     BrushSizeSlider.value = BrushSize;
+
+    // Hide the Undo and Redo Buttons initially
+    UndoButton.gameObject.SetActive(false);
+    RedoButton.gameObject.SetActive(false);
+
+
   }
 
   /// <summary>
-  /// Save the texture to a datafile. 
+  /// Public method to invoke the coroutine to save the texture to a datafile. 
   /// </summary>
-  void SaveTexture() {
+  public void SaveTexture() {
     _brushCounter = 0;
     System.DateTime date = System.DateTime.Now;
     RenderTexture.active = canvasTexture;
@@ -61,9 +69,16 @@ private void Start()
     tex.ReadPixels(new Rect(0, 0, canvasTexture.width, canvasTexture.height), 0, 0);
     tex.Apply();
     RenderTexture.active = null;
-    baseMaterial.mainTexture = tex; //Put the painted texture as the base
+    _fileName = date.ToString();
+    StartCoroutine ("SaveTextureToFile"); //SAVING
+    // Remove the copy plane from the scene
+    Destroy(_copyPlane);
+    // rather than doing that I should create a method that clears and resets. 
 
-    //StartCoroutine ("SaveTextureToFile"); //SAVING
+    // INVOKE THE CNN ROUTINE
+
+    // Control manager should call this. 
+
     Invoke("ShowCursor", 0.1f);
   }
 
@@ -82,40 +97,14 @@ private void Start()
     }
   }
 
-  /// <summary>
-  /// Iterates to the next color as the user presses on the draw icon button.
-  /// </summary>
-  public void NextBrushColor()
-  {
-    _drawColorEnum++;
-    if (_drawColorEnum > 4)
-      _drawColorEnum = 0;
-    switch (_drawColorEnum)
-    {
-      case (0):
-        _brushColor = Color.black;
-        break;
-      case (1):
-        _brushColor = Color.white;
-        break;
-      case (2):
-        _brushColor = Color.red;
-        break;
-      case (3):
-        _brushColor = Color.green;
-        break;
-      case (4):
-        _brushColor = Color.blue;
-        break;
-    }
-    DrawIconImage.color = _brushColor;
-  }
+
   
   /// <summary>
   /// Undo the last brush stroke
   /// </summary>
   public void UndoLastStroke()
   {
+    Debug.Log("Undo Pressed!");
     // Leave if the stack is empty
     if (_strokeStack.Count == 0)
       return;
@@ -149,13 +138,34 @@ private void Start()
     Stroke redoneStroke = _redoStack.Pop();
     //Put the pixels back to their color. 
     foreach (Vector2 point in redoneStroke.StrokeUpdateCoords)
-      _tex.SetPixel((int)point.x, (int)point.y, redoneStroke.BrushColor);
+      _tex.SetPixel((int)point.x, (int)point.y, Color.black);
     _strokeStack.Push(redoneStroke);
     _brushCounter++;
     
     // If the redo stack is empty at the end of the run, deactivate the button
     if (_redoStack.Count == 0)
       RedoButton.gameObject.SetActive(false);
+  }
+
+  /// <summary>
+  /// Saves the texture to the file. 
+  /// </summary>
+  /// <param name="savedTexture"></param>
+  /// <returns></returns>
+  IEnumerator SaveTextureToFile(Texture2D savedTexture)
+  {
+    _brushCounter = 0;
+    string fullPath = System.IO.Directory.GetCurrentDirectory() + "\\UserCanvas\\";
+    System.DateTime date = System.DateTime.Now;
+    if (!System.IO.Directory.Exists(fullPath))
+      System.IO.Directory.CreateDirectory(fullPath);
+    var bytes = savedTexture.EncodeToPNG();
+    System.IO.File.WriteAllBytes(fullPath + _fileName, bytes);
+    Debug.Log("<color=orange>Saved Successfully!</color>" + fullPath + _fileName);
+
+    // Return to the edit mode, and wait for the result. 
+
+    yield return null;
   }
 
   /// <summary>
@@ -198,7 +208,6 @@ private void Start()
       List<Vector2> newStrokeDrawPointList = new List<Vector2>();
       newStroke.StrokeID = _brushCounter;
       newStroke.BrushStrokeSize = BrushSize;
-      newStroke.BrushColor = _brushColor;
       if (Input.GetTouch(0).phase == TouchPhase.Began || Input.GetTouch(0).phase == TouchPhase.Moved)
       {
         _touchStartPosition = pixelUV;
@@ -208,25 +217,22 @@ private void Start()
       {
         for (int j = -BrushSize / 2; j <= BrushSize / 2; ++j)
         {
+          //If the pixel exists, then we change it
           if (_tex.GetPixel((int)pixelUV.x + i, (int)pixelUV.y + j) != null && _touchStartPosition != null)
           {
-            //if the pixel exists, then we change it
-            // tex.SetPixel((int)pixelUV.x + i, (int)pixelUV.y + j, _drawColor);
             Vector2 drawPoint = new Vector2((int)pixelUV.x + i, (int)pixelUV.y + j);
-            LineDrawer.DrawLine(_tex, drawPoint, _touchStartPosition, _brushColor);
+            LineDrawer.DrawLine(_tex, drawPoint, _touchStartPosition, Color.black);
+            LineDrawer.DrawLine(_tex, 2); // TEST
             newStrokeDrawPointList.Add(drawPoint);
           }
         }
       }
-      Debug.Log("right before touchphase.ended");
       if (Input.GetTouch(0).phase == TouchPhase.Ended)
       {
         newStroke.StrokeUpdateCoords = newStrokeDrawPointList;
         _strokeStack.Push(newStroke);
         _brushCounter++;
-        Debug.Log("Stroke count = " + _strokeStack.Count);
       }
-      Debug.Log("right after touchphase.ended");
       _tex.Apply();
       _touchStartPosition = pixelUV;
     }
