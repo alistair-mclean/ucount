@@ -1,5 +1,5 @@
 ﻿///<summary>
-/// PhoneCamera.cs - 
+/// PhoneCamera.cs -
 /// </summary>
 using System.Collections;
 using System.Collections.Generic;

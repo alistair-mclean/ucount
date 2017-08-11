@@ -150,6 +150,9 @@
     <Compile Include="Assets\SampleAssets\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
+    <Compile Include="Assets\ScribblePhysics\Scripts\ScribblePhysicsGUI.cs" />
+    <Compile Include="Assets\ScribblePhysics\Scripts\ScribblePhysicsMainScript.cs" />
+    <Compile Include="Assets\ScribblePhysics\Scripts\ScribblePhysicsObjectScript.cs" />
     <Compile Include="Assets\Scripts\Camera Controls\SmoothCameraOrbit.cs" />
     <Compile Include="Assets\Scripts\Interface\controlSwitcher.cs" />
     <Compile Include="Assets\Scripts\Interface\inGameMenuScript.cs" />
@@ -167,6 +170,7 @@
     <Compile Include="Assets\Scripts\Scene Specific\singlePendulumSetup.cs" />
     <Compile Include="Assets\Scripts\User Interface\BackToMainMenu.cs" />
     <Compile Include="Assets\Scripts\User Interface\Controls\Camera Capture\CameraCapture.cs" />
+    <Compile Include="Assets\Scripts\User Interface\Controls\Camera Capture\CameraModeManager.cs" />
     <Compile Include="Assets\Scripts\User Interface\Controls\Camera Capture\PhoneCamera.cs" />
     <Compile Include="Assets\Scripts\User Interface\Controls\Drawing\CreateSphereOnTouch.cs" />
     <Compile Include="Assets\Scripts\User Interface\Controls\Drawing\DrawModeControlManager.cs" />
@@ -200,8 +204,6 @@
     <None Include="Assets\Cardboard\Resources\UnlitTexture.shader" />
     <None Include="Assets\Editor\Vuforia\CylinderTargetTextures\test\authoringinfo.xml" />
     <None Include="Assets\Editor\Vuforia\Vuforia\authoringinfo.xml" />
-    <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
-    <None Include="Assets\Plugins\iOS\Vuforia.UnityExtensions.iOS.XML" />
     <None Include="Assets\SampleAssets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\SampleAssets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
     <None Include="Assets\Shaders\self_illuminated_outlined_diffuse_113.shader" />
