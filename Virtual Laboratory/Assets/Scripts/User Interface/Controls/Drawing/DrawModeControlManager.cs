@@ -104,16 +104,11 @@ public class DrawModeControlManager : MonoBehaviour
   {
     _brushCounter = 0;
     string fullPath = System.IO.Directory.GetCurrentDirectory() + "\\UserCanvas\\";
-    //System.DateTime date = System.DateTime.Now;
-    //_fileName = date.ToShortDateString();
     _fileName = "newFile.png";
-    Debug.Log("path = " + fullPath);
     if (!System.IO.Directory.Exists(fullPath))
       System.IO.Directory.CreateDirectory(fullPath);
     var bytes = _tex.EncodeToPNG();
-    Debug.Log("Derp");
     System.IO.File.WriteAllBytes(fullPath + _fileName, bytes);
-    Debug.Log("Herp");
     Debug.Log("<color=orange>Saved Successfully!</color>" + fullPath + _fileName);
 
     // Return to the edit mode, and wait for the result.

@@ -126,6 +126,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 4fd9ade0b4557494d12532bb227463c3 Assembly-CSharp.dll:.ReadLiquidDensity
 a4acff6b2c57754cbbabec76ace2de08 Assembly-CSharp.dll:.ScribblePhysicsMainScript
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GetObjectID
+ee31401236e694bbe32b19816d23af2a Assembly-CSharp.dll:.CameraModeManager
 c32933d0e0a5ad8b6d101a2b71749c4f Assembly-CSharp.dll:.ColorSelector
 6e714b24188cddfc9ae1e07d05ed4ddd Assembly-CSharp.dll:UnitySampleAssets.Utility.ParticleSystemDestroyer
 879b3df2ab67cfd00172f75f85a7a583 Assembly-CSharp.dll:UnitySampleAssets.Utility.SimpleMouseRotator

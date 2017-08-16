@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/_Scenes/BUILD scenes/mainMode.unity
+- path: Assets/_Scenes/Test Scenes/2dPendulum.unity
   isLoaded: 1
   isActive: 1

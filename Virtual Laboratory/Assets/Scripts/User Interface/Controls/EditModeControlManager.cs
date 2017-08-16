@@ -1,7 +1,7 @@
 ﻿/// <summary>
-/// EditModeControlManager.cs - Container for all user controls, enabling 
-/// and disabling components when neccessary. 
-/// 
+/// EditModeControlManager.cs - Container for all user controls, enabling
+/// and disabling components when neccessary.
+///
 /// Copyright - VARIAL Studios LLC
 /// </summary>
 using System.Collections;
@@ -15,8 +15,8 @@ public enum EditMode { Idle, Draw, Camera };
 public class EditModeControlManager : MonoBehaviour {
   // Public
   public GameObject DrawingPlane; // The object plane the user draws on.
-  public GameObject DefaultModePanel; // The UI panel containing the default mode controls 
-  public GameObject CameraFeedPanel; // The object plane the camera feed is displayed on. 
+  public GameObject DefaultModePanel; // The UI panel containing the default mode controls
+  public GameObject CameraFeedPanel; // The object plane the camera feed is displayed on.
   public GameObject DrawModePanel; // The UI panel containing the draw mode controls
   public GameObject CameraModePanel; // The UI panel containing the camera mode controls/display
   public Button DrawButton;
@@ -30,7 +30,7 @@ public class EditModeControlManager : MonoBehaviour {
   }
 
   /// <summary>
-  /// SetUserEditMode - Assigns a new enumerated edit mode (if not already in it). 
+  /// SetUserEditMode - Assigns a new enumerated edit mode (if not already in it).
   /// </summary>
   /// <param name="newMode"> </param>
   public void SetUserEditMode(int newMode)
@@ -48,12 +48,12 @@ public class EditModeControlManager : MonoBehaviour {
         _userEditMode = EditMode.Idle;
         if (!DrawingPlane.activeInHierarchy)
           DrawingPlane.SetActive(true);
-        
+
         DrawModePanel.SetActive(false);
         CameraFeedPanel.SetActive(false);
 
         GetComponent<DrawModeControlManager>().SetDrawMode(false);
-        GetComponent<PhoneCamera>().CameraIsOn = false;
+        GetComponent<CameraModeManager>().CameraIsOn = false;
         break;
 
       //DRAW MODE
@@ -76,14 +76,14 @@ public class EditModeControlManager : MonoBehaviour {
         if (_userEditMode == EditMode.Camera)
           return;
         _userEditMode = EditMode.Camera;
-        
+
         CameraFeedPanel.SetActive(true);
-        DefaultModePanel.SetActive(false);  
+        DefaultModePanel.SetActive(false);
         DrawingPlane.SetActive(false);
 
-        GetComponent<PhoneCamera>().CameraIsOn = true;
+        GetComponent<CameraModeManager>().CameraIsOn = true;
         break;
-    } 
+    }
   }
 
   private void Update()

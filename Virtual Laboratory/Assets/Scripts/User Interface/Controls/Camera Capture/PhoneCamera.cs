@@ -23,7 +23,7 @@ public class PhoneCamera : MonoBehaviour {
 
     if (devices.Length == 0)
     {
-      Debug.Log("No camera detectd.");
+      Debug.Log("No camera detected.");
       CameraAvailable = false;
       return;
     }
