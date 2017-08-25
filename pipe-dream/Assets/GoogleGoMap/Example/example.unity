@@ -140,7 +140,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDrawn: 0
   zoom: 16
-  mapType: 0
+  mapType: 1
   horizontalSize: 512
   verticalSize: 512
   realWorldtoUnityWorldScale: {x: 0.1, y: 1}
@@ -679,13 +679,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1506333553}
-  m_LocalRotation: {x: 0.21411636, y: -0, z: -0, w: 0.9768082}
-  m_LocalPosition: {x: -0.10618555, y: 4.0248766, z: -11.9189625}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1750993605}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 24.698002, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!81 &1506333555
 AudioListener:
   m_ObjectHideFlags: 0

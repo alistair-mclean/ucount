@@ -6,7 +6,7 @@ public class GoogleStaticMap : MonoBehaviour {
 
 	private const int TILE_SIZE = 256;  // default world map size in google static map.
 	private const int MAX_PIXEL = 640;
-	const float initialPixelToMercator = 2.0f / ((float) TILE_SIZE); 
+	const float initialPixelToMercator = 2.0f / ((float) TILE_SIZE);
 	private float curPixelToMercator;
 	private static int countOfMapRequests = 0;
 
@@ -42,15 +42,15 @@ public class GoogleStaticMap : MonoBehaviour {
 	// Setting map center in web mercator automatically sets the value of center in lat, lon.
 	private MyPoint _centerMercator;
 	public MyPoint centerMercator {
-		set { 
+		set {
 			_centerMercator = value;
 			_centerLatLon = mercatorPointToGeoPoint (value);
-		}	
-		get { 
+		}
+		get {
 			return _centerMercator;
 		}
 	}
-		
+
 	// Choose zoom level between 0 to 20.
 	public int zoom = 15;
 
@@ -72,13 +72,13 @@ public class GoogleStaticMap : MonoBehaviour {
 
 	public bool hideLabels = false;
 
-	public Color landscapeColor, pointOfInterestsColor, highwaysFill, highwaysStroke, arterialRoadsFill, 
+	public Color landscapeColor, pointOfInterestsColor, highwaysFill, highwaysStroke, arterialRoadsFill,
 				arterialRoadsStroke, localRoadsFill, localRoadsStroke, transitRoadsFill, waterColor;
 
 	// Set your API KEY here
-	private string _apiKey = "";
+	private string _apiKey = "AIzaSyCi8edqsDd2mn4anIOIs4pYsm963-q4VxI";
 	public string ApiKey {
-		set { 
+		set {
 			_apiKey = value;
 		}
 	}
@@ -97,20 +97,20 @@ public class GoogleStaticMap : MonoBehaviour {
 		if (verticalSize > MAX_PIXEL)
 			verticalSize = MAX_PIXEL;
 
-		const float initialPixelToMercator = 2.0f / ((float) TILE_SIZE); 
+		const float initialPixelToMercator = 2.0f / ((float) TILE_SIZE);
 
 		curPixelToMercator = initialPixelToMercator / Mathf.Pow (2.0f, (float)zoom) / (this.doubleResolution ? 2.0f : 1.0f);
-	
+
 		widthMercatorX = (horizontalSize * (this.doubleResolution ? 2.0f : 1.0f)) * curPixelToMercator;
 		heightMercatorY = (verticalSize * (this.doubleResolution ? 2.0f : 1.0f)) * curPixelToMercator;
 
 		// You can initialize realWorldtoUnityWorldScale to another value of your choice.
-		realWorldtoUnityWorldScale = new Vector2 (0.1f, 0.1f); 
+		realWorldtoUnityWorldScale = new Vector2 (0.1f, 0.1f);
 	}
 
 
 	// Call to draw map on an object (with material assigned)
-	public void DrawMap() {	
+	public void DrawMap() {
 		isDrawn = false;
 		StartCoroutine(DrawMapCoroutine());
 	}
@@ -146,7 +146,7 @@ public class GoogleStaticMap : MonoBehaviour {
 	}
 
 	// Call to draw map on a GUI element with RawImage.
-	public void DrawMapGUI() {	
+	public void DrawMapGUI() {
 		isDrawn = false;
 		StartCoroutine(DrawMapCoroutineGUI());
 	}
@@ -183,7 +183,7 @@ public class GoogleStaticMap : MonoBehaviour {
 
 
 	// IMPORTANT NOTE: As of today, 12/16/2016, Google Static Maps API has an issue with "road strokes"
-	// This issue will be likely solved at some point. But the developer is recommended to keep styles 
+	// This issue will be likely solved at some point. But the developer is recommended to keep styles
 	// upto data by comparing them to:
 	// https://developers.google.com/maps/documentation/static-maps/styling
 
@@ -209,7 +209,7 @@ public class GoogleStaticMap : MonoBehaviour {
 
 	private void findCorners(){
 		mapRectangle = new MapRectangle ();
-	
+
 		MyPoint SW_Mercator = new MyPoint (centerMercator.x - widthMercatorX / 2.0f, centerMercator.y - heightMercatorY / 2.0f);
 
 		MyPoint NE_Mercator = new MyPoint (centerMercator.x + widthMercatorX / 2.0f, centerMercator.y + heightMercatorY / 2.0f);
@@ -258,7 +258,7 @@ public class GoogleStaticMap : MonoBehaviour {
 		float a = Mathf.Sin (delta_lat / 2.0f) * Mathf.Sin (delta_lat / 2.0f)
 		                + Mathf.Cos (loc1.lat_r) * Mathf.Cos (loc2.lat_r) * Mathf.Sin (delta_lon / 2.0f) * Mathf.Sin (delta_lon / 2.0f);
 		float c = 2.0f * Mathf.Atan2 (Mathf.Sqrt (a), Mathf.Sqrt (1.0f - a));
-		return R * c;          
+		return R * c;
 	}
 
 	public class MapRectangle {
@@ -407,10 +407,10 @@ public class GoogleStaticMap : MonoBehaviour {
 
 	// Return the position of an object in the unity world given its position on map (lat, lon)
 	public Vector2 getPositionOnMap(GeoPoint point) {
-		
+
 		float delta_lon = point.lon_d - this._centerLatLon.lon_d;
 		float delta_lat = point.lat_d - this._centerLatLon.lat_d;
-	
+
 		return Vector2.Scale(
 			new Vector2 (gameObject.transform.position.x / this.realWorldtoUnityWorldScale.x + this.mapRectangle.getWidthMeterLonRatio_deg () * delta_lon,
 				gameObject.transform.position.z / this.realWorldtoUnityWorldScale.y + this.mapRectangle.getHeightMeterLatRatio_deg () * delta_lat),
@@ -419,7 +419,7 @@ public class GoogleStaticMap : MonoBehaviour {
 
 	// Return the position of an object on the map (lat, lon) given its position in the unity world.
 	public GeoPoint getPositionOnMap(Vector2 point) {
-		
+
 		float delta_x = (point.x - gameObject.transform.position.x) / this.realWorldtoUnityWorldScale.x;
 		float delta_y = (point.y - gameObject.transform.position.z) / this.realWorldtoUnityWorldScale.y;
 		GeoPoint geo = new GeoPoint ();
