@@ -5,11 +5,11 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Component:
-  - component: {fileID: 413102}
-  - component: {fileID: 2013102}
-  - component: {fileID: 11413102}
+  - 4: {fileID: 413102}
+  - 20: {fileID: 2013102}
+  - 114: {fileID: 11413102}
   m_Layer: 0
   m_Name: PreRender
   m_TagString: Untagged
@@ -22,12 +22,12 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Component:
-  - component: {fileID: 413104}
-  - component: {fileID: 2013104}
-  - component: {fileID: 9213102}
-  - component: {fileID: 11413104}
+  - 4: {fileID: 413104}
+  - 20: {fileID: 2013104}
+  - 92: {fileID: 9213102}
+  - 114: {fileID: 11413104}
   m_Layer: 0
   m_Name: PostRender
   m_TagString: Untagged
@@ -40,10 +40,10 @@ GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  serializedVersion: 4
   m_Component:
-  - component: {fileID: 413106}
-  - component: {fileID: 11403204}
+  - 4: {fileID: 413106}
+  - 114: {fileID: 11403204}
   m_Layer: 0
   m_Name: CardboardManager
   m_TagString: Untagged
@@ -63,7 +63,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 413106}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &413104
 Transform:
   m_ObjectHideFlags: 1
@@ -76,7 +75,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 413106}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &413106
 Transform:
   m_ObjectHideFlags: 1
@@ -91,7 +89,6 @@ Transform:
   - {fileID: 413104}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2013102
 Camera:
   m_ObjectHideFlags: 1
@@ -108,7 +105,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: .300000012
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -120,14 +117,10 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
-  m_ForceIntoRT: 0
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
+  m_StereoSeparation: .0219999999
 --- !u!20 &2013104
 Camera:
   m_ObjectHideFlags: 1
@@ -144,11 +137,11 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
+  near clip plane: .300000012
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 0.5
+  orthographic size: .5
   m_Depth: 100
   m_CullingMask:
     serializedVersion: 2
@@ -156,14 +149,10 @@ Camera:
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
-  m_TargetEye: 3
   m_HDR: 0
-  m_AllowMSAA: 1
-  m_ForceIntoRT: 0
   m_OcclusionCulling: 0
   m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
-  m_StereoMirrorMode: 0
+  m_StereoSeparation: .0219999999
 --- !u!92 &9213102
 Behaviour:
   m_ObjectHideFlags: 1
@@ -182,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a40b544b8c3553c40852ae7ad35a9343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vrModeEnabled: 0
+  vrModeEnabled: 1
   distortionCorrection: 2
   enableAlignmentMarker: 1
   enableSettingsButton: 1
@@ -229,3 +218,4 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 113106}
   m_IsPrefabParent: 1
+  m_IsExploded: 1

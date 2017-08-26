@@ -130,6 +130,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\Editor\CrossPlatformInputInitialize.cs" />
+    <Compile Include="Assets\Standard Assets\CrossPlatformInput\Scripts\Editor\InputAxisScrollbarCI.cs" />
     <Compile Include="Assets\Standard Assets\Editor\CrossPlatformInput\CrossPlatformInputInitialize.cs" />
   </ItemGroup>
   <ItemGroup>

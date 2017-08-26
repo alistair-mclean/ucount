@@ -78,12 +78,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="pipe-dream.Plugins.csproj">
-      <Project>{21D1C056-6105-C42F-4419-0676095CB5E4}</Project>
-      <Name>pipe-dream.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUI.cs" />
     <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUIMouse.cs" />
     <Compile Include="Assets\Cardboard\Legacy\Scripts\CardboardOnGUIWindow.cs" />
@@ -118,18 +112,60 @@
     <Compile Include="Assets\GoogleGoMap\Scripts\ObjectPosition.cs" />
     <Compile Include="Assets\GoogleGoMap\Scripts\PlayerLocationService.cs" />
     <Compile Include="Assets\GoogleGoMap\Scripts\Singleton.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\AbstractTargetFollower.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\AutoCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\FreeLookCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\HandHeldCam.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\LookatTarget.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\PivotBasedCameraRig.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\ProtectCameraFromWallClip.cs" />
+    <Compile Include="Assets\SampleAssets\Cameras\Scripts\TargetFieldOfView.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\FirstPersonController.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\HeadBob.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\MouseLook.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\RigidbodyFirstPersonController.cs" />
+    <Compile Include="Assets\SampleAssets\Characters\FirstPersonCharacter\Scripts\VRRigidbodyFirstPersonController.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\CameraSwitch.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\Joystick.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\LevelReset.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\TiltInput.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\TouchPad.cs" />
+    <Compile Include="Assets\SampleAssets\CrossPlatformInput\Scripts\VirtualInput.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ActivateTrigger.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\AutoMobileShaderSwitch.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\AutoMoveAndRotate.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\CameraRefocus.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\CurveControlledBob.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\DragRigidbody.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\DynamicShadowSettings.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FollowTarget.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ForcedReset.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FOVKick.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\FPSCounter.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\LerpControlledBob.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ObjectResetter.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\ParticleSystemDestroyer.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\PlatformSpecificContent.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\SimpleActivatorMenu.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\SimpleMouseRotator.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\TimedObjectActivator.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\TimedObjectDestructor.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
+    <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Cardboard\Distortion\CardboardDistortion.cginc" />
-    <None Include="Assets\Cardboard\Resources\SkyboxMesh.shader" />
-    <None Include="Assets\Cardboard\Resources\SolidColor.shader" />
     <None Include="Assets\Cardboard\Resources\UI\CardboardReticleShader.shader" />
-    <None Include="Assets\Cardboard\Resources\UnlitTexture.shader" />
     <None Include="Assets\GoogleGoMap\Instructions.txt" />
     <None Include="Assets\GoogleGoMap\README.txt" />
     <None Include="Assets\GoogleGoMap\The MIT License.txt" />
-    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
-    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\SampleAssets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
