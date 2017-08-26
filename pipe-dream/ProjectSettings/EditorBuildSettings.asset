@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/GoogleGoMap/Example/example.unity
-    guid: 4526a38f9dcb8418fb64ea423c44732d
+    path: Assets/_Scenes/main.unity
+    guid: e3e17a2fe4f631b4981a3096a19c492c
