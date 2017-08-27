@@ -4,8 +4,8 @@ using System.Collections;
 
 public class GoogleStaticMap : MonoBehaviour {
 
-	private const int TILE_SIZE = 256;  // default world map size in google static map.
-	private const int MAX_PIXEL = 640;
+	private const int TILE_SIZE = 128;  // default world map size in google static map.
+	private const int MAX_PIXEL = 640; // was 640
 	const float initialPixelToMercator = 2.0f / ((float) TILE_SIZE);
 	private float curPixelToMercator;
 	private static int countOfMapRequests = 0;
