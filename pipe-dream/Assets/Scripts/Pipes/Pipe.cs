@@ -20,6 +20,7 @@ public class Pipe : MonoBehaviour {
   private float _length { get; set; }
   private List<PipeSection> _pipeLine = new List<PipeSection>();
 
+
   public Pipe(string owner, string mat, List<PipeSection> pipeSections)
   {
     // Validation
@@ -37,17 +38,12 @@ public class Pipe : MonoBehaviour {
     _pipeLine = pipeSections;
   }
 
-  // Invoke the pipe rendering coroutine
+ //Render the pipe
   public void DisplayPipe()
   {
-    StartCoroutine("RenderPipes");
-  }
-
-  private IEnumerable RenderPipe()
-  {
+    LineRenderer newLine = new LineRenderer();
     foreach (PipeSection section in _pipeLine)
     {
-      LineRenderer newLine = new LineRenderer();
       Vector3[] positions = { section.StartPostion, section.EndPostion };
       newLine.SetPositions(positions);
       newLine.startWidth = section.Diameter;
@@ -56,7 +52,6 @@ public class Pipe : MonoBehaviour {
       newLine.endColor = Color.red;
       Instantiate(newLine);
     }
-    yield return null;
   }
 
 }

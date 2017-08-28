@@ -11,7 +11,7 @@ public class MapMarker : MonoBehaviour {
   public Transform TargetObject;
   // Private
   private Transform _marker;
-
+  private Quaternion _orientation;
   /// <summary>
   /// Set the gameobject.
   /// </summary>
@@ -19,6 +19,7 @@ public class MapMarker : MonoBehaviour {
   private IEnumerator Start()
   {
     _marker = GetComponent<Transform>();
+    _orientation = _marker.rotation;
     yield return null;
   }
 
@@ -32,6 +33,7 @@ public class MapMarker : MonoBehaviour {
     _marker.transform.position = new Vector3(_marker.transform.position.x,
                                              _marker.transform.position.y + 1f,
                                              _marker.transform.position.z);
+
   }
 
 

@@ -15,11 +15,22 @@ public class PipeMapManager : MonoBehaviour {
 
     PipeSection pipesection1 = new PipeSection(10f, 20f, startPos, endPos);
     PipeSection pipesection2 = new PipeSection(10f, 20f, endPos, endPos * 2f); // we need to validate a couple things. 1 - that the diameters of subsequent segments match up.
+    PipeSection pipesection3 = new PipeSection(10f, 20f, endPos, endPos * 3f); // we need to validate a couple things. 1 - that the diameters of subsequent segments match up.
     List<PipeSection> pipeSegments = new List<PipeSection>();
     pipeSegments.Add(pipesection1);
     pipeSegments.Add(pipesection2);
+    pipeSegments.Add(pipesection3);
     Pipe testPipe = new Pipe("Alistair McLean", "Wood", pipeSegments);
+
+    //Initialize coroutine
+    StartCoroutine(ShowPipe(testPipe));
+  }
+
+  //Display pipe as a coroutine
+  private IEnumerator ShowPipe(Pipe testPipe)
+  {
     testPipe.DisplayPipe();
+    yield return null;
   }
 
 

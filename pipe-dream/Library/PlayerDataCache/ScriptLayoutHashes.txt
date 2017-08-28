@@ -125,6 +125,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.Utility.DragRigidbody
 78ebae5ed9b3edeb216da437b99754a4 Assembly-CSharp.dll:.Joystick
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.PipeMapManager
 2289ca56d77b54e4d309ed42087d0885 Assembly-CSharp.dll:.GameManager
 97250c504047e360c39e4024b2a77c39 Assembly-CSharp.dll:UnitySampleAssets.Utility.PlatformSpecificContent
 9927f9033995c048dcee5258ceb7659a Assembly-CSharp.dll:.CameraSwitch
@@ -139,6 +140,7 @@ f930c71e2bac4d71caaa19659d7f5631 Assembly-CSharp.dll:.CardboardAudioListener
 a90e94673f50d2237c1b971c138660c6 Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMoveAndRotate
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ForcedReset
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.CrossPlatformInput.MobileControlRig
+48674094a8a03c9f6966156051354fa0 Assembly-CSharp.dll:.Pipe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.Utility.ObjectResetter
 b7797416cbcf117e668abd95ec922572 Assembly-CSharp.dll:.CardboardHead
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
@@ -187,3 +189,4 @@ e75a1ecfaa6a93f2adbeb7ea0a5dc9b0 Assembly-CSharp.dll:.CardboardAudioSource
 cf576a0f2e9f42b3e1dd8ff8a15fb1c8 Assembly-CSharp.dll:.StereoController
 9bff53cab2a6d5d4e8df679458844006 Assembly-CSharp.dll:.CardboardOnGUIMouse
 8300a5eeb1af34f182cf2e246ffc120f Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMobileShaderSwitch
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GyroCamera
