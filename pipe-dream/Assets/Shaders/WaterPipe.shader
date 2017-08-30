@@ -7,13 +7,13 @@
 		Cull Off
 		Pass{
 		ZTest Greater
-	}
+		}
 		Pass{
 		ZTest Less
-	}
+		}
 		Pass{
 		ZTest Always
-	}
+		}
 		Tags{ "RenderType" = "Opaque" }
 		LOD 200
 

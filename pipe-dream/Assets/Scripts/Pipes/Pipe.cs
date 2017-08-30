@@ -45,7 +45,8 @@ public class Pipe : MonoBehaviour {
     foreach (PipeSection section in _pipeLine)
     {
       Vector3[] positions = { section.StartPostion, section.EndPostion };
-      newLine.SetPositions(positions);
+      newLine.SetPosition(0, positions[0]);
+      newLine.SetPosition(1, positions[1]);
       newLine.startWidth = section.Diameter;
       newLine.endWidth = section.Diameter;
       newLine.startColor = Color.red;

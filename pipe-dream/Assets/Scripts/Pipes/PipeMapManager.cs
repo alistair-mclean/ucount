@@ -23,14 +23,15 @@ public class PipeMapManager : MonoBehaviour {
     Pipe testPipe = new Pipe("Alistair McLean", "Wood", pipeSegments);
 
     //Initialize coroutine
-    StartCoroutine(ShowPipe(testPipe));
+    //StartCoroutine(ShowPipe(testPipe));
+    ShowPipe(testPipe);
   }
 
   //Display pipe as a coroutine
-  private IEnumerator ShowPipe(Pipe testPipe)
+  private void ShowPipe(Pipe testPipe)
   {
     testPipe.DisplayPipe();
-    yield return null;
+    //yield return null;
   }
 
 

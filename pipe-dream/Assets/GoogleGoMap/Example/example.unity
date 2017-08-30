@@ -145,8 +145,8 @@ MonoBehaviour:
   verticalSize: 512
   realWorldtoUnityWorldScale: {x: 0.1, y: 1}
   doubleResolution: 1
-  defaultStyle: 0
-  hideLabels: 1
+  defaultStyle: 1
+  hideLabels: 0
   landscapeColor: {r: 0.40151525, g: 1, b: 0, a: 0}
   pointOfInterestsColor: {r: 1, g: 1, b: 1, a: 1}
   highwaysFill: {r: 0.28676468, g: 0.28676468, b: 0.28676468, a: 0}
@@ -622,8 +622,8 @@ MonoBehaviour:
   verticalSize: 512
   realWorldtoUnityWorldScale: {x: 0.1, y: 1}
   doubleResolution: 1
-  defaultStyle: 0
-  hideLabels: 1
+  defaultStyle: 1
+  hideLabels: 0
   landscapeColor: {r: 0.40331352, g: 1, b: 0, a: 0}
   pointOfInterestsColor: {r: 1, g: 1, b: 1, a: 1}
   highwaysFill: {r: 0.28676468, g: 0.28676468, b: 0.28676468, a: 0}
@@ -726,7 +726,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1506333553}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 30, z: 0}
+  m_LocalPosition: {x: 0, y: 46.86, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1750993605}

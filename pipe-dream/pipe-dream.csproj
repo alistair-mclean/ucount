@@ -159,6 +159,7 @@
     <Compile Include="Assets\SampleAssets\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
+    <Compile Include="Assets\Scripts\Pipes\MaterialFadeWithDistance.cs" />
     <Compile Include="Assets\Scripts\Pipes\Pipe.cs" />
     <Compile Include="Assets\Scripts\Pipes\PipeMapManager.cs" />
     <Compile Include="Assets\Scripts\Pipes\PipeSection.cs" />

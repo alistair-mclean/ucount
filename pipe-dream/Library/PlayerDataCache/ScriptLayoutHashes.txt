@@ -142,6 +142,7 @@ a90e94673f50d2237c1b971c138660c6 Assembly-CSharp.dll:UnitySampleAssets.Utility.A
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.CrossPlatformInput.MobileControlRig
 48674094a8a03c9f6966156051354fa0 Assembly-CSharp.dll:.Pipe
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.Utility.ObjectResetter
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GyroCamera
 b7797416cbcf117e668abd95ec922572 Assembly-CSharp.dll:.CardboardHead
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -189,4 +190,4 @@ e75a1ecfaa6a93f2adbeb7ea0a5dc9b0 Assembly-CSharp.dll:.CardboardAudioSource
 cf576a0f2e9f42b3e1dd8ff8a15fb1c8 Assembly-CSharp.dll:.StereoController
 9bff53cab2a6d5d4e8df679458844006 Assembly-CSharp.dll:.CardboardOnGUIMouse
 8300a5eeb1af34f182cf2e246ffc120f Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMobileShaderSwitch
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GyroCamera
+63a1e9d9ddf7fdc42affcfe8105db03a Assembly-CSharp.dll:.MaterialFadeWithDistance

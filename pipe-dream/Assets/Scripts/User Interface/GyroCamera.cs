@@ -3,19 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GyroCamera : MonoBehaviour {
-
+  // Private
   private bool _gyroEnabled;
-  private Gyroscope _gyro;
-
   private GameObject _cameraContainer;
+  private Gyroscope _gyro;
   private Quaternion _rotation;
 
   void Start () {
-    _cameraContainer = new GameObject("Camera Container");
-    _cameraContainer.transform.position = transform.position;
-    transform.SetParent(_cameraContainer.transform);
-
+    _cameraContainer = GetComponentInParent<GameObject>();
     _gyroEnabled = EnableGyro();
+
 	}
 
   private bool EnableGyro()
