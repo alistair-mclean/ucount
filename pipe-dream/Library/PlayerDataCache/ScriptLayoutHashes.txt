@@ -83,6 +83,7 @@ c63db43c730fa2cbb8ca07de15898cb6 UnityEngine.UI.dll:UnityEngine.UI.Toggle
 f61c0793411f10cf5fbfa1473fef5ef2 UnityEngine.UI.dll:UnityEngine.UI.ToggleGroup
 86d36c43c53541d667100dc90b89cfba UnityEngine.UI.dll:UnityEngine.EventSystems.TouchInputModule
 1b8c02d0aa82fbf036a2b9b2d713eec3 UnityEngine.UI.dll:UnityEngine.UI.VerticalLayoutGroup
+63a1e9d9ddf7fdc42affcfe8105db03a Assembly-CSharp.dll:.MaterialFadeWithDistance
 28668a8de3c49c9ab5d28bafb358c580 Assembly-CSharp.dll:UnitySampleAssets.Cameras.AutoCam
 03bbed44bf0809da9eb453e702673301 Assembly-CSharp.dll:.CardboardAudioRoom
 6c156248975c65e334daa4cbfba64bd1 Assembly-CSharp.dll:UnitySampleAssets.Utility.TimedObjectActivator
@@ -140,9 +141,9 @@ f930c71e2bac4d71caaa19659d7f5631 Assembly-CSharp.dll:.CardboardAudioListener
 a90e94673f50d2237c1b971c138660c6 Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMoveAndRotate
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.ForcedReset
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.CrossPlatformInput.MobileControlRig
-48674094a8a03c9f6966156051354fa0 Assembly-CSharp.dll:.Pipe
+48674094a8a03c9f6966156051354fa0 Assembly-CSharp.dll:.PipeLine
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.Utility.ObjectResetter
-05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.GyroCamera
+9ff0c757f64da4e35bf009eb294434d4 Assembly-CSharp.dll:.GyroCamera
 b7797416cbcf117e668abd95ec922572 Assembly-CSharp.dll:.CardboardHead
 fc1e0f4d8439d9928083474691511a13 UnityEngine.Networking.dll:UnityEngine.Networking.NetworkAnimator
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.Networking.dll:UnityEngine.Networking.NetworkBehaviour
@@ -162,6 +163,7 @@ e9bdabf9265d758d56f01bb188916fa8 UnityEngine.Networking.dll:UnityEngine.Networki
 a8ae05ec61d0e3fc8b05e914d5b75092 Assembly-CSharp.dll:UnitySampleAssets.Cameras.TargetFieldOfView
 8f8045226259fd0190e62fc902ef02f7 Assembly-CSharp.dll:UnitySampleAssets.Characters.FirstPerson.RigidbodyFirstPersonController
 7a5f4c3ba749ce79263b21b36598e3ee Assembly-CSharp.dll:UnitySampleAssets.Cameras.HandHeldCam
+6593053727ce4f22a143b3f423adc857 Assembly-CSharp.dll:.PhoneCamera
 05524b8f659e7bfe5756d1335fec24ba UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.PlayModeRunnerCallback
 5f2ad81aa8994e8fbe25d1e57afe6773 UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.PlaymodeTestsController
 64eb32cc721b1cc68a91ed57461e188c UnityEngine.TestRunner.dll:UnityEngine.TestTools.TestRunner.Callbacks.RemoteTestResultSender
@@ -189,5 +191,5 @@ e75a1ecfaa6a93f2adbeb7ea0a5dc9b0 Assembly-CSharp.dll:.CardboardAudioSource
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:UnitySampleAssets.Utility.FPSCounter
 cf576a0f2e9f42b3e1dd8ff8a15fb1c8 Assembly-CSharp.dll:.StereoController
 9bff53cab2a6d5d4e8df679458844006 Assembly-CSharp.dll:.CardboardOnGUIMouse
+d469802e90af45033f87c754c0d6d9b0 Assembly-CSharp.dll:.UserLocationOnMap
 8300a5eeb1af34f182cf2e246ffc120f Assembly-CSharp.dll:UnitySampleAssets.Utility.AutoMobileShaderSwitch
-63a1e9d9ddf7fdc42affcfe8105db03a Assembly-CSharp.dll:.MaterialFadeWithDistance

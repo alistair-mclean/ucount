@@ -6,7 +6,7 @@ public class PipeMapManager : MonoBehaviour {
   // Public
 
   // Private
-  private static Dictionary<string, Pipe> _pipeMap = new Dictionary<string, Pipe>();
+  private static Dictionary<string, PipeLine> _pipeMap = new Dictionary<string, PipeLine>();
 
   private void Start()
   {
@@ -20,15 +20,16 @@ public class PipeMapManager : MonoBehaviour {
     pipeSegments.Add(pipesection1);
     pipeSegments.Add(pipesection2);
     pipeSegments.Add(pipesection3);
-    Pipe testPipe = new Pipe("Alistair McLean", "Wood", pipeSegments);
+    PipeLine testPipe = new PipeLine("Alistair McLean", "Wood", pipeSegments);
 
     //Initialize coroutine
     //StartCoroutine(ShowPipe(testPipe));
-    ShowPipe(testPipe);
+    _pipeMap.Add("Test Pipe", testPipe);
+    _pipeMap["Test Pipe"].DisplayPipe();
   }
 
   //Display pipe as a coroutine
-  private void ShowPipe(Pipe testPipe)
+  private void ShowPipe(PipeLine testPipe)
   {
     testPipe.DisplayPipe();
     //yield return null;

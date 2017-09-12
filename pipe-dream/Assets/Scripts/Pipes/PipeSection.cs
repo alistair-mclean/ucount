@@ -5,10 +5,10 @@ using UnityEngine;
 public class PipeSection  {
 
   // Private
-  public float Diameter { get; set; }
-  public float Length { get; set; }
-  public Vector3 StartPostion { get; set; } //long, lat, and depth
-  public Vector3 EndPostion { get; set; } // long, lat, and depth
+  public float Diameter;
+  public float Length;
+  public Vector3 StartPostion; //long, lat, and depth
+  public Vector3 EndPostion; // long, lat, and depth
 
   public PipeSection(float diam, float length, Vector3 startPos, Vector3 endPos)
   {

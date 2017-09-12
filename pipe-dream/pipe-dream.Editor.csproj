@@ -142,6 +142,7 @@
     <None Include="Assets\GoogleGoMap\README.txt" />
     <None Include="Assets\GoogleGoMap\The MIT License.txt" />
     <None Include="Assets\SampleAssets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Shaders\VisibleThroughWalls.shader" />
     <None Include="Assets\Shaders\WaterPipe.shader" />
     <None Include="Assets\license_3rdpartynotice.txt" />
     <None Include="Assets\link.xml" />

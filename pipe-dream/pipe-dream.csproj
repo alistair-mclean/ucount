@@ -160,11 +160,13 @@
     <Compile Include="Assets\SampleAssets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\SampleAssets\Utility\WaypointProgressTracker.cs" />
     <Compile Include="Assets\Scripts\Pipes\MaterialFadeWithDistance.cs" />
-    <Compile Include="Assets\Scripts\Pipes\Pipe.cs" />
+    <Compile Include="Assets\Scripts\Pipes\PipeLine.cs" />
     <Compile Include="Assets\Scripts\Pipes\PipeMapManager.cs" />
     <Compile Include="Assets\Scripts\Pipes\PipeSection.cs" />
     <Compile Include="Assets\Scripts\User Interface\GyroCamera.cs" />
     <Compile Include="Assets\Scripts\User Interface\MapMarker.cs" />
+    <Compile Include="Assets\Scripts\User Interface\PhoneCamera.cs" />
+    <Compile Include="Assets\Scripts\User Interface\UserLocationOnMap.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Cardboard\Resources\UI\CardboardReticleShader.shader" />
@@ -172,6 +174,7 @@
     <None Include="Assets\GoogleGoMap\README.txt" />
     <None Include="Assets\GoogleGoMap\The MIT License.txt" />
     <None Include="Assets\SampleAssets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
+    <None Include="Assets\Shaders\VisibleThroughWalls.shader" />
     <None Include="Assets\Shaders\WaterPipe.shader" />
     <None Include="Assets\license_3rdpartynotice.txt" />
     <None Include="Assets\link.xml" />
