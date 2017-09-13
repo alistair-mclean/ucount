@@ -1,19 +1,17 @@
-var factorize = function(n) {
-	var results = [];
-	var i = 2;
-	while (n > 1) {
-		if (n % i ===0) {
-		n /= 1;
-		results.push(i);
-	} else {
-		i++;
-	}
-	}
-	return results;
-	};
-
-class PipeLine {
-	constructor(owner, transportMaterial, pipeMap) {
+class PipeMap {
+	constructor(owner, transportMaterial, map) {
+		if(typeof(owner) != 'string'){
+			//TODO - ADD AN ERROR MESSAGE
+			break;
+		}
+		if (typeof(transportMaterial) != 'string') {
+			//TODO - ADD AN ERROR MESSAGE
+			break;
+		}
+		if(typeof(map) != 'object') {
+			//TODO - ADD AN ERROR MESSAGE
+			break; 
+		}
 		this.owner = owner;
 		this.transportMaterial = transportMaterial;
 		this.pipeMap = pipeMap;
@@ -30,13 +28,22 @@ class PipeLine {
 	loadMap() {
 		
 	}
-
-
-
+    function initMap() {
+      map = new google.maps.Map(document.getElementById('map'), {
+    	// TODO - make function to get user location (if able)
+      center: {lat: 40.025040, lng: -105.285787},
+      zoom: 13
+    });
 };
 
-var Pipe = function(location,depth) {
+var Pipe = function(location, sections[],depth) {
+	if(typeof(location) != 'object') {
+		//TODO - ERROR MESSAGE HERE
+		break;
+	}
+	for (let pipeSection in sections){
 
+	}
 };
 
      var map;
