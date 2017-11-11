@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="me.alistairmclean.cc01.RCCarActivity">
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="567dp">
+
+        <TextView
+            android:id="@+id/status_text"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="312dp"
+            android:text="@string/text_status_text_placeholder"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/host_port_edit_text"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="64dp"
+            android:ems="10"
+            android:hint="4444"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="6000"
+            app:layout_constraintStart_toEndOf="@+id/host_port_text"
+            app:layout_constraintTop_toBottomOf="@+id/host_connection_toggle_button" />
+
+        <TextView
+            android:id="@+id/host_ip_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/text_host_ip_address"
+            android:textColor="@android:color/black"
+            app:layout_constraintEnd_toStartOf="@+id/host_ip_edit_text"
+            app:layout_constraintTop_toTopOf="@+id/host_ip_edit_text" />
+
+        <TextView
+            android:id="@+id/host_port_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="@string/text_host_port"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="@+id/host_ip_text"
+            app:layout_constraintTop_toBottomOf="@+id/host_ip_text" />
+
+        <EditText
+            android:id="@+id/host_ip_edit_text"
+            android:layout_width="146dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="116dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="128.171.183.2"
+            android:inputType="textShortMessage"
+            android:text="192.168.1.100"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/host_connection_toggle_button" />
+
+        <VideoView
+            android:id="@+id/video_feed"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginBottom="270dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <ToggleButton
+            android:id="@+id/host_connection_toggle_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="364dp"
+            android:onClick="startConnectionToggle"
+            android:text="@string/toggle_button_host_connect"
+            android:textOff="@string/toggle_button_host_connect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />;
+            android:textOn="@string/toggle_button_host_disconnect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
+</android.support.design.widget.CoordinatorLayout>
