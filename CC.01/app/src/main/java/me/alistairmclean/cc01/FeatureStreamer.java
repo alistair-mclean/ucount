@@ -1,10 +1,8 @@
 package me.alistairmclean.cc01;
-import android.os.AsyncTask;
+import android.util.Log;
 
-import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -13,20 +11,22 @@ import java.net.UnknownHostException;
  * File recreated on 11/3/2017.
  */
 
-public class FeatureStreamer extends Thread {
-    private Socket sock;
-    private DataOutputStream dos;
+public class FeatureStreamer {
+    private String mHOST_IP;
+    private int mHOST_PORT;
+    private Socket mSocket;
+    private DataOutputStream mDOS;
     private boolean mIsConnected = false;
 
 
     FeatureStreamer() {
     }
 
-    public Socket getSocket() {return sock;}
     void connect(String addr, int port) {
+        Log.d("FEATURE STREAMER: ", "add = " + addr + " port = " + port);
         try {
-            sock = new Socket(addr, port);
-            dos = new DataOutputStream(sock.getOutputStream());
+            mSocket = new Socket(addr, port);
+            mDOS = new DataOutputStream(mSocket.getOutputStream());
             mIsConnected = true;
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -36,10 +36,10 @@ public class FeatureStreamer extends Thread {
     }
 
     void sendByteArray(byte[] send) throws IOException {
-        if (dos != null) {
-            dos.writeInt(send.length);
-            dos.write(send, 0, send.length);
-            dos.flush();
+        if (mDOS != null) {
+            mDOS.writeInt(send.length);
+            mDOS.write(send, 0, send.length);
+            mDOS.flush();
         }
     }
     boolean isConnected() {
@@ -48,28 +48,25 @@ public class FeatureStreamer extends Thread {
 
     void sendFeatures(int width, int height, byte[] send) {
         try {
-            if (dos != null) {
-                dos.writeInt(width);
-                dos.writeInt(height);
-                dos.write(send, 0, send.length);
-                dos.flush();
+            if (mDOS != null) {
+                mDOS.writeInt(width);
+                mDOS.writeInt(height);
+                mDOS.write(send, 0, send.length);
+                mDOS.flush();
             }
         } catch (IOException e) {
         }
     }
 
     void close() throws IOException {
-        if (dos != null) {
-            dos.close();
+        if (mDOS != null) {
+            mDOS.close();
         }
-        if (sock != null) {
-            sock.close();
+        if (mSocket != null) {
+            mSocket.close();
         }
         mIsConnected = false;
     }
-
-
-
 
 
 }

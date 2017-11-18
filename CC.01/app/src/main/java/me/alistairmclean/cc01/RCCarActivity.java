@@ -1,5 +1,6 @@
 package me.alistairmclean.cc01;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -48,6 +49,7 @@ import java.util.concurrent.Executors;
 public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
         Camera.PreviewCallback{
     private static final String APP_CLASS = "CC.01" ;
+    private static final String CLASS_TAG = "RC_CAR_ACTIVITY";
     private static final String TAG = "Video" ;
     private static int HOST_PORT = 6000;
     private static String HOST_IP = "192.168.1.100";
@@ -60,13 +62,10 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     private Camera.Size mPreviewSize;
     List<Camera.Size> mSupportedPreviewSizes;
     private SurfaceHolder mHolder = null;
-    private int position = 0;
-    private ProgressDialog progressDialog;
     private boolean isPreviewRunning = false;
     private byte[] pixels = null;
     private boolean mUsbConnected = false;
     private boolean mHostConnected = false;
-    private boolean mControllerConnected = false;
     private FeatureStreamer fs = new FeatureStreamer();
     private InputStreamReader mInputStreamReader;
     private OutputStreamWriter mOutputStream;
@@ -124,16 +123,6 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
         HOST_PORT = Integer.parseInt(mHostPortEditText.getText().toString());
     }
 
-    public void startConnectionToggle(View view) {
-        //TODO - fix this button functionality
-        HOST_IP = mHostIpEditText.getText().toString();
-        int port = Integer.parseInt(mHostPortEditText.getText().toString());
-        HOST_PORT = port;
-
-        new Thread(new ClientThread()).start();
-        mStatusText.setText(mStatusMessage);
-        }
-
 
     public String getHostIp() {
         return HOST_IP;
@@ -142,50 +131,25 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     public int getHostPort() {
         return HOST_PORT;
     }
-    class ClientThread implements Runnable {
 
-        @Override
-        public void run() {
-            try {
 
-                if (mHostConnected) {
-                    //IF CONNECTED, DISCONNECT
-                    mHostConnected = false;
-                    fs.close();
-                    Log.v("RCCARACIVITY!!!", "SOCKET DISCONNECTED!!!!!!!!!!!!!!");
-                    mStatusMessage = "Disconnected from server";
 
-                } else if (!mHostConnected) {
-                    //OTHERWISE CONNECT
-                    fs.connect(HOST_IP, HOST_PORT);
-                    wait(10);
-                    mInputStreamReader = new InputStreamReader(fs.getSocket().getInputStream());
-                    if (fs.isConnected()){
-                        Log.v("RCCARACIVITY!!!", "SOCKET CONNECTED!!!!!!!!!!!!!!");
-                        mStatusMessage = "Connected to server.";
-                    }
-                    mHostConnected = true;
-                }
-            //Read data and write to USB
-            int inputData = mInputStreamReader.read();
-                if(mUsbConnected)
-            writeToUsb(intToByteArray(inputData));
-
-            } catch (UnknownHostException e1) {
-                //mStatusText.setText("Unknown host, could not connect to server.");
-                e1.printStackTrace();
-            } catch(IOException e) {
-                e.printStackTrace();
-                Log.e(getClass().getName(), "Error connecting to server.");
-               // mStatusText.setText("Error connecting to server.");
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-        }
-
+    public void openSocket(){
+        //Create socket connection
+        fs.connect(HOST_IP,HOST_PORT);
     }
-    public static final byte[] intToByteArray(int value) {
+
+    public void closeSocket(){
+        final String TAG = "CloseSocket";
+        //Create socket connection
+        try {
+            fs.close();
+        } catch (IOException e) {
+            Log.v(TAG, "IO exception caught when trying to close connection");
+        }
+    }
+
+    public static byte[] intToByteArray(int value) {
         return new byte[] {
                 (byte)(value >>> 24),
                 (byte)(value >>> 16),
@@ -233,6 +197,7 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
         startActivityForResult(cameraIntent,VIDEO_REQUEST_CODE);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == VIDEO_REQUEST_CODE ){
@@ -257,11 +222,10 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
         if(folder.exists()) {
             folder.mkdir();
         }
-        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
+        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH_mm_ss");
         Date date = new Date();
         String fileName = dateFormat.format(date) + "_clip.mp4";
-        File videoFile = new File(folder, fileName);
-        return videoFile;
+        return new File(folder, fileName);
     }
 
 
@@ -346,30 +310,34 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     @Override
     public void onPreviewFrame(final byte[] data, Camera camera) {
         final String TAG = "ONPREVIEWFRAME: ";
-        Log.v(TAG, "CALLED");
+        //Log.v(TAG, "CALLED");
+
+        //If not connected to the host, do nothing.
         if(!mHostConnected)
             return;
+
         Camera.Parameters parameters = camera.getParameters();
         parameters.set("orientation","portrait");
         camera.setParameters(parameters);
         if (data.length >= mPreviewSize.width * mPreviewSize.height) {
-            // Create a new thread to decode to grayscale and send to server
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    decodeYUV420SPGrayscale(pixels, data, mPreviewSize.width,
-                            mPreviewSize.height);
-                    fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
 
-                }
-            });
+            // NOT SUCCESSFUL vvvvv
+            // Attempted to create a new thread to decode to grayscale and send to server
+      //      new Thread(new Runnable() {
+            //    @Override
+        //        public void run() {
+          //          synchronized (this) {
+                        decodeYUV420SPGrayscale(pixels, data, mPreviewSize.width,
+                                mPreviewSize.height);
+                        fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
+                    //}
+              //  }
+           // });
+            Log.d(TAG, "Sending Features to server.");
+            mStatusMessage = "Sending Features to server.";
+            mStatusText.setText(mStatusMessage);
+            Log.d(TAG, "Width = " + mPreviewSize.width + ", Height = " + mPreviewSize.height);
 
-            synchronized (this) {
-                Log.d(TAG, "Sending Features to server.");
-                mStatusMessage = "Sending Features to server.";
-                mStatusText.setText(mStatusMessage);
-                Log.d(TAG, "Width = " + mPreviewSize.width + ", Height = " + mPreviewSize.height);
-            }
         }
 
     }
@@ -438,6 +406,11 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
         super.onPause();
         unregisterReceiver(mUsbReceiver);
         unbindService(usbConnection);
+        if (mCamera != null) {
+            mCamera.stopPreview();
+            mCamera.release();
+            mCamera = null;
+        }
     }
 
     private void startService(Class<?> service, ServiceConnection serviceConnection, Bundle extras) {

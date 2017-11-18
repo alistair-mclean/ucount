@@ -28,14 +28,13 @@
             android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="64dp"
             android:ems="10"
             android:hint="4444"
             android:inputType="number"
             android:singleLine="true"
             android:text="6000"
             app:layout_constraintStart_toEndOf="@+id/host_port_text"
-            app:layout_constraintTop_toBottomOf="@+id/host_connection_toggle_button" />
+            tools:layout_editor_absoluteY="476dp" />
 
         <TextView
             android:id="@+id/host_ip_text"
@@ -63,13 +62,12 @@
             android:layout_width="146dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="116dp"
-            android:layout_marginTop="16dp"
             android:ems="10"
             android:hint="128.171.183.2"
             android:inputType="textShortMessage"
             android:text="192.168.1.100"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/host_connection_toggle_button" />
+            tools:layout_editor_absoluteY="428dp" />
 
         <VideoView
             android:id="@+id/video_feed"
@@ -83,23 +81,23 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <ToggleButton
-            android:id="@+id/host_connection_toggle_button"
+        <Button
+            android:id="@+id/connectDisconnectButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="364dp"
-            android:onClick="startConnectionToggle"
-            android:text="@string/toggle_button_host_connect"
-            android:textOff="@string/toggle_button_host_connect"
+            android:layout_marginTop="360dp"
+            android:text="Connect"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.501"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />;
+            app:layout_constraintTop_toTopOf="parent" /><![CDATA[
+
+        ;
             android:textOn="@string/toggle_button_host_disconnect"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+    ]]>
     </android.support.constraint.ConstraintLayout>
 </android.support.design.widget.CoordinatorLayout>
