@@ -11,15 +11,21 @@ import java.net.UnknownHostException;
  * File recreated on 11/3/2017.
  */
 
-public class FeatureStreamer {
+public class FeatureStreamer implements Runnable{
     private String mHOST_IP;
     private int mHOST_PORT;
-    private Socket mSocket;
-    private DataOutputStream mDOS;
+    private static Socket mSocket;
+    private static DataOutputStream mDOS;
     private boolean mIsConnected = false;
 
 
-    FeatureStreamer() {
+
+    FeatureStreamer(String addr, int port) {
+        if(addr != null)
+            mHOST_IP = addr;
+        if(mHOST_IP != null)
+            mHOST_PORT = port;
+
     }
 
     void connect(String addr, int port) {
@@ -67,6 +73,86 @@ public class FeatureStreamer {
         }
         mIsConnected = false;
     }
+    public void sendFeaturesToServer(byte[] rgb, byte[] yuv420sp,
+                                         int width, int height) {
+        Thread thread1 = new Thread(new DecodeAndSend(rgb,yuv420sp,width,height));
+
+    }
 
 
+
+    @Override
+    public void run() {
+        connect(mHOST_IP, mHOST_PORT);
+    }
+
+    //Decodes and sends to the server
+    static class DecodeAndSend implements Runnable {
+        private static byte[] RGB;
+        private static byte[] YUV420SP;
+        private static int WIDTH;
+        private static int HEIGHT;
+
+        public DecodeAndSend(byte[] rgb, byte[] yuv420sp,
+                       int width, int height){
+            RGB = new byte[rgb.length];
+            RGB = rgb;
+            YUV420SP = new byte[yuv420sp.length];
+            YUV420SP = yuv420sp;
+            WIDTH = width;
+            HEIGHT = height;
+        }
+        private static void decodeYUV420SPGrayscale(byte[] rgb, byte[] yuv420sp,
+                                                   int width, int height) {
+            final int frameSize = width * height;
+
+            for (int pix = 0; pix < frameSize; pix++) {
+                int pixVal = (0xff & ((int) yuv420sp[pix])) - 16;
+                if (pixVal < 0)
+                    pixVal = 0;
+                if (pixVal > 255)
+                    pixVal = 255;
+                rgb[pix] = (byte) pixVal;
+            }
+        }
+
+
+        @Override
+        public void run() {
+            decodeYUV420SPGrayscale(RGB,YUV420SP,WIDTH, HEIGHT);
+            //Start the
+
+        }
+    }
+
+    static class SendFeaturesToServer implements Runnable {
+        private static int WIDTH;
+        private static int HEIGHT;
+        private static byte[] SEND;
+        public SendFeaturesToServer(int width, int height, byte[] send){
+            WIDTH = width;
+            HEIGHT = height;
+            SEND = new byte[send.length];
+            SEND = send;
+        }
+
+        void sendFeatures(int width, int height, byte[] send) {
+            try {
+                if (mDOS != null) {
+                    mDOS.writeInt(width);
+                    mDOS.writeInt(height);
+                    mDOS.write(send, 0, send.length);
+                    mDOS.flush();
+                }
+            } catch (IOException e) {
+            }
+        }
+        @Override
+        public void run() {
+            while(mIsConnected) {
+                sendFeatures(WIDTH,HEIGHT,SEND);
+            }
+
+        }
+    }
 }

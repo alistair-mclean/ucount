@@ -23,6 +23,7 @@ import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.VideoView;
@@ -133,10 +134,26 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     }
 
 
+    public void toggleConnection(View view) {
+        Log.v("TOGGLECONNECTION", "CALLED");
+        Button button = (Button)this.findViewById(R.id.connectDisconnectButton);
+        if (fs.isConnected()) {
+            button.setText("Disconnect");
+            closeSocket();
+        }
+        else if (!fs.isConnected()) {
+            button.setText("Connect");
+            openSocket();
+        }
+    }
 
     public void openSocket(){
         //Create socket connection
-        fs.connect(HOST_IP,HOST_PORT);
+        fs.connect(HOST_IP, HOST_PORT);
+        if(fs.isConnected())
+            Log.v("OPENSOCKET", " SOCKET HAS OPENNED!!!");
+
+
     }
 
     public void closeSocket(){
@@ -329,7 +346,7 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
           //          synchronized (this) {
                         decodeYUV420SPGrayscale(pixels, data, mPreviewSize.width,
                                 mPreviewSize.height);
-                        fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
+                        //fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
                     //}
               //  }
            // });
