@@ -6,17 +6,13 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-/**
- * Written by David Singleton.
- * File recreated on 11/3/2017.
- */
 
 public class FeatureStreamer implements Runnable{
     private String mHOST_IP;
     private int mHOST_PORT;
     private static Socket mSocket;
     private static DataOutputStream mDOS;
-    private boolean mIsConnected = false;
+    private static boolean mIsConnected = false;
 
 
 
@@ -76,7 +72,7 @@ public class FeatureStreamer implements Runnable{
     public void sendFeaturesToServer(byte[] rgb, byte[] yuv420sp,
                                          int width, int height) {
         Thread thread1 = new Thread(new DecodeAndSend(rgb,yuv420sp,width,height));
-
+        thread1.start();
     }
 
 
@@ -84,6 +80,8 @@ public class FeatureStreamer implements Runnable{
     @Override
     public void run() {
         connect(mHOST_IP, mHOST_PORT);
+        //TODO - figure out how to send the data properly to the server.
+
     }
 
     //Decodes and sends to the server
@@ -121,7 +119,8 @@ public class FeatureStreamer implements Runnable{
         public void run() {
             decodeYUV420SPGrayscale(RGB,YUV420SP,WIDTH, HEIGHT);
             //Start the
-
+            Thread sendingThread = new Thread(new SendFeaturesToServer(WIDTH,HEIGHT, YUV420SP));
+            sendingThread.start();
         }
     }
 

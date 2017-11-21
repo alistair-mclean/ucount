@@ -67,11 +67,12 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     private byte[] pixels = null;
     private boolean mUsbConnected = false;
     private boolean mHostConnected = false;
-    private FeatureStreamer fs = new FeatureStreamer();
+    private FeatureStreamer fs;
     private InputStreamReader mInputStreamReader;
     private OutputStreamWriter mOutputStream;
     private static UsbService mUsbService;
     private TextView display;
+    private Thread fsThread;
     private static String mStatusMessage = "Enter in the IP and PORT of the HOST.";
     private EditText mHostIpEditText;
     private EditText mHostPortEditText;
@@ -137,22 +138,26 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
     public void toggleConnection(View view) {
         Log.v("TOGGLECONNECTION", "CALLED");
         Button button = (Button)this.findViewById(R.id.connectDisconnectButton);
-        if (fs.isConnected()) {
+        if (mHostConnected) {
             button.setText("Disconnect");
             closeSocket();
         }
-        else if (!fs.isConnected()) {
+        else if (!mHostConnected) {
             button.setText("Connect");
             openSocket();
         }
     }
 
     public void openSocket(){
+        HOST_IP = mHostIpEditText.getText().toString();
+        HOST_PORT = (Integer)Integer.parseInt(mHostPortEditText.getText().toString());
+        fs = new FeatureStreamer(HOST_IP, HOST_PORT);
+        fsThread = new Thread(fs);
+        fsThread.start();
         //Create socket connection
-        fs.connect(HOST_IP, HOST_PORT);
         if(fs.isConnected())
             Log.v("OPENSOCKET", " SOCKET HAS OPENNED!!!");
-
+            mHostConnected = true;
 
     }
 
@@ -344,8 +349,11 @@ public class RCCarActivity extends Activity  implements SurfaceHolder.Callback,
             //    @Override
         //        public void run() {
           //          synchronized (this) {
-                        decodeYUV420SPGrayscale(pixels, data, mPreviewSize.width,
-                                mPreviewSize.height);
+                        fs.sendFeaturesToServer(pixels, data, mPreviewSize.width,
+                                        mPreviewSize.height);
+                        //decodeYUV420SPGrayscale(pixels, data, mPreviewSize.width,
+                        //        mPreviewSize.height);
+                        //fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
                         //fs.sendFeatures(mPreviewSize.width, mPreviewSize.height, pixels);
                     //}
               //  }
