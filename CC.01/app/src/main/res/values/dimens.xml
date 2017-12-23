@@ -1,8 +1,0 @@
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="directional_button_margin">8dp</dimen>
-    <dimen name="directional_button_height">80dp</dimen>
-    <dimen name="directional_button_width">80dp</dimen>
-    <dimen name="directional_button_container_height">80dp</dimen>
-    <dimen name="button_connect_to_host_height">60dp</dimen>
-</resources>
