@@ -18,8 +18,6 @@ public class PipeMapManager : MonoBehaviour {
     List<PipeSection> pipeSegments = new List<PipeSection>();
     pipeSegments.Add(pipesection1);
     pipeSegments.Add(pipesection2);
-    Pipe testPipe = new Pipe("Alistair McLean", "Wood", pipeSegments);
-    testPipe.DisplayPipe();
   }
 
 

@@ -42,6 +42,8 @@ GameObject:
   - component: {fileID: 124035585576760204}
   - component: {fileID: 81498997569069994}
   - component: {fileID: 114070644390215198}
+  - component: {fileID: 114365314316604680}
+  - component: {fileID: 114831667613260332}
   m_Layer: 0
   m_Name: ARCam
   m_TagString: MainCamera
@@ -56,7 +58,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1975854289560242}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 0, y: 2.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4614196550374770}
@@ -71,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 1711954711304226}
   m_LocalRotation: {x: 0, y: 0.7071068, z: -0.7071068, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 8}
-  m_LocalScale: {x: 1.43, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 4571629949150196}
   m_RootOrder: 0
@@ -191,6 +193,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   webCameraPlane: {fileID: 1711954711304226}
+--- !u!114 &114365314316604680
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975854289560242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9545cac3cf4204293ceb02e4a293de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WRLDMAP: {fileID: 0}
+  LocationServiceStatusImage: {fileID: 0}
+--- !u!114 &114831667613260332
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1975854289560242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad9545cac3cf4204293ceb02e4a293de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WRLDMAP: {fileID: 0}
+  LocationServiceStatusImage: {fileID: 0}
 --- !u!124 &124035585576760204
 Behaviour:
   m_ObjectHideFlags: 1

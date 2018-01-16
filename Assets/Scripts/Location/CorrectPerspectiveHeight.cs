@@ -1,52 +1,53 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Wrld;
+using Wrld.Space;
 
+/// <summary>
+/// CorrectPerspectiveHeight.cs
+/// Corrects the position of the perspective with respect to the WRLD map.
+///
+/// SHOULD PROBABLY BE RENAMED AT SOME POINT
+/// </summary>
 
 
 public class CorrectPerspectiveHeight : MonoBehaviour {
   // Public
-  public WrldMap WRLDMAP;
-  public static float HEIGHT = 0.1f;
+  public float HEIGHT = 10.0f;
+  public float DELAYTIME = 2.0f;
+  public Transform MapCameraPosition;
+  public GeographicTransform coordinateFrame;
 
   // Private
-  private Vector3 m_position;
-  private Vector2 m_gpsCoordinates;
-  private Ray m_ray; //This ray looks downward.
+  private static LatLongAltitude _latLongAlt = LatLongAltitude.FromDegrees(40.025147, -105.285932, 1646);
+  private static LatLong _latLong = LatLong.FromDegrees(40.025147, -105.285932);
+  private Ray _ray;
 
   private void Start()
   {
-    m_position = transform.position;
-    m_ray.origin = m_position;
-    m_ray.direction = Vector3.down;
+    Api.Instance.GeographicApi.RegisterGeographicTransform(coordinateFrame);
   }
 
-  void Update () {
-    RaycastHit hit;
 
-    //Ensure that the user is above the map, at the specified height.
-    if (Physics.Raycast(m_ray, out hit))
+  private IEnumerator MoveObjectToLatLongAlt(LatLong newLatLong, float alt)
+  {
+    MapCameraPosition.position = new Vector3(0.0f, HEIGHT, 0.0f);
+
+    while(true)
     {
-      print("The map is below the user.");
-
-      if (hit.distance > HEIGHT)
-      {
-        // WE ARE TOO FAR ABOVE THE MAP!
-        // Look for the map, it's terrain, and locate the proper position to assign the user to depending upon their GPS location.
-      }
+      yield return new WaitForSeconds(DELAYTIME);
+      coordinateFrame.SetPosition(newLatLong);
+      transform.position = new Vector3(transform.position.x, alt, transform.position.y); // Hack to fix the altitude
     }
 
   }
 
-  Vector3 LocatePositionOnMap(Vector2 currentLocation, WrldMap currentMap)
+  //This method is used when a button is pressed to send the user's location.
+  public void Relocate(double newLat, double newLong, float newAlt)
   {
-    // This is the method we will use to evaluate where we should place the user on the WRLD map, and therefore the Unity world space.
-    Vector3 positionOnWrldMap = new Vector3(0, 0, 0);
-
-
-
-    return positionOnWrldMap;
+    _latLong = LatLong.FromDegrees(newLat, newLong);
+    StartCoroutine(MoveObjectToLatLongAlt(_latLong, newAlt));
   }
-
-
 }

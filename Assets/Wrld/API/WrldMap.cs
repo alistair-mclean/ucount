@@ -28,8 +28,8 @@ public class WrldMap : MonoBehaviour
 
     [Tooltip("The distance of the camera from the interest point (meters)")]
     [SerializeField]
-    [Range(300.0f, 7000000.0f)]
-    private double m_distanceToInterest = 1781.0;
+    [Range(1.0f, 7000000.0f)]
+    private double m_distanceToInterest = 1.0; //1781.0 - default
 
     [Tooltip("Direction you are facing")]
     [SerializeField]

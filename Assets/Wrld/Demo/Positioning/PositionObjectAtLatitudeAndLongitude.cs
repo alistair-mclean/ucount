@@ -5,9 +5,8 @@ using Wrld.Space;
 
 public class PositionObjectAtLatitudeAndLongitude: MonoBehaviour
 {
-    static LatLong pointA = LatLong.FromDegrees(37.783372, -122.400834);
-    static LatLong pointB = LatLong.FromDegrees(37.784560, -122.402092);
-    
+    static LatLong pointA = LatLong.FromDegrees(40.025147, -105.285932);
+
     public GeographicTransform coordinateFrame;
     public Transform box;
 
@@ -26,8 +25,6 @@ public class PositionObjectAtLatitudeAndLongitude: MonoBehaviour
         {
             yield return new WaitForSeconds(2.0f);
             coordinateFrame.SetPosition(pointA);
-            yield return new WaitForSeconds(2.0f);
-            coordinateFrame.SetPosition(pointB);
         }
     }
 
