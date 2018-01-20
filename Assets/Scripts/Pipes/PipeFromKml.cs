@@ -6,9 +6,9 @@ using System.Text;
 using UnityEngine;
 using System.Xml.Linq;
 using System.Linq;
-using SharpKml;
-using SharpKml.Engine;
-using SharpKml.Dom;
+//using SharpKml;
+//using SharpKml.Engine;
+//using SharpKml.Dom;
 
 public class PipeFromKml : MonoBehaviour {
   // This will read a Kml file into memory.
@@ -16,19 +16,19 @@ public class PipeFromKml : MonoBehaviour {
 
   private void Start()
   {
-   
-    KmlFile file = KmlFile.Load("YourKmlFile.kml");
+
+    //KmlFile file = KmlFile.Load("YourKmlFile.kml");
 
 
-    // It's good practice for the root element of the file to be a Kml element, though not compulsary
-    Kml kml = file.Root as Kml;
-    if (kml != null)
-    {
-      foreach (var placemark in kml.Flatten().OfType<Placemark>())
-      {
-          print(placemark.Name);
-      }
-    }
+    ////// It's good practice for the root element of the file to be a Kml element, though not compulsary
+    //Kml kml = file.Root as Kml;
+    //if (kml != null)
+    //{
+    //  foreach (var placemark in kml.Flatten().OfType<Placemark>())
+    //  {
+    //    print(placemark.Name);
+    //  }
+    //}
 
   }
   // Following method is used to retrive the relative path as device platform

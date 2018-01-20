@@ -21,8 +21,8 @@ public class CorrectPerspectiveHeight : MonoBehaviour {
   public GeographicTransform coordinateFrame;
 
   // Private
-  private static LatLongAltitude _latLongAlt = LatLongAltitude.FromDegrees(40.025147, -105.285932, 1646);
-  private static LatLong _latLong = LatLong.FromDegrees(40.025147, -105.285932);
+  private static LatLongAltitude _latLongAlt = LatLongAltitude.FromDegrees(40.025147, -105.285932, 1646); //Hardcoded initial value
+  private static LatLong _latLong = LatLong.FromDegrees(40.025147, -105.285932); //Hardcoded initial value
   private Ray _ray;
 
   private void Start()
