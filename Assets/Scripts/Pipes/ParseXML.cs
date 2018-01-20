@@ -6,48 +6,115 @@ using System.IO;
 using System.Text;
 using System;
 using System.Xml.Linq;
-
-
-
+using System.Linq;
 
 public class ParseXML : MonoBehaviour
 {
 
-  public TextMesh fileDataTextbox;
-  private string path;
-  private string fileInfo;
-  private XmlDocument xmlDoc;
-  private WWW www;
-  private TextAsset textXml;
-  private string fileName;
+  public TextMesh _fileDataTextbox;
+  private string _path;
+  private string _fileInfo;
+  private XmlDocument _xmlDoc;
+  private WWW _www;
+  private TextAsset _textXml;
+  private string _fileName;
   private string _xmlFile;
 
+  /// <summary>
+  /// KML FILES CAN BE IMPORTED THROUGH XML. 
+  /// Currently reading them as strings. I was unable to get them working with SharpKml. Hopefully this can suffice. 
+  /// </summary>
+  struct PlaceMark
+  {
+    public string Name  ;
+    public string Description;
+  };
 
   void Awake()
   {
-    fileName = "Stormwater_Storm_Sewers.kml"; 
-    fileDataTextbox.text = "";
+    _fileName = "Stormwater__Storm_Sewers.kml"; 
+    //fileName = "books.xml"; //TEST XML FILE 
   }
 
   void Start()
   {
     XNamespace ns = "http://earth.google.com/kml/2.2";
-    loadXMLFromAssest();
-    print(GetXMLAsString(xmlDoc));
+    LoadXMLFromAssets();
+    PrintXmlFileFromAssets();
+    //PrintRequestedElements("PlaceMark");
+    //readXml();
   }
   
-  // Following method load xml file from resouces folder under Assets
-  private void loadXMLFromAssest()
+  private void PrintXmlFileFromAssets()
   {
-    xmlDoc = new XmlDocument();
-    if (System.IO.File.Exists(getPath()))
+    StringBuilder output = new StringBuilder();
+
+    using (XmlReader reader = XmlReader.Create(new StringReader(GetXMLAsString(_xmlDoc))))
     {
-      xmlDoc.LoadXml(System.IO.File.ReadAllText(getPath()));
+      XmlWriterSettings ws = new XmlWriterSettings();
+      ws.Indent = true;
+      using (XmlWriter writer = XmlWriter.Create(output, ws))
+      {
+
+        // Parse the file and display each of the nodes.
+        while (reader.Read())
+        {
+          print("Reader node position: " + reader.ReadContentAsString());
+          switch (reader.NodeType)
+          {
+            case XmlNodeType.Element:
+              writer.WriteStartElement(reader.Name);
+              break;
+            case XmlNodeType.Text:
+              writer.WriteString(reader.Value);
+              break;
+            case XmlNodeType.XmlDeclaration:
+            case XmlNodeType.ProcessingInstruction:
+              writer.WriteProcessingInstruction(reader.Name, reader.Value);
+              break;
+            case XmlNodeType.Comment:
+              writer.WriteComment(reader.Value);
+              break;
+            case XmlNodeType.EndElement:
+              writer.WriteFullEndElement();
+              break;
+          }
+        }
+
+      }
+    }
+    print(output.ToString());
+  }
+
+  private void PrintRequestedElements(string element)
+  {
+    StringBuilder output = new StringBuilder();
+    using (XmlReader reader = XmlReader.Create(new StringReader(GetXMLAsString(_xmlDoc) )))
+    {
+      reader.ReadToFollowing(element);
+      reader.ReadInnerXml();
+      string value = reader.Value;
+      output.AppendLine("The value: " + value);
+
+      reader.ReadToFollowing("title");
+      output.AppendLine("Content of the title element: " + reader.ReadElementContentAsString());
+    }
+  }
+
+  // Following method loads an xml file from resouces folder under Assets
+  private void LoadXMLFromAssets()
+  {
+    _xmlDoc = new XmlDocument();
+    if (System.IO.File.Exists(GetPath()))
+    {
+      _xmlDoc.LoadXml(System.IO.File.ReadAllText(GetPath()));
     }
     else
     {
-      textXml = (TextAsset)Resources.Load(fileName, typeof(TextAsset));
-      xmlDoc.LoadXml(textXml.text);
+      print("FILE DIDN't EXIST");
+      _textXml = (TextAsset)Resources.Load(_fileName, typeof(TextAsset));
+      _xmlDoc.LoadXml(_textXml.text);
+      
     }
   }
 
@@ -58,27 +125,19 @@ public class ParseXML : MonoBehaviour
 
 
   // Following method reads the xml file and display its content
-  private void readXml()
+  private void ReadXml()
   {
-    int count = 0;
-    print("READING ");
-    foreach (XmlElement node in xmlDoc)
-    {
-      print("Count = " + count);
-      print(node.Name);
-      print(node.Value);
-      count++;
-    }
+    
 
   }
 
 
 
   // Following method is used to retrive the relative path as device platform
-  private string getPath()
+  private string GetPath()
   {
 #if UNITY_EDITOR
-        return Application.dataPath +"/Resources/"+fileName;
+        return Application.dataPath +"/Resources/"+_fileName;
 #elif UNITY_ANDROID
         return Application.persistentDataPath+fileName;
 #elif UNITY_IPHONE

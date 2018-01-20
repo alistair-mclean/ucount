@@ -856,6 +856,10 @@ Prefab:
       propertyPath: HEIGHT
       value: 40
       objectReference: {fileID: 0}
+    - target: {fileID: 1417454274619886, guid: 796a62c454bbda34397d0bd062cfe240, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 796a62c454bbda34397d0bd062cfe240, type: 2}
   m_IsPrefabParent: 0
@@ -1301,12 +1305,12 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1963890311}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7386433b72070a0469c342d413bed8b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileDataTextbox: {fileID: 1687925459}
+  _fileDataTextbox: {fileID: 0}
 --- !u!4 &1963890313
 Transform:
   m_ObjectHideFlags: 0

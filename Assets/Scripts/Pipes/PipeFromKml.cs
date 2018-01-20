@@ -9,14 +9,11 @@ using System.Linq;
 //using SharpKml;
 //using SharpKml.Engine;
 //using SharpKml.Dom;
-using SharpKml;
-using SharpKml.Engine;
-using SharpKml.Dom;
 
 public class PipeFromKml : MonoBehaviour {
   // This will read a Kml file into memory.
 
-  private KmlFile _file;
+  //private KmlFile _file;
 
   private void Start()
   {
