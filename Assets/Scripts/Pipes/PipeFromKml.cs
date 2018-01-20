@@ -9,14 +9,19 @@ using System.Linq;
 //using SharpKml;
 //using SharpKml.Engine;
 //using SharpKml.Dom;
+using SharpKml;
+using SharpKml.Engine;
+using SharpKml.Dom;
 
 public class PipeFromKml : MonoBehaviour {
   // This will read a Kml file into memory.
 
+  private KmlFile _file;
 
   private void Start()
   {
 
+    //_file = KmlFile.Load("Stormwater__Storm_Sewers.kml"); //UNITY DOESN'T LIKE THIS LINE....
     //KmlFile file = KmlFile.Load("YourKmlFile.kml");
 
 
