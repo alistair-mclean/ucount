@@ -53,6 +53,10 @@ public class ParseXML : MonoBehaviour
     //readXml();
   }
   
+
+  /// <summary>
+  /// This method currently prints to the console log. This method will eventually be renamed to ParseXmlFileFromAssets. 
+  /// </summary>
   private void PrintXmlFileFromAssets()
   {
     StringBuilder output = new StringBuilder();
@@ -71,6 +75,7 @@ public class ParseXML : MonoBehaviour
           String tempDescription = "";
           String tempSimpleData = "";
           Vector2 tempCoordinate = new Vector2(0f, 0f);
+          bool parseMe = false;
 
           List<String> tempExtendedData = new List<String>();
           List<Vector2> tempCoordList = new List<Vector2>();
@@ -79,33 +84,38 @@ public class ParseXML : MonoBehaviour
           {
             case XmlNodeType.Element:
               writer.WriteStartElement(reader.Name);
-              //This gets the name, like placemark, extended data, simpledata, etc. 
+              //This gets the name, like Placemark, coordinates,  ExtendedData, SimpleData, etc. 
 
-              if(reader.Name == "Placemark")
+             if (reader.Name == "coordinates" && reader.HasAttributes)
               {
-                _pipeCount++;
-                //print("FOUND!!!!!!!!!!!!!!!!! "+ reader.Name + " value = " + reader.Value); //DEBUG
+                print("reader.getAttrib = " + reader.GetAttribute("coordinates")); // DEBUG
+                reader.GetAttribute("coordinates");
               }
-              print(reader.Name); // DEBUG
+              //TO-DO: Make a condition that checks if the reader.Name is coordinates
+              // then go to the next XmlNodeType.Text and parse the reader.Value
+              
+
+              //print(reader.Name); // DEBUG
               break;
             case XmlNodeType.Text:
-              // What does this retreive? 
-              // It retreives the value in between the brackets. 
+              // This retreives the value in between the brackets. 
               writer.WriteString(reader.Value);
-              print(reader.Value); //DEBUG
+
+              //print(reader.Value); //DEBUG
               break;
             case XmlNodeType.XmlDeclaration:
+              break;
             case XmlNodeType.ProcessingInstruction:
               writer.WriteProcessingInstruction(reader.Name, reader.Value);
               break;
             case XmlNodeType.Comment:
               writer.WriteComment(reader.Value);
-              print(reader.Value);//DEBUG
+              //print(reader.Value);//DEBUG
               break;
             case XmlNodeType.EndElement:
               if(reader.Name == "Placemark")
               {
-                print("Ending placemark" + _pipeCount + "."); //DEBUG
+                //print("Ending placemark" + _pipeCount + "."); //DEBUG
 
               }
               writer.WriteFullEndElement();
@@ -116,8 +126,59 @@ public class ParseXML : MonoBehaviour
       }
     }
     print(output.ToString()); // DEBUG
-    print("Found " + _pipeCount + " pipes."); // DEBUG
   }
+
+  /// <summary>
+  /// ParseCoordinates.cs
+  /// This method parses the string of corrdinates, and returns a list of interpreted coordinates.
+  /// </summary>
+  /// <param name="coordinateString"></param>
+  /// <returns> A list of Lat,Long coordinate pairs. </returns>
+  private List<Vector2> ParseCoordinates(string coordinateString)
+  {
+    print("PARSING " + coordinateString);
+    string tempVal = "";
+    bool tempHasXValue = false;
+    bool tempHasYValue = false;
+    Vector2 tempCoord = new Vector2(301f,301f); // defaulting to 301 so you can easily check if the value has been changed.
+    List<Vector2> tempCoordList = new List<Vector2>();
+
+      //Super ghetto looping. Might not be a good idea to keep around in the long run 
+      // PLEASE REFACTOR ME
+    foreach(char c in coordinateString)
+    {
+      if (c != ',')
+        tempVal += c;
+      else if(c == ',')
+      {
+        if (!tempHasXValue) { 
+          tempCoord.x = float.Parse(tempVal) ; // Is the tempcoord 
+          tempHasXValue = true;
+          tempVal = ""; // Clear the buffer
+        }
+      }
+      else if (c == ' ')
+      {
+        if (tempHasXValue && !tempHasYValue)
+        {
+          tempCoord.y = float.Parse(tempVal);
+          tempHasYValue = true;
+          tempCoordList.Add(tempCoord);
+          tempCoord.x = 301f;
+          tempCoord.y = 301f;
+          tempVal = "";
+        }
+      }
+
+      
+    }
+    foreach (var item in tempCoordList)
+    {
+      print("Coordinates: " + item.x + ", " + item.y);
+    }
+    return tempCoordList;
+  }
+
 
   private void PrintRequestedElements(string element)
   {
