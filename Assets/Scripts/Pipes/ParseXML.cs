@@ -75,7 +75,6 @@ public class ParseXML : MonoBehaviour
           String tempDescription = "";
           String tempSimpleData = "";
           Vector2 tempCoordinate = new Vector2(0f, 0f);
-          bool parseMe = false;
 
           List<String> tempExtendedData = new List<String>();
           List<Vector2> tempCoordList = new List<Vector2>();
@@ -144,10 +143,10 @@ public class ParseXML : MonoBehaviour
     List<Vector2> tempCoordList = new List<Vector2>();
 
       //Super ghetto looping. Might not be a good idea to keep around in the long run 
-      // PLEASE REFACTOR ME
+      // PLEASE REFACTOR ME 
     foreach(char c in coordinateString)
     {
-      if (c != ',')
+      if (c != ',') // waht - I should improve this logic
         tempVal += c;
       else if(c == ',')
       {
@@ -172,10 +171,13 @@ public class ParseXML : MonoBehaviour
 
       
     }
+    // DEBUG LOOP
+    /*
     foreach (var item in tempCoordList)
     {
       print("Coordinates: " + item.x + ", " + item.y);
     }
+    */
     return tempCoordList;
   }
 
