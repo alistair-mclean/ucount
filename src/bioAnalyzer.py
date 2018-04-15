@@ -9,7 +9,8 @@ from pathlib import Path
 import cv2
 import datetime
 import os
-
+from src.preProcessor import PreProcessor
+from src.tester import tester
 class organism():
 	def __init__(self, id):
 		self.id = id
@@ -33,11 +34,10 @@ class bioAnalyzer():
 	def analyzeOrganism(self, organismName, sizeRange, colorRange): # NEW METHOD
 		hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 		self.size = sizeRange
-		print('colorrange[0][1]')
-		print(colorRange[0][1])
 		self.colorRange = [np.array(colorRange[0]), np.array(colorRange[1])]
 		self.mask = cv2.inRange(hsv, self.colorRange[0], self.colorRange[1])
 		self.result = cv2.bitwise_and(self.img, self.img, mask=self.mask)
+		PreProcessor().test(self.result)
 		self.countSpecies(self.mask)
 		self.OutputResults(organismName) # debug	
 		self.SaveResults(organismName)
@@ -61,7 +61,7 @@ class bioAnalyzer():
 		self.pxCount = pxCount
 		self.popRange = [int(pxCount / self.size[0]), int(pxCount / self.size[1])]
 		if self.pxCount > 0:
-			self.coverage = self.envArea / self.pxCount * 100.0
+			self.coverage =  self.pxCount/ self.envArea * 100.0
 
 	def test(self): # NEW METHOD
 
@@ -96,7 +96,7 @@ class bioAnalyzer():
 
 	def SaveResults(self, organismName): # NEW METHOD
 		#Get the date for the new directory
-		date = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+		date = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
 		prettyDate = datetime.datetime.now().strftime("%Y-%m-%d at %H:%M:%S")
 		try:
 			os.stat('results/' + date)
@@ -106,9 +106,6 @@ class bioAnalyzer():
 		# Write to file
 		filename = 'results/' + date + "/" + organismName + ".txt"
 		f = open(filename, 'w')
-		f.write('-----------------------------------------------------------------------\n')
-		f.write('                               BioAnalyzer                             \n')
-		f.write('                        Author: Alistair McLean                        \n')
 		f.write('-----------------------------------------------------------------------\n')
 		f.write(' Source file: {}\n'.format(self.filename))
 		f.write(' Organism: {}\n'.format(organismName))

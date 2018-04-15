@@ -1,0 +1,10 @@
+-----------------------------------------------------------------------
+ Source file: C:\Users\alist\Documents\Practice\Python\bioCounter\samples\Mix_Well1_3Teflon_new.tif
+ Organism: Ecoli
+=============================== RESULTS ===============================
+ Area of image: 624100 pixels.
+ Population range of Ecoli within 0 and 0 organisms.
+ Size Range: [ 1px , 2px ]
+ Based on the count of : 0 pixels resulting from the given thresholds: [ 14 255 102] - [ 12 255 153]. 
+ Percentage of area covered by Ecoli is: 0.0%
+ Recorded at : 2018-04-14 at 21:03:40

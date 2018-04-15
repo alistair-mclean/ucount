@@ -5,10 +5,10 @@
 # user to control which files they wish to analyze
 
 # TODO  
-# - Disable Analyze until all settings are set
 # - Improve the color selection 
 #  --> Maybe a zoomed in view where the mouse is hovering over
 # - 
+# -  
 
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
@@ -43,11 +43,10 @@ class LoadDialog(FloatLayout):
 
 class Root(FloatLayout):
 	loadfile = ObjectProperty(None)
-	loadString = "Select the file you wish to analyze."
+	loadString = "Press Load to select a file you wish to analyze."
 	
 
 	def startup(self):
-		pass
 		self.hasLowColor = False # Figure out better logic for this
 		self.hasHighColor = False # Figure out better logic for this
 	
@@ -60,6 +59,22 @@ class Root(FloatLayout):
 		self._popup = Popup(title="Load file", content=content,
 							size_hint=(0.9,0.9))
 		self._popup.open()
+
+	def colorPicker(self):
+		# When the button is pressed activate this widget
+	    clr_picker = ColorPicker()
+	    # Add widget to the Analyzer pane. 
+	    #self.ids.analyze_tab.add_widget(clr_picker)
+
+	    # To monitor changes, we can bind to color property changes
+
+	    clr_picker.bind(color=self.on_color)		
+		
+	def on_color(instance, value):
+	        print ("RGBA = ", str(value))  #  or instance.color
+	        print ("HSV = ", str(instance.hsv))
+	        print ("HEX = ", str(instance.hex_color))
+#	    	return instance.hsv
 
 	def load(self,filepath, filename):
 		self.filepath = filepath
@@ -95,56 +110,112 @@ class Root(FloatLayout):
 		self.loadString = str('Analyzing {} '.format(fname))
 		self.ids.load_text.text = self.loadString
 		self.analyzer.analyzeOrganism(organismName, sizeRange, colorRange)
-		print(colorRange) # debug
 		self.loadString = str('Finished analyzing {}\n'.format(fname) +
-							  'Results saved in  /results\n' + # Maybe add the ability to have a setting for a custom directory 
 							  'Select a new file, or analyze again with new settings.')
 		self.ids.load_text.text = self.loadString
 
 	def selectLowColor(self):
 		self.lowColor = self.selectColor()
-		# TODO - BUTTON COLOR CHANGE
-		self.ids.low_color.background_color.hsv = (self.lowColor[2] / 255, self.lowColor[1] / 255, self.lowColor[0] / 255, 1)
+		if self.loc:
+			kivyColor = self.img[self.loc[-1][0],self.loc[-1][1]]
+			kivyColor = (kivyColor[2] / 255, kivyColor[1] / 255, kivyColor[0] / 255, 1) 
+			self.ids.low_color.background_color = kivyColor 
 		
 	def selectHighColor(self):
 		self.highColor = self.selectColor()
-		# TODO - BUTTON COLOR CHANGE
-		self.ids.high_color.background_color.hsv = (self.highColor[2] / 255, self.highColor[1] / 255, self.highColor[0] / 255, 1)
-		
+		if self.loc:
+			kivyColor = self.img[self.loc[-1][0],self.loc[-1][1]]
+			kivyColor = (kivyColor[2] / 255, kivyColor[1] / 255, kivyColor[0] / 255, 1)
+			self.ids.high_color.background_color = kivyColor
+
+
+	## DEBUG ##
 	def test(self):
 		self.analyzer = bioAnalyzer(self.filename[0])
 		l_red = np.array([0, 97, 30]) # THESE STILL NEED MASSAGING
 		u_red = np.array([10, 255, 255]) # THESE STILL NEED MASSAGING
 		size = [5, 20]
 		color = [l_red, u_red]
-		organism = "herpaderp"
+		organism = "herpaderp" 
 		self.analyzer.analyzeOrganism(organism, size, color)
 
-
 	def selectColor(self):
-		img = cv2.imread(self.filename[0])
-		hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HLS_FULL)
+		self.img = cv2.imread(self.filename[0])
+		hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 		self.colors = []
 		self.loc = []
-		cv2.imshow('frame', img)
 		while True:
-			if self.colors:
-				cv2.putText(img, str(self.colors[-1]), (10, 50), cv2.FONT_HERSHEY_PLAIN, 2, (255, 255, 255), 2)
-			cv2.setMouseCallback('frame', self.on_mouse_click, hsv)
+			cv2.imshow('frame', self.img)
+			cv2.setMouseCallback('frame', self.on_mouse_click, self.img)
 			if cv2.waitKey(0):
 				break
 		cv2.destroyAllWindows()
-		if self.colors:
-			return self.colors[-1]
+		if self.loc:
+			return hsv[self.loc[-1][0], self.loc[-1][1]]
+#		if self.colors:
+#			return self.colors[-1]
 		else: 
 			return None
 
 
 	def on_mouse_click (self, event, x, y, flags, frame):
 		if event == cv2.EVENT_LBUTTONUP:
-			self.colors.append(frame[y,x].tolist())
+#			self.colors.append(frame[y,x].tolist())
+			self.loc.append([y,x])
+		elif event == cv2.EVENT_MOUSEMOVE:
+			self.displayZoomedBoxWithIcon(x,y,frame,4)
+			
+		
+	def displayZoomedBoxWithIcon(self, x, y, frame, zoom=4):
+		height, width = frame.shape[:2]
+		verticalPadding = int(0.1 * height)
+		horizontalPadding = int(0.1 * width)
+		windowSize = 30
+		# Check if the x and y are greater than a certain percent
+		# And auto position the display
+		# Crop the frame
+		crop = frame[(y - windowSize):(y + windowSize), 
+					 (x - windowSize):(x + windowSize)]
+		cHeight, cWidth = crop.shape[:2]
+		# Enlarge the croppage 
+		res = cv2.resize(crop,(zoom*cWidth, zoom*cHeight), interpolation = cv2.INTER_CUBIC)
+		hsv = cv2.cvtColor(res, cv2.COLOR_BGR2HSV)
+		res = self.drawCrosshair(res,50)
 
-	def on_mouse_hover (self, event, x, y, flags, frame):
+		px = hsv[int(cHeight/2), int(cWidth/2)]
+		
+		# Display update text on zoom box
+		# - Location, Color: 
+		message = str('Location:({},{}) HSV: {:2}'.format(x,y,str(px)))
+		font = cv2.FONT_HERSHEY_SIMPLEX
+		bottomLeftCornerOfText = (10,100)
+		fontScale = 1
+		fontColor = (255,255,255)
+		lineType = 2
+#		cv2.putText(res, message, bottomLeftCornerOfText, fontScale, fontColor, lineType)
+
+		# TODO - figure out a way to put this on the img. 
+		cv2.imshow('zoom', res)
+		#return res
+
+
+	def drawCrosshair(self, frame, lineLength):
+		res = frame
+		rHeight, rWidth = res.shape[:2]
+		rHalfH = int(rHeight / 2)
+		rHalfW = int(rWidth/ 2)
+
+		#Black outline
+		res = cv2.line(res, (rHalfH - lineLength, rHalfW), (rHalfH + lineLength, rHalfW), (0,0,0), 4)
+		res = cv2.line(res, (rHalfH, rHalfW - lineLength), (rHalfH, rHalfW + lineLength), (0,0,0), 4)
+		
+		#White infil
+		res = cv2.line(res, (rHalfH - lineLength, rHalfW), (rHalfH + lineLength, rHalfW), (255,255,255), 2)
+		res = cv2.line(res, (rHalfH, rHalfW - lineLength), (rHalfH, rHalfW + lineLength), (255,255,255), 2)
+		res[rHalfW-2:rHalfW+2, rHalfH-2:rHalfH+2] = frame[rHalfW-2:rHalfW+2, rHalfH-2:rHalfH+2]
+		return res
+
+	def on_mouse_move (self, event, x, y, flags, frame):
 		# Create a rectangle which displays 
 		# a local zoomed portion of the 
 		# original image, near the mouse position
@@ -154,7 +225,8 @@ class Root(FloatLayout):
 			
 
 class BioFrame(App):
-	#pass
+	def build(self):
+		self.title = 'BioCounter v0.4a'
 	Root().startup()
 
 Factory.register('Root', cls=Root)

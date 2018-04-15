@@ -1,0 +1,10 @@
+-----------------------------------------------------------------------
+ Source file: C:\Users\alist\Documents\Practice\Python\bioCounter\samples\Mix_Well1_2Steel_new.tif
+ Organism: NewOrganism
+=============================== RESULTS ===============================
+ Area of image: 624100 pixels.
+ Population range of NewOrganism within 384 and 76 organisms.
+ Size Range: [ 4px , 20px ]
+ Based on the count of : 1537 pixels resulting from the given thresholds: [  0 255  46] - [  0 255 148]. 
+ Percentage of area covered by NewOrganism is: 0.2462746354750841%
+ Recorded at : 2018-04-14 at 23:13:41
