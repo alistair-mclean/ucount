@@ -83,12 +83,13 @@ class bioAnalyzer():
 
 	def OutputResults(self, organismName): # NEW METHOD
 		# Print out the results to the console
+		prettyDate = datetime.datetime.now().strftime("%Y-%m-%d at %H:%M:%S")
 		print('-----------------------------------------------------------------------')
 		print('                               BioAnalyzer                             ')
-		print('                        Author: Alistair McLean                        ')
 		print('-----------------------------------------------------------------------')
 		print(' Source file: {}'.format(self.filename))
 		print(' Organism: {}'.format(organismName))
+		print(' Date: {}'.format(prettyDate))
 		# TODO - PRINT THE THRESHOLDS
 		print('=============================== RESULTS ===============================')
 		print(' Area of image: {} pixels.'.format(self.envArea))
@@ -96,6 +97,7 @@ class bioAnalyzer():
 		print(' Size Range: [ {}px , {}px ]'.format(self.size[0], self.size[1]))
 		print(' Based on the count of : {} pixels from the given thresholds: {} - {}.'.format(self.pxCount, self.colorRange[0], self.colorRange[1]))
 		print(' Percentage of area covered by {} is: {}%'.format(organismName, self.coverage))
+		print('-----------------------------------------------------------------------\n')
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
 

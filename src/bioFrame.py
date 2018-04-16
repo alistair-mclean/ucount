@@ -167,8 +167,8 @@ class Root(FloatLayout):
 		self.colors = []
 		self.loc = []
 		while True:
-			cv2.imshow('frame', self.img)
-			cv2.setMouseCallback('frame', self.on_mouse_click, self.img)
+			cv2.imshow('Source', self.img)
+			cv2.setMouseCallback('Source', self.on_mouse_click, self.img)
 			if cv2.waitKey(0):
 				break
 		cv2.destroyAllWindows()
@@ -244,7 +244,7 @@ class Root(FloatLayout):
 
 class BioFrame(App):
 	def build(self):
-		self.title = 'BioCounter v0.4a'
+		self.title = 'BioCounter v0.5a' # v0.5a @ 04-15-2018
 	Root().startup()
 
 Factory.register('Root', cls=Root)
