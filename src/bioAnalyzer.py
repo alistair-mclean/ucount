@@ -9,7 +9,8 @@ from pathlib import Path
 import cv2
 import datetime
 import os
-from src.preProcessor import PreProcessor
+from src.imageProcessor import PreProcessor
+from src.imageProcessor import PostProcessor
 from src.tester import tester
 class organism():
 	def __init__(self, id):
@@ -31,6 +32,7 @@ class bioAnalyzer():
 		self.size = []
 		self.organismCount = 0
 
+
 	def analyzeOrganism(self, organismName, sizeRange, colorRange): # NEW METHOD
 		hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 		self.size = sizeRange
@@ -41,6 +43,9 @@ class bioAnalyzer():
 		self.countSpecies(self.mask)
 		self.OutputResults(organismName) # debug	
 		self.SaveResults(organismName)
+		
+	def postProcess(self, images):
+		self.postProcess = cv2.Laplacian(image, cv2.CV_64F)
 
 
 	def identifyClusters(self, image, numberOfClusters, clusteringAlgo='kMeans'): # NEW METHOD

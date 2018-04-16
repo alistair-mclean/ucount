@@ -32,12 +32,6 @@ Root:
             disabled: True
             size_hint_x: None
             width: 500
-            Label:
-                id: load_text
-                color: 0, 0, 0, 1
-                text: root.loadString
-
-
             BoxLayout:
                 spacing: 0
                 padding: 0
@@ -112,7 +106,13 @@ Root:
                     size_hint_x: None
                     width: 30
                     color: 0, 0, 0, 1
-    
+            Label:
+                id: load_text
+                color: 0, 0, 0, 1
+                text: root.loadString
+
+
+                
 
             Button:
                 id: analyze_button
@@ -123,25 +123,4 @@ Root:
                 text: 'Analyze'
                 on_release: root.analyze()
 
-
-
-
-<LoadDialog>:
-    BoxLayout:
-        size: root.size
-        pos: root.pos
-        orientation: "vertical"
-        FileChooserIconView:
-            id: filechooser
-            path: 'C:/Users/alist/Documents/Practice/Python/bioCounter'
-        BoxLayout:
-            size_hint_y: None
-            height: 30
-            Button:
-                text: "Cancel"
-                on_release: root.cancel()
-
-            Button:
-                text: "Load"
-                on_release: root.load(filechooser.path, filechooser.selection)
 

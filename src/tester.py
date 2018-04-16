@@ -1,4 +1,5 @@
-from src.preProcessor import PreProcessor
+from src.imageProcessor import PreProcessor
+from src.imageProcessor import PostProcessor
 import cv2
 import numpy as np
 class tester: 

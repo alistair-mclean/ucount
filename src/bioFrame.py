@@ -21,11 +21,13 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.config import Config
-import numpy as np
-import os
 from src.bioAnalyzer import bioAnalyzer
-import cv2
+from tkinter.filedialog import askopenfilename
+import tkinter as tk
+import numpy as np
 import ntpath
+import os
+import cv2
 
 # Window configurations
 Config.set('kivy', 'window_icon', 'src/res/Analyze.png')
@@ -44,6 +46,8 @@ class LoadDialog(FloatLayout):
 class Root(FloatLayout):
 	loadfile = ObjectProperty(None)
 	loadString = "Press Load to select a file you wish to analyze."
+	hasLowColor = False
+	hasHighColor = False
 	
 
 	def startup(self):
@@ -51,14 +55,21 @@ class Root(FloatLayout):
 		self.hasHighColor = False # Figure out better logic for this
 	
 	def dismiss_popup(self):
-		self._popup.dismiss()
+		if self._popup:
+			self._popup.dismiss()
 
 	def show_load(self):
-		content = LoadDialog(load=self.load, 
-							cancel=self.dismiss_popup)
-		self._popup = Popup(title="Load file", content=content,
-							size_hint=(0.9,0.9))
-		self._popup.open()
+#		content = LoadDialog(load=self.load, 
+#							cancel=self.dismiss_popup)
+#		self._popup = Popup(title="Load file", content=content,
+#							size_hint=(0.9,0.9))
+#		self._popup.open()
+		root = tk.Tk()
+		root.withdraw()
+		self.filename = askopenfilename()
+		if self.filename:
+			self.load(self.filename)
+			root.destroy()
 
 	def colorPicker(self):
 		# When the button is pressed activate this widget
@@ -76,26 +87,33 @@ class Root(FloatLayout):
 	        print ("HEX = ", str(instance.hex_color))
 #	    	return instance.hsv
 
-	def load(self,filepath, filename):
-		self.filepath = filepath
+	def load(self, filename):
 		self.filename = filename
 		if filename:
-			fname = ntpath.basename(filename[0])
+#			fname = ntpath.basename(filename[0])
+			fname = ntpath.basename(filename)
 		else:
 			return
 
 		# TODO - add a check to make sure that it is an image extension!!!!
-		self.loadString = str('{} ready for analyzing'.format(fname))
+		self.loadString = str('{} loaded.\nPlease select the settings for the organism you wish to analyze.'.format(fname))
 		self.ids.load_text.text = self.loadString
-		self.ids.load_image.source = filename[0]
+		#self.ids.load_image.source = filename[0]
+		self.ids.load_image.source = filename
 
 		# ENABLE Analyzer
 		self.ids.analyze_tab.disabled = False
-		self.dismiss_popup()
+		#self.dismiss_popup()
 
 	def analyze(self):
-		self.analyzer = bioAnalyzer(self.filename[0])
-		fname = ntpath.basename(self.filename[0])
+#		self.analyzer = bioAnalyzer(self.filename[0])
+#		fname = ntpath.basename(self.filename[0])
+		if self.hasHighColor != True and self.hasLowColor != True:
+			self.loadString = str('Please select the low and high color thresholds for the image.')
+			self.ids.load_text.text = self.loadString
+			return
+		self.analyzer = bioAnalyzer(self.filename)
+		fname = ntpath.basename(self.filename)
 		# Get the values from the UI
 		# Name
 		organismName = self.ids.name_input.text
@@ -120,6 +138,7 @@ class Root(FloatLayout):
 			kivyColor = self.img[self.loc[-1][0],self.loc[-1][1]]
 			kivyColor = (kivyColor[2] / 255, kivyColor[1] / 255, kivyColor[0] / 255, 1) 
 			self.ids.low_color.background_color = kivyColor 
+			self.hasLowColor = True
 		
 	def selectHighColor(self):
 		self.highColor = self.selectColor()
@@ -127,11 +146,13 @@ class Root(FloatLayout):
 			kivyColor = self.img[self.loc[-1][0],self.loc[-1][1]]
 			kivyColor = (kivyColor[2] / 255, kivyColor[1] / 255, kivyColor[0] / 255, 1)
 			self.ids.high_color.background_color = kivyColor
+			self.hasHighColor = True
 
 
 	## DEBUG ##
 	def test(self):
-		self.analyzer = bioAnalyzer(self.filename[0])
+#		self.analyzer = bioAnalyzer(self.filename[0])
+		self.analyzer = bioAnalyzer(self.filename)
 		l_red = np.array([0, 97, 30]) # THESE STILL NEED MASSAGING
 		u_red = np.array([10, 255, 255]) # THESE STILL NEED MASSAGING
 		size = [5, 20]
@@ -140,7 +161,8 @@ class Root(FloatLayout):
 		self.analyzer.analyzeOrganism(organism, size, color)
 
 	def selectColor(self):
-		self.img = cv2.imread(self.filename[0])
+#		self.img = cv2.imread(self.filename[0])
+		self.img = cv2.imread(self.filename)
 		hsv = cv2.cvtColor(self.img, cv2.COLOR_BGR2HSV)
 		self.colors = []
 		self.loc = []
@@ -198,7 +220,6 @@ class Root(FloatLayout):
 		cv2.imshow('zoom', res)
 		#return res
 
-
 	def drawCrosshair(self, frame, lineLength):
 		res = frame
 		rHeight, rWidth = res.shape[:2]
@@ -212,7 +233,7 @@ class Root(FloatLayout):
 		#White infil
 		res = cv2.line(res, (rHalfH - lineLength, rHalfW), (rHalfH + lineLength, rHalfW), (255,255,255), 2)
 		res = cv2.line(res, (rHalfH, rHalfW - lineLength), (rHalfH, rHalfW + lineLength), (255,255,255), 2)
-		res[rHalfW-2:rHalfW+2, rHalfH-2:rHalfH+2] = frame[rHalfW-2:rHalfW+2, rHalfH-2:rHalfH+2]
+		res[rHalfW-4:rHalfW+4, rHalfH-4:rHalfH+4] = frame[rHalfW-4:rHalfW+4, rHalfH-4:rHalfH+4]
 		return res
 
 	def on_mouse_move (self, event, x, y, flags, frame):
@@ -220,9 +241,6 @@ class Root(FloatLayout):
 		# a local zoomed portion of the 
 		# original image, near the mouse position
 		pass
-
-
-			
 
 class BioFrame(App):
 	def build(self):
