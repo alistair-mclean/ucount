@@ -1,0 +1,126 @@
+#:kivy 1.1.0
+
+Root:
+    canvas.before:
+		Color:
+			rgba: 1, 1, 1, 1
+		Rectangle:
+			pos: self.pos
+			size: self.size
+	BoxLayout:
+		orientation: 'horizontal'
+        padding: 2
+        spacing: 4
+	    BoxLayout:
+    	    orientation: 'vertical'
+        	Image:
+                id: load_image
+                source:'src/res/Analyze.png'
+                size: 128, 128
+                padding: 20
+            Button:
+        		size_hint_y: None
+                spacing: 20
+        		font_size: 32
+                height: 60
+                text: 'Load'
+            	on_release: root.show_load()
+
+        BoxLayout:
+            orientation: 'vertical'
+            id: analyze_tab
+            disabled: True
+            size_hint_x: None
+            width: 500
+            BoxLayout:
+                spacing: 0
+                padding: 0
+                orientation: 'horizontal'
+                size_hint_y:None
+                height: 10
+                Label:
+                    text:'Organism'
+                    color: 0, 0, 0, 1
+                    size_hint_x: None
+                    font: 20
+                    width: 200
+                Label:
+                    text:'Color'
+                    color: 0, 0, 0, 1
+                    size_hint_x: None
+                    font: 20
+                    width: 100
+                Label:
+                    text:'Size'
+                    color: 0, 0, 0, 1
+                    size_hint_x: None
+                    font: 20
+                    width: 120
+            
+            # Organism Parameters
+            BoxLayout:
+                spacing: 5
+                padding: 5
+                orientation: 'horizontal'
+                size_hint_y:None
+                height: 40
+                TextInput:
+                    id: name_input
+                    multi_line: False
+                    text:'NewOrganism'
+                    size_hint_x: None
+                    width:220
+
+                Button:
+                    id:low_color    
+                    backgound_color: 0.1, 1, 0, 1
+                    size_hint_x: None
+                    width:30
+                    on_release: root.selectLowColor()
+
+                Button:
+                    id:high_color
+                    size_hint_x: None
+                    width:30
+                    on_release: root.selectHighColor()
+
+                TextInput:
+                    id: low_size_input
+                    multi_line: False
+                    text: '1'
+                    size_hint_x: None
+                    width: 30
+                Label:
+                    text: 'px'
+                    size_hint_x: None
+                    width: 30
+                    color: 0, 0, 0, 1
+                TextInput:
+                    id: high_size_input
+                    multi_line: False
+                    size_hint_x: None
+                    text: '2'
+                    width: 30
+                Label:
+                    text: 'px'
+                    size_hint_x: None
+                    width: 30
+                    color: 0, 0, 0, 1
+            Label:
+                id: load_text
+                color: 0, 0, 0, 1
+                text: root.loadString
+
+
+                
+
+            Button:
+                id: analyze_button
+                size_hint_y: None
+                spacing: 20
+                font_size: 32
+                height: 60
+                text: 'Analyze'
+                on_release: root.analyze()
+
+

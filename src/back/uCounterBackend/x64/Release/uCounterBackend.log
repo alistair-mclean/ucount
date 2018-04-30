@@ -1,0 +1,8 @@
+﻿  Main.cpp
+  PreProcessor.cpp
+  Generating code
+  10 of 288 functions ( 3.5%) were compiled, the rest were copied from previous compilation.
+    2 functions were new in current compilation
+    12 functions had inline decision re-evaluated but remain unchanged
+  Finished generating code
+  uCounterBackend.vcxproj -> C:\Users\alist\Documents\GitHub\uCounter\src\back\uCounterBackend\x64\Release\uCounterBackend.exe
