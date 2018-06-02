@@ -49,12 +49,10 @@ class PreProcessor():
 		plt.title('Sobel X'), plt.xticks([]), plt.yticks([])
 		plt.subplot(2,2,4),plt.imshow(sobely,cmap = 'gray')
 		plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
-
-
 		plt.show()
 
 
-# Apply a laplacian convolution 
+	# Apply a laplacian convolution 
 	def SharpenEdges(self, img):
 		return cv2.Laplacian(img, cv2.CV_64F)
 

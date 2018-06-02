@@ -49,12 +49,19 @@ class Analyzer():
 		self.SaveResults(organismName)
 		
 
-	def identifyClusters(self, image, numberOfClusters, clusteringAlgo='kMeans'): # NEW METHOD
+	def identifyClusters(self, image): # NEW METHOD
 		# Put in a switch statement which determines which algorithm to use
 		# Also put int the gottdang code!
-		#  
-		pass
-
+		circles = cv2.HoughCircles(image, cv2.HOUGH_GRADIENT, 1, 20,
+								   param1=50, param2=30, minRadius=0, maxRadius=0)
+		circles = np.uint16(np.around(circles))
+		for i in circles[0,:]
+			# draw the outer circle
+			circle_color = (255, 255, 0)
+			cv2.circle(cimg,(i[0],i[1]),i[2],circle_color, 3)
+		cv2.imshow('detected circles', cimg)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
 
 	def countSpecies(self, mask): # NEW METHOD
 		pxCount =  0
