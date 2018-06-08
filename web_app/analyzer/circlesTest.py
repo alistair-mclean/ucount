@@ -1,14 +1,17 @@
 import cv2
 import numpy as np
+from imageProcessor import *
 
 #img = cv2.imread('opencv-logo.png',0)
 img = cv2.imread('Mix_Well1_2Steel_new.tif',0)
 
 def test1():
 	img = cv2.imread('Mix_Well1_2Steel_new.tif',0)
-	img = cv2.medianBlur(img,5)
-	cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
-
+	#img = cv2.medianBlur(img,5)
+	#cimg = cv2.cvtColor(img,cv2.COLOR_GRAY2BGR)
+	proc = ImageProcessor()
+	img = proc.smooth(img)
+	gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 	circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
 	                            param1=50,param2=30,minRadius=0,maxRadius=0)
 
@@ -36,7 +39,7 @@ def test2():
 		grays[indx] = channel
 		indx += 1
 	print(len(grays))
-	cimg = cv2.cvtColor(grays[1],cv2.COLOR_GRAY2BGR)
+	cimg = cv2.cvtColor(grays[1],cv2.COLOR_BGR2GRAY)
 
 	circles = cv2.HoughCircles(grays[1],cv2.HOUGH_GRADIENT,1,20,
 	                            param1=50,param2=30,minRadius=0,maxRadius=0)

@@ -36,38 +36,17 @@ class Analyzer():
 	def analyzeImage(self, image):
 		self.original = image
 		proc = ImageProcessor()
-		self.colors = proc.splitChannels(image)
-		self.grays.append(proc.preProcess(self.colors[0]))
-		self.grays.append(proc.preProcess(self.colors[1]))
-		self.grays.append(proc.preProcess(self.colors[2]))
-#		self.edges = proc.sharpenEdges(self.grays[:])
-		print('Displaying grays')
-		cv2.imshow('b', self.grays[0])
-		cv2.imshow('g', self.grays[1])
-		cv2.imshow('r', self.grays[2])
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
-
-		print('Displaying edges')
-		self.edges.append(proc.sharpenEdges(self.grays[1]))
-		self.edges.append(proc.sharpenEdges(self.grays[2]))
-		cv2.imshow('g', self.edges[0])
-		cv2.imshow('r', self.edges[1])
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
-
-		self.countCircles(self.edges[0])
+		self.results = (proc.processImage(self.original))
+		for resultantImage in results: 
+			self.detectCircles(resultantImage)
 		
-	def countCircles(self, img):
-		#circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-        #                          param1=50,param2=30,minRadius=0,maxRadius=0)
-
-		circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT,1,20,
-                            param1=50,param2=30,minRadius=0,maxRadius=0)
+	def detectCircles(self, img):
+		#convert to compatible datatype
+		print('called')
+		circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 8, 10, param1=50,param2=60,minRadius=5,maxRadius=10)
 		circles = np.uint16(np.around(circles))
 		for i in circles[0,:]:
-			# Draw the outer circle
-			cv2.circle(img, (i[0],i[1]), 2, (255,255,0),2)
+			cv2.circle(img,(i[0],i[1]),i[2],(255,255,0),1)
 		cv2.imshow('detected circles', img)
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
@@ -77,10 +56,7 @@ if __name__=='__main__':
 	path = '~/research/uCounter/web_app/samples/'
 	filename = 'Mix_Well1_2Steel_new.tif'
 	file = path + filename
-	print(file) # Debug
 	image = cv2.imread(filename)
-	print(image.shape) # Debug
-	#analyzer.analyzeImage(image)
-	analyzer.test(image)
+	analyzer.analyzeImage(image)
 
 

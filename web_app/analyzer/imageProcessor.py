@@ -23,16 +23,13 @@ class ImageProcessor():
 		plt.title('Sobel Y'), plt.xticks([]), plt.yticks([])
 		plt.show()
 
-	def preProcess(self, img):
+	def processImage(self, img):
 		self.original = img
 		grays = self.splitChannels(img)
-		#grays = self.channelsToGrayScale(channels)
 		indx = 0
-		clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
 		for channel in grays:
 			channel = self.smooth(channel, 3)
-			channel = clahe.apply(channel)
-			grays[indx] = channel
+			grays[indx] = self.sharpenEdges(channel)
 			indx += 1
 		return grays
 
@@ -54,8 +51,18 @@ class ImageProcessor():
 		return grays
 
 	# Apply a laplacian convolution 
-	def sharpenEdges(self, img):
-		return cv2.Laplacian(img, cv2.CV_64F)
+	def sharpenEdges(self, img):		
+		edges = cv2.Laplacian(img, cv2.CV_8UC1)
+		clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(10,10))
+		edges = clahe.apply(edges)
+		cv2.imshow('edges 64F ', edges)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
+		cv2.imshow('edges uint8 ', np.uint8(edges))
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
+		return edges
+#		return cv2.Laplacian(img, cv2.CV_8UC1)
 
 	# Apply a gaussian blur
 	def smooth(self, img, ksize):
