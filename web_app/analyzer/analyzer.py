@@ -14,7 +14,7 @@ class Analyzer():
 	def test(self, image):
 		self.original = image
 		proc = ImageProcessor()
-		self.colors = proc.splitChannels(image)
+		self.colors = proc.split_channels(image)
 		idx = 0
 		for img in self.colors:
 			self.colors[idx] = cv2.bitwise_and(self.original, self.original, mask = img)
