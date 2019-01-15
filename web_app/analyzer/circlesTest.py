@@ -30,7 +30,7 @@ def test1():
 def test2():
 	img = cv2.imread('Mix_Well1_2Steel_new.tif',0)
 	grays = cv2.split(img)
-	#grays = self.channelsToGrayScale(channels)
+	#grays = self.channels_to_grayscale(channels)
 	indx = 0
 	clahe = cv2.createCLAHE(clipLimit=3.0, tileGridSize=(8,8))
 	for channel in grays:

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 class ImageProcessor(): 
 	def __init__(self, mode=None, original=None):
-		self.mdoe = mode
+		self.mode = mode
 		self.original = []
 		if original:
 			self.original = cv2.imread(original)
@@ -15,33 +15,23 @@ class ImageProcessor():
 		try:
 			channels = self.split_channels(img)
 		except Exception as e:
-			print('[ERROR] ImageProcessor: failed to split_channels on img: ', img)
+			print('[ERROR] ImageProcessor.process_image: failed to split_channels on img: ', img)
 		indx = 0
 		for channel in channels[1:]:
-			channel = self.smooth(channel, 3)
+			channel = self.smooth(channel, 3) # k_size = 3 seems the most ideal..
 			# cv2.imshow('smooth', channel)
 			# cv2.waitKey(0)
 			# cv2.destroyAllWindows()
 			
-			channel = self.improve_contrast(channel)
+			contrast_settings = {
+				'clip_limit': 1.5,
+				'k_size': 10
+			}
+			channel = self.improve_contrast(channel, contrast_settings) 
 			# cv2.imshow('clahe', channel)
 			# cv2.waitKey(0)
 			# cv2.destroyAllWindows()
 
-			# channel = self.normalize_image(channel)
-			# cv2.imshow('normalize', channel)
-			# cv2.waitKey(0)
-			# cv2.destroyAllWindows()
-			
-			channel = self.threshold_image(channel, [35, 255])
-			cv2.imshow('threshold', channel)
-			cv2.waitKey(0)
-			cv2.destroyAllWindows()
-
-			# channel = self.highlight_edges(channel)
-			# cv2.imshow('laplacian', channel)
-			# cv2.waitKey(0)
-			# cv2.destroyAllWindows()
 			channels[indx] = channel
 			indx += 1
 		return channels
@@ -62,42 +52,30 @@ class ImageProcessor():
 		try:
 			edges = cv2.Laplacian(img, cv2.CV_8UC1)
 		except:
-			print("Could't detect the edges!")
+			print("[ERROR] ImageProcessor.highlight_edges: Could't detect the edges!")
 			return None
-		'''
-		cv2.imshow('edges 64F ', edges)
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
-		cv2.imshow('edges uint8 ', np.uint8(edges))
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
-		'''
 		return edges
 
-	def improve_contrast(self, img):
+	def improve_contrast(self, img, contrast_settings=None):
+		clip_limit = 3.0
+		k_size = (5,5)
+		if contrast_settings:
+			clip_limit = contrast_settings['clip_limit']
+			k_size = (contrast_settings['k_size'], contrast_settings['k_size'])
 		try:
-			clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(5,5))
+			clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=k_size)
 			temp = clahe.apply(img)
-			#cv2.imshow('CLAHE',clahe.apply(img))
-			#cv2.waitKey(0)
-			#cv2.destroyAllWindows()
-
 		except:
-			print("Couldn't improve the contrast.")
+			print("[ERROR] ImageProcessor.improve_contrast: Couldn't improve the contrast.")
 			return None
 		return temp
 		
 	def threshold_image(self, image, valRange):
 		ret, thet = cv2.threshold(image, valRange[0], valRange[1], cv2.THRESH_OTSU)
-		#cv2.imshow('Ret',ret)
-		#cv2.imshow('Thet', thet)
-		#cv2.waitKey(0)
-		#cv2.destroyAllWindows()
 		return thet
 		
 
 	def normalize_image(self, img):
-#		cv2.normalize(img, img, 0, 255, norm_type=cv2.NORM_MINMAX, dtype=cv2.CV_8UC1)
 		cv2.normalize(img, img, 0, 255, norm_type=cv2.NORM_MINMAX)
 		return img
 

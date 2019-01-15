@@ -4,21 +4,38 @@ import cv2
 import os
 
 def preprocess_all_images_in_dir(directory):
+	print('\n-------------- Preprocessing files in directory: %s --------------' % directory)
 	try:
 		print('First try with the path: ', directory)
 		for subdir, dirs, files in os.walk(directory):
+			print('In subdir: %s \n With Dirs: %s ' % (subdir, dirs))
 			for filename in files: 
 				print(filename)
 				base_name, extension = filename.split('.')
-				if not base_name.endswith('scale') and 'tif' in extension:
+
+				if base_name.endswith('scale'):
+					pass
+
+				elif 'tif' in extension:
 					processor = ImageProcessor()
 					channels = []	
+
 					try: 
-						image = cv2.imread(filename)
+						full_name_and_path = os.path.join(directory, filename)
+						print('FULL NAME AND PATH OF FILE: %s' % full_name_and_path)
+						image = cv2.imread(full_name_and_path)
+
 						channels = processor.process_image(image)
-						make_dirs_for_channels_and_save(directory, channels, base_name)
+
+						if len(channels) > 0:
+							make_dirs_for_channels_and_save(directory, channels, base_name)
+						else:
+							print('Skipping ')
+
 					except Exception as e:
 						print('[WARNING] Preprocessor: Exception was thrown: ', e)
+						print(type(e))
+
 						try:
 							filename_and_path = os.path.join(subdir, filename)
 							image = cv2.imread(filename_and_path)
@@ -26,8 +43,10 @@ def preprocess_all_images_in_dir(directory):
 							print(len(channels))
 							make_dirs_for_channels_and_save(directory, channels, base_name)
 						except Exception as e:
+							print(type(e))
 							print('[ERROR] Preprocessor: Failed to preprocess file. Exiting...')
 	except Exception as e:
+		print(type(e))
 		print(e)
 		try: 
 			path = os.getcwd() + '/' + directory
@@ -39,32 +58,32 @@ def preprocess_all_images_in_dir(directory):
 						filename_and_path = os.path.join(subdir, filename)
 						# Do the preprocessing
 		except Exception as e:
+			print(type(e))
 			print('[ERROR] Preprocessor: The path provided does not exist. Exiting')
 			return
 
 
 def make_dirs_for_channels_and_save(directory, channels, base_file_name):
 	# Try to make dir for green:
+	new_dir = directory + '/green_pp/'
 	try:
-		print('Saving channel[0] for ', base_file_name)
-		new_dir = directory + '/green_pp/'
 		os.mkdir(new_dir)
-		cv2.imwrite(base_file_name + '.png', channels[0])
-	except Exception as e:
-		print(e)	
+	except FileExistsError:
+		pass	
+	print('Saving channel[0] for ', base_file_name)
+	write_name = new_dir + base_file_name + '.png' 
+	cv2.imwrite(r'{name}'.format(name=write_name), channels[0])
+
 
 	# Try to make dir for red:
+	new_dir = directory + '/red_pp/'
 	try:
-		print('Saving channel[1] for ', base_file_name)
-		new_dir = directory + '/green_pp/'
 		os.mkdir(new_dir)
-		cv2.imwrite(base_file_name + '.png', channels[1])
-	except Exception as e:
-		print(e)	
-
-
-
-
+	except FileExistsError:
+		pass
+	print('Saving channel[1] for ', base_file_name)
+	write_name = new_dir + base_file_name + '.png' 
+	cv2.imwrite(r'{name}'.format(name=write_name), channels[1])
 
 
 if __name__ == '__main__':
