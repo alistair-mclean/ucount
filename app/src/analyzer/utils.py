@@ -17,17 +17,13 @@ def make_dirs_for_channels_and_save_results(results):
 	output_directory = os.path.join(os.getcwd(),results['output directory'])
 	# Save the original
 	write_name = os.path.join(output_directory, original_file_name)	
-	print('The original file: ', write_name)
+
 
 	# Try to make dir for Pseudonomas:
-	print('[] \n [] \n output_directory: %s \n results[output_directory] = %s ' % (output_directory, results['output directory']))
 	new_dir = output_directory + 'pseudonomas_preprocessed/'
 	try:
 		os.mkdir(new_dir)
-	except Exception as e:
-		print('88 88 88 Ran into an exception when trying to make directory')
-		print('Exception: ', e)
-		print('Directory: ', new_dir)
+	except FileExistsError	:
 		pass	
 	# print('Saving pseudonomas_preprocessed for ', original_file_name)
 
