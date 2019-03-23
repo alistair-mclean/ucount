@@ -27,6 +27,7 @@ class Analyzer(object):
 			files = []
 			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
 
+			summaries = []
 			# Iterate over all tif files in the directory that isn't the results dir.  
 			if len(files) > 0 and '__RESULTS__' not in subdir:
 				# If there is a settings file in the directory use that as the settings
@@ -43,7 +44,8 @@ class Analyzer(object):
 					self.base_file_name = file_name
 					path = os.path.join(directory, subdir[len(directory) -1:])
 					file_to_read = os.path.join(subdir, file_name)
-					results = self.analyze_image(file_to_read)
+					summary = self.analyze_image(file_to_read)
+					summaries.append(summary)
 					self.output_path = os.path.join(self.output_dir, file_name)
 
 	def test_preprocessor(self, directory):
