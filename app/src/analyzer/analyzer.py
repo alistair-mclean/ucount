@@ -1,3 +1,5 @@
+"""Summary
+"""
 from src.analyzer.image_processing.imageProcessor import ImageProcessor
 from src.analyzer.image_processing.preprocessor import preprocess_all_images_in_dir
 from src.analyzer.image_processing.meta_data_extractor import read_metadata
@@ -11,18 +13,61 @@ import os
 from pprint import pprint
 
 class Analyzer(object):
+
+	"""
+	
+	Attributes:
+	    base_file_name (str): Original file name currently being analyzed
+	    img_processor (ImageProcessor): The ImageProcessor object
+	    metadata (dict): The metadata of the file
+	    original_image (cv2.image): Original image object
+	    output_dir (str): The output _RESULTS_ directory
+	    output_path (str): The full name and path of the analyzed file to be saved 
+	    settings (dict): The settings for the analyzer and img_processor
+	"""
+	
 	def __init__(self, settings):
+		"""
+		Initialize arguments
+		
+		Args:
+		    settings (dict): The settings for the analyzer and img_processor
+		"""
 		self.metadata = {}
 		self.settings = settings
 		self.img_processor = ImageProcessor(self.settings['preprocessing'])
 
 		self.output_dir = None
 		self.output_path = None
+		self.summary_dir = None
 
 		self.original_image = None
 		self.base_file_name = None
 
 	def analyze_images_in_dir(self, directory):
+		"""
+		
+		Analyzes all images in a directory ending with a .tif extension.
+		
+		If there is a settings.json file in the directory (or subdirectory) 
+		the settings are loaded and used for the analysis.
+		
+		Generates a _RESULTS_ directory for each sub directory, where it stores
+		the preprocessed images for E Coli and PA.
+
+		Also has the summarizer write the summary to the original directory 
+		being analyzed (NOT the _RESULTS_ directory). 
+		
+		Args:
+		    directory (str): Description
+		
+		No Longer Returned:
+		    - [String] Summaries array
+		
+		
+		Args:
+		    directory (TYPE): Description
+		"""
 		for subdir, dirs, file_names in os.walk(directory):
 			files = []
 			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
@@ -35,7 +80,11 @@ class Analyzer(object):
 				if 'settings.json' in file_names:
 					with open(directory + 'settings.json', 'rb') as f:
 						self.settings = json.load(f)
+
+				print('8 8 8 8 8 directory: ', directory)
 				self.output_dir = '%s__RESULTS__%s' % (directory, subdir[len(directory) -1:])
+				print('9 9 9 9 9 output_dir', self.output_dir)
+
 				for file_name in files:
 					try:
 						os.mkdir(self.output_dir)
@@ -47,16 +96,37 @@ class Analyzer(object):
 					summary = self.analyze_image(file_to_read)
 					summaries.append(summary)
 					self.output_path = os.path.join(self.output_dir, file_name)
+				
 
 	def test_preprocessor(self, directory):
+		""" 
+		Test function for preprocessor
+		
+		Args:
+		    directory (str): The directory to preprocess
+		"""
 		preprocess_all_images_in_dir(directory)
 
 	def test_show_img(self, img, title='image'):
+		""" 
+		Test function to display an image
+		
+		Args:
+		    img (cv2.image): The image to display
+		    title (str, optional): The title of the image window.
+		"""
 		cv2.imshow(title, img)
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
 
 	def generate_results(self, channels):
+		""" 
+		Generates a result dict to then be saved in a _RESULTS_.txt file
+		in the directory being analyzed. 
+		
+		Args:
+		    channels (TYPE): Description
+		"""
 		# Takes some channels and applies a threshold based on 
 		# the settings and returns a summary object
 		settings = self.settings['analysis']['threshold']
@@ -81,6 +151,14 @@ class Analyzer(object):
 
 
 	def calculate_results(self, image):
+		"""
+		
+		Args:
+		    image (TYPE): Description
+		
+		Returns:
+		    TYPE: Description
+		"""
 		height, width = np.shape(image)
 		area = height * width
 		sum_of_pixels = 0 
@@ -96,6 +174,9 @@ class Analyzer(object):
 		return results
 
 	def generate_base_dir_and_file_name_from_file_path(self):
+		"""
+		Generates the output_dir for the analyzer from the base_file_name
+		"""
 		path_without_extension = self.base_file_name.split('.')
 		split_up_children = []
 		if '/' in path_without_extension[0]:
@@ -113,6 +194,12 @@ class Analyzer(object):
 		self.output_dir = base_directory
 
 	def analyze_image(self, file_name):
+		"""
+		Analyzes an image, but first preprocesses
+		
+		Args:
+		    file_name (TYPE): Description
+		"""
 		results = {}
 		if self.output_dir is None:
 			self.base_file_name = file_name
@@ -125,7 +212,7 @@ class Analyzer(object):
 			print('---------------------------------------------------------------------')
 			print('Analyzing %s with settings: ' % file_name)
 			pprint(self.settings)
-			
+			self.img_processor.settings = self.settings['preprocessing']
 			channels = self.img_processor.process_image(self.original_image)
 			results = self.generate_results(channels)
 			make_dirs_for_channels_and_save_results(results)
@@ -135,6 +222,11 @@ class Analyzer(object):
 			print(e)
 
 	def extract_metadata(self, file_name):
+		"""Summary
+		
+		Args:
+		    file_name (TYPE): Description
+		"""
 		metadata = read_metadata(file_name)
 
 

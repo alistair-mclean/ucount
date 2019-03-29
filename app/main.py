@@ -28,7 +28,7 @@ def parse_arguments():
 		}
 	}
 
-	# Try to load the settings, if supplied it.
+	# If settings were supplied, try to assign the settings.
 	if args.settings:
 		try:
 			json_data = open(args.settings).read()
@@ -40,21 +40,23 @@ def parse_arguments():
 	# Initialize the Analyzer
 	analyzer = Analyzer(settings)
 
-	# If the user entered a filename then analyze the file
 	if args.filename:
+		# If the user entered a filename then analyze the file
 		try:
 			analyzer.analyze_image(args.filename)
 		except Exception as e:
 			print(e)
-	try:
-		if args.directory:
-			try:
-				analyzer.analyze_images_in_dir(args.directory)
-				# analyzer.test_preprocessor(args.directory)
-			except Exception as e:
-				print(e)
-	except Exception as e:
-		print (e)
+	else:
+		# Otherwise try to analyze the directory if one was provided
+		try:
+			if args.directory:
+				try:
+					analyzer.analyze_images_in_dir(args.directory)
+					# analyzer.test_preprocessor(args.directory)
+				except Exception as e:
+					print(e)
+		except Exception as e:
+			print (e)
 
 
 
