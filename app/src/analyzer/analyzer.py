@@ -140,7 +140,11 @@ class Analyzer(object):
 		}
 		index = 0
 		for threshold in thresholds:
+			name = 'E Coli'
+			if index > 1:
+				name = 'Pseudonomas'
 			channel_summary = {
+				'name': name,
 				'preprocessed channel' : channels[index],
 				'threshold channel' : thresholds[index],
 				'results' : calculated_results[index]
@@ -215,6 +219,17 @@ class Analyzer(object):
 			self.img_processor.settings = self.settings['preprocessing']
 			channels = self.img_processor.process_image(self.original_image)
 			results = self.generate_results(channels)
+			print('---------------------------------------------------------------------')
+
+			print('Results: ')
+			# pprint(results)
+			# print(results[0]['name'])
+			# print(results[0]['results'])
+			print('Name: ' + results[1]['name'])
+			pprint(results[1]['results'])
+			print('Name: ' + results[2]['name'])
+			pprint(results[2]['results'])
+			print('====================================================================')
 			make_dirs_for_channels_and_save_results(results)
 		
 		except Exception as e:
