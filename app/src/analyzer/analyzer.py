@@ -80,11 +80,8 @@ class Analyzer(object):
 				if 'settings.json' in file_names:
 					with open(directory + 'settings.json', 'rb') as f:
 						self.settings = json.load(f)
-
-				print('8 8 8 8 8 directory: ', directory)
-				self.output_dir = '%s__RESULTS__%s' % (directory, subdir[len(directory) -1:])
-				print('9 9 9 9 9 output_dir', self.output_dir)
-
+						
+				self.output_dir = '%s__RESULTS__%s/' % (directory, subdir[len(directory) -1:])
 				for file_name in files:
 					try:
 						os.mkdir(self.output_dir)
