@@ -3,7 +3,7 @@
 from src.analyzer.image_processing.imageProcessor import ImageProcessor
 from src.analyzer.image_processing.preprocessor import preprocess_all_images_in_dir
 from src.analyzer.image_processing.meta_data_extractor import read_metadata
-from src.analyzer.utils import make_dirs_for_channels_and_save_results
+from src.analyzer.utils import make_dirs_for_channels_and_save_images
 import numpy as np
 import json
 import sklearn
@@ -90,9 +90,12 @@ class Analyzer(object):
 					self.base_file_name = file_name
 					path = os.path.join(directory, subdir[len(directory) -1:])
 					file_to_read = os.path.join(subdir, file_name)
-					summary = self.analyze_image(file_to_read)
-					summaries.append(summary)
+					results = self.analyze_image(file_to_read)
+					summaries.append(results)
+					make_dirs_for_channels_and_save_images(results)
 					self.output_path = os.path.join(self.output_dir, file_name)
+		print('SUMMARIES:')
+		pprint(summaries)
 				
 
 	def test_preprocessor(self, directory):
@@ -132,7 +135,7 @@ class Analyzer(object):
 		summary = {
 				'settings' : settings,
   			    'original image' : self.original_image,
-  			    'original file_name' : self.base_file_name,
+  			    'original filename' : self.base_file_name,
   			    'output directory' : self.output_dir,
 		}
 		index = 0
@@ -148,6 +151,7 @@ class Analyzer(object):
 			}
 			summary.update({index : channel_summary})
 			index += 1
+		file_summary = {self.base_file_name : summary}
 		return summary
 
 
@@ -219,7 +223,7 @@ class Analyzer(object):
 			print('---------------------------------------------------------------------')
 
 			print('Results: ')
-			# pprint(results)
+			pprint(results)
 			# print(results[0]['name'])
 			# print(results[0]['results'])
 			print('Name: ' + results[1]['name'])
@@ -227,11 +231,11 @@ class Analyzer(object):
 			print('Name: ' + results[2]['name'])
 			pprint(results[2]['results'])
 			print('====================================================================')
-			make_dirs_for_channels_and_save_results(results)
 		
 		except Exception as e:
 			print('[ERROR] Analyzer had an issue reading: ', file_name)
 			print(e)
+		return results
 
 	def extract_metadata(self, file_name):
 		"""Summary

@@ -1,8 +1,9 @@
 from pprint import pprint
+import json
 import cv2
 import os
 
-def make_dirs_for_channels_and_save_results(results):
+def make_dirs_for_channels_and_save_images(results):
 	# This method creates both of the directories for the separate files 
 	# and saves the results
 	pa_summary = results[1]
@@ -38,7 +39,7 @@ def make_dirs_for_channels_and_save_results(results):
 	cv2.imwrite(r'{name}'.format(name=write_name), pa_summary['preprocessed channel'])
 
 
-	# Try to make dir for E Coli:
+	# Try to make dir for E Coli if it doesn't exist:
 	new_dir = output_directory + 'ecoli_preprocessed/'
 	try:
 		os.mkdir(new_dir)
@@ -55,3 +56,21 @@ def make_dirs_for_channels_and_save_results(results):
 	new_file_name = 'preproc_' + base_file_name + '.png'
 	write_name = os.path.join(new_dir, new_file_name)  
 	cv2.imwrite(r'{name}'.format(name=write_name), ecoli_summary['preprocessed channel'])
+
+
+
+def shape_output_summary(settings, results):
+	'''
+	Shapes the resulting output summary from the settings and
+	the list of results from the directory being analyzed. 
+	'''
+	for key in results:
+		file_summary = {}
+		channel_summary = {}
+		channel_summary.update({'results': results[key]['results']})
+		channel_summary.update({'name': results[key]['name']})
+		file_dict = {'filename': results[key]['original filename']}
+		file_summary.update({results[key]['original filename']: key_dict})
+
+	summary.update({'settings': settings})
+	return summary
