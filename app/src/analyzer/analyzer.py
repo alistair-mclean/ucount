@@ -35,7 +35,13 @@ class Analyzer(object):
 		"""
 		self.metadata = {}
 		self.settings = settings
-		self.img_processor = ImageProcessor(self.settings['preprocessing'])
+		try:
+			self.img_processor = ImageProcessor(self.settings['preprocessing'])
+		except Exception as e:
+			print(e)
+			print('[ERROR] Analyzer initialization: There was a problem with intiializing the ImageProcessor using settings: ')
+			pprint(settings)
+
 
 		self.output_dir = None
 		self.output_path = None
@@ -78,9 +84,12 @@ class Analyzer(object):
 				# If there is a settings file in the directory use that as the settings
 				# for the Analyzer 
 				if 'settings.json' in file_names:
-					with open(directory + 'settings.json', 'rb') as f:
-						self.settings = json.load(f)
-						
+					with open(directory + 'settings.json', 'r') as f:
+						try:
+							self.settings = json.load(f)
+						except Exception as e:
+							print(e)
+
 				self.output_dir = '%s__RESULTS__%s/' % (directory, subdir[len(directory) -1:])
 				for file_name in files:
 					try:
@@ -128,6 +137,7 @@ class Analyzer(object):
 		# the settings and returns a summary object
 		settings = self.settings['analysis']['threshold']
 		thresholds = [self.img_processor.threshold_image(channel, settings) for channel in channels]
+		print('The number of thresholds for the image is: ', len(thresholds))
 		calculated_results = [self.calculate_results(threshold) for threshold in thresholds]
 		summary = {
 				'settings' : settings,
@@ -137,16 +147,19 @@ class Analyzer(object):
 		}
 		index = 0
 		for threshold in thresholds:
-			name = 'E Coli'
-			if index > 1:
+			# This is a temporary solution 
+			# TODO - fix this!!!
+			if index > 0:
 				name = 'Pseudonomas'
-			channel_summary = {
-				'name': name,
-				'preprocessed channel' : channels[index],
-				'threshold channel' : thresholds[index],
-				'results' : calculated_results[index]
-			}
-			summary.update({index : channel_summary})
+				if index > 1:
+					name = 'E Coli'
+				channel_summary = {
+					'name': name,
+					'preprocessed channel' : channels[index],
+					'threshold channel' : thresholds[index],
+					'results' : calculated_results[index]
+				}
+				summary.update({index : channel_summary})
 			index += 1
 		return summary
 
