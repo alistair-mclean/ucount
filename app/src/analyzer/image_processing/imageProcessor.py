@@ -3,15 +3,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class ImageProcessor(): 
-	def __init__(self, mode=None, settings=None, original=None):
+	def __init__(self, mode=None, settings=None):
 		self.mode = mode
 		self.original = []
 		self.settings = {}
 		if settings:
 			self.settings = settings
-		if original:
-			self.original = cv2.imread(original)
-			return self.process_image(self.original)
 
 	def process_image(self, img):
 		self.original = img
@@ -28,7 +25,8 @@ class ImageProcessor():
 		if self.settings:
 			blur_settings = self.settings['blur']
 
-
+		## TODO - refactor the image processor to instead use the new filter technique logic
+		## 		  and the filter values for segmentation of images.
 		try:
 			channels = self.split_channels(img)
 		except Exception as e:

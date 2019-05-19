@@ -1,0 +1,62 @@
+{
+	"organisms" : [
+		{
+			"name" : "E Coli",
+			"config": {
+				"preprocessing" : {
+					"filter technique" : "BGR",
+					"filter values": {
+						"min": [0, 0, 0],
+						"max": [0, 0, 255]
+					},
+					"clahe" : {
+						"clip_limit": 1.5,
+						"k_size": 10
+					},
+					"blur" : {
+						"k_size": 3
+					}
+				},
+				"analysis" : {
+					"threshold" : {
+						"min": [0, 0, 35],
+						"max": [0, 0, 255]
+					}
+				}
+
+			}
+		},
+		{
+			"name" : "Pseudomonas Aeruginosa",
+			"config": {
+				"preprocessing" : {
+					"filter technique" : "BGR",
+					"filter values": {
+						"min": [0, 0, 0],
+						"max": [255, 0, 0]
+					},
+					"clahe" : {
+						"clip_limit": 1.5,
+						"k_size": 10
+					},
+					"blur" : {
+						"k_size": 3
+					}
+				},
+				"analysis" : {
+					"threshold" : {
+						"min": [35, 0, 0],
+						"max": [255, 0, 0]
+					}
+				}
+
+			}
+		}
+	],
+	"image settings": {
+		"image_area": {
+			"magnitude": 0.0002,
+			"units": "mm^2"
+		}
+	}
+}
