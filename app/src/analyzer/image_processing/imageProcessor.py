@@ -62,7 +62,7 @@ class ImageProcessor():
 			channels = cv2.split(img)
 		except Exception as e:
 			print('[ERROR] ImageProcessor.split_channels: Exception occurred: ', e)
-			raise
+			raise Exception
 		return channels
 
 	# Apply a laplacian convolution 
