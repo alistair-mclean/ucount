@@ -18,7 +18,6 @@ class Analyzer(object):
 	
 	Attributes:
 	    base_file_name (str): Original file name currently being analyzed
-	    img_processor (ImageProcessor): The ImageProcessor object
 	    metadata (dict): The metadata of the file
 	    original_image (cv2.image): Original image object
 	    output_dir (str): The output _RESULTS_ directory
@@ -26,22 +25,16 @@ class Analyzer(object):
 	    settings (dict): The settings for the analyzer and img_processor
 	"""
 	
-	def __init__(self, settings):
+	def __init__(self, config):
 		"""
 		Initialize arguments
 		
 		Args:
-		    settings (dict): The settings for the analyzer and img_processor
+		    config (dict): The config for the analyzer and img_processor
 		"""
 		self.metadata = {}
-		self.settings = settings
-		try:
-			self.img_processor = ImageProcessor(self.settings['preprocessing'])
-		except Exception as e:
-			print(e)
-			print('[ERROR] Analyzer initialization: There was a problem with intiializing the ImageProcessor using settings: ')
-			pprint(settings)
-
+		self.config = config
+		self.img_processor = ImageProcessor()
 
 		self.output_dir = None
 		self.output_path = None
@@ -50,12 +43,12 @@ class Analyzer(object):
 		self.original_image = None
 		self.base_file_name = None
 
-	def analyze_images_in_dir(self, directory):
+	def analyze_images_in_dir(self, dir_to_analyze):
 		"""
 		
 		Analyzes all images in a directory ending with a .tif extension.
 		
-		If there is a settings.json file in the directory (or subdirectory) 
+		If there is a config.json file in the directory (or subdirectory)
 		the settings are loaded and used for the analysis.
 		
 		Generates a _RESULTS_ directory for each sub directory, where it stores
@@ -65,17 +58,16 @@ class Analyzer(object):
 		being analyzed (NOT the _RESULTS_ directory). 
 		
 		Args:
-		    directory (str): Description
+		    dir_to_analyze (str): Description
 		
 		No Longer Returned:
 		    - [String] Summaries array
 		
 		
 		Args:
-		    directory (TYPE): Description
+		    dir_to_analyze (TYPE): Description
 		"""
-		for subdir, dirs, file_names in os.walk(directory):
-			files = []
+		for subdir, dirs, file_names in os.walk(dir_to_analyze):
 			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
 
 			summaries = []
@@ -83,25 +75,26 @@ class Analyzer(object):
 			if len(files) > 0 and '__RESULTS__' not in subdir:
 				# If there is a settings file in the directory use that as the settings
 				# for the Analyzer 
-				if 'settings.json' in file_names:
-					with open(directory + 'settings.json', 'r') as f:
+				if 'config.json' in file_names:
+					with open(dir_to_analyze + 'config.json', 'r') as f:
 						try:
-							self.settings = json.load(f)
+							self.config = json.load(f)
 						except Exception as e:
 							print(e)
 
-				self.output_dir = '%s__RESULTS__%s/' % (directory, subdir[len(directory) -1:])
+				self.output_dir = '%s__RESULTS__%s/' % (dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
 				for file_name in files:
 					try:
 						os.mkdir(self.output_dir)
 					except FileExistsError:
 						pass
 					self.base_file_name = file_name
-					path = os.path.join(directory, subdir[len(directory) -1:])
+					path = os.path.join(dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
 					file_to_read = os.path.join(subdir, file_name)
-					summary = self.analyze_image(file_to_read)
-					summaries.append(summary)
-					self.output_path = os.path.join(self.output_dir, file_name)
+					self.analyze_image(file_to_read)
+					# summary = self.analyze_image(file_to_read)
+					# summaries.append(summary)
+					# self.output_path = os.path.join(self.output_dir, file_name)
 				
 
 	def test_preprocessor(self, directory):
@@ -135,7 +128,7 @@ class Analyzer(object):
 		"""
 		# Takes some channels and applies a threshold based on 
 		# the settings and returns a summary object
-		settings = self.settings['analysis']['threshold']
+		settings = self.config['analysis']['threshold']
 		thresholds = [self.img_processor.threshold_image(channel, settings) for channel in channels]
 		print('The number of thresholds for the image is: ', len(thresholds))
 		calculated_results = [self.calculate_results(threshold) for threshold in thresholds]
@@ -216,21 +209,26 @@ class Analyzer(object):
 		"""
 		results = {}
 		if self.output_dir is None:
+			# If an output directory has not been established, create one.
 			self.base_file_name = file_name
 			self.generate_base_dir_and_file_name_from_file_path()
 		
 		try:
 			self.metadata = read_metadata(file_name)
 			self.original_image = cv2.imread(file_name)
-
+		except Exception as e:
+			print('[ERROR] Analyzer had an issue reading: ', file_name)
+			print(e)
+		for organism in self.config['organisms']:
+			pprint(organism)
 			print('---------------------------------------------------------------------')
-			print('Analyzing %s with settings: ' % file_name)
-			pprint(self.settings)
-			self.img_processor.settings = self.settings['preprocessing']
+			print('Analyzing for %s in %s with configuration: ' % file_name)
+			pprint(organism['config'])
+			self.img_processor.settings = organism['config']['preprocessing']
 			channels = self.img_processor.process_image(self.original_image)
 			results = self.generate_results(channels)
 			print('---------------------------------------------------------------------')
-
+	
 			print('Results: ')
 			# pprint(results)
 			# print(results[0]['name'])
@@ -241,10 +239,6 @@ class Analyzer(object):
 			pprint(results[2]['results'])
 			print('====================================================================')
 			make_dirs_for_channels_and_save_results(results)
-		
-		except Exception as e:
-			print('[ERROR] Analyzer had an issue reading: ', file_name)
-			print(e)
 
 	def extract_metadata(self, file_name):
 		"""Summary
