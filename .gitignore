@@ -10,8 +10,9 @@ instance/
 .coverage
 htmlcov/
 
-dist/
+.idea/
 build/
-*.egg-info/
 
+*.egg-info/
+*.exe
 test_dir/
