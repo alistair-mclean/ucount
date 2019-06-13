@@ -12,6 +12,7 @@ htmlcov/
 
 .idea/
 build/
+.vscode/
 
 *.egg-info/
 *.exe
