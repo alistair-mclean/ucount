@@ -118,7 +118,7 @@ class Analyzer(object):
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
 
-	def generate_results(self, channels):
+	def generate_results(self, channels, organism):
 		""" 
 		Generates a result dict to then be saved in a _RESULTS_.txt file
 		in the directory being analyzed. 
@@ -128,31 +128,24 @@ class Analyzer(object):
 		"""
 		# Takes some channels and applies a threshold based on 
 		# the settings and returns a summary object
-		settings = self.config['analysis']['threshold']
-		thresholds = [self.img_processor.threshold_image(channel, settings) for channel in channels]
-		print('The number of thresholds for the image is: ', len(thresholds))
+		threshold_settings = organism['config']['analysis']['threshold']
+		thresholds = [self.img_processor.threshold_grayscale(channel, threshold_settings) for channel in channels]
 		calculated_results = [self.calculate_results(threshold) for threshold in thresholds]
 		summary = {
-				'settings' : settings,
+				'settings' : organism['config'],
   			    'original image' : self.original_image,
   			    'original file_name' : self.base_file_name,
   			    'output directory' : self.output_dir,
 		}
 		index = 0
 		for threshold in thresholds:
-			# This is a temporary solution 
-			# TODO - fix this!!!
-			if index > 0:
-				name = 'Pseudonomas'
-				if index > 1:
-					name = 'E Coli'
-				channel_summary = {
-					'name': name,
-					'preprocessed channel' : channels[index],
-					'threshold channel' : thresholds[index],
-					'results' : calculated_results[index]
-				}
-				summary.update({index : channel_summary})
+			channel_summary = {
+				'name': organism['name'],
+				'preprocessed image' : channels[index],
+				'threshold image' : threshold,
+				'results' : calculated_results[index]
+			}
+			summary.update({index : channel_summary})
 			index += 1
 		return summary
 
@@ -220,25 +213,26 @@ class Analyzer(object):
 			print('[ERROR] Analyzer had an issue reading: ', file_name)
 			print(e)
 		for organism in self.config['organisms']:
-			pprint(organism)
 			print('---------------------------------------------------------------------')
-			print('Analyzing for %s in %s with configuration: ' % file_name)
-			pprint(organism['config'])
-			self.img_processor.settings = organism['config']['preprocessing']
-			channels = self.img_processor.process_image(self.original_image)
-			results = self.generate_results(channels)
+			print('Analyzing for %s in %s with configuration: ' % (organism['name'],file_name))
+			pprint(organism)
+
+			filter_mode = organism['config']['filter mode']
+			self.img_processor.update_config(organism['config']['preprocessing'])
+			self.img_processor.update_mode(filter_mode)
+			image = self.original_image			
+			if filter_mode == 'HSV':
+				image = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2HSV)
+			channels = self.img_processor.process_image(image)
+			# Generate results seems to be where all the magic happens 
+			results = self.generate_results(channels, organism)
 			print('---------------------------------------------------------------------')
 	
+
 			print('Results: ')
-			# pprint(results)
-			# print(results[0]['name'])
-			# print(results[0]['results'])
-			print('Name: ' + results[1]['name'])
-			pprint(results[1]['results'])
-			print('Name: ' + results[2]['name'])
-			pprint(results[2]['results'])
+			pprint(results)
 			print('====================================================================')
-			make_dirs_for_channels_and_save_results(results)
+			# make_dirs_for_channels_and_save_results(results)
 
 	def extract_metadata(self, file_name):
 		"""Summary

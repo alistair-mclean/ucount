@@ -1,4 +1,5 @@
 import cv2
+from pprint import pprint
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -6,62 +7,105 @@ class ImageProcessor():
 	def __init__(self, mode=None, settings=None):
 		self.mode = mode
 		self.original = []
-		self.settings = {}
+		self.config = {}
 		if settings:
-			self.settings = settings
+			self.config = settings
 
 	def process_image(self, img):
+		print('Type of img', type(img))
 		self.original = img
+		return self.process_image_using_mode(img)
 
-		contrast_settings = {
-			'clip_limit': 1.5,
-			'k_size': 10
-		}
-		blur_settings = {
-			'k_size' : 3
-		}
-		if self.settings:
-			contrast_settings = self.settings['clahe']
-		if self.settings:
-			blur_settings = self.settings['blur']
+	def process_image_using_mode(self, img):
+		# Really missing switch statements right about now..
+		if self.mode is None:
+			raise Exception # TODO - Specify this exception 
+		if self.mode == 'BGR':
+			return self.process_image_via_bgr(img)
+		elif self.mode == 'HSV':
+			return [self.process_image_via_hsv(img)]
+		elif self.mode == 'GRY':
+			return [self.process_image_via_grayscale(img)]
+		else:
+			print("[WARNING] ImageProcessor.process_image_using_mode: Couldn't determine which settings to use. Defaulting to grayscale.")
+			return self.process_image_via_grayscale(img)
 
-		## TODO - refactor the image processor to instead use the new filter technique logic
+	def process_image_via_bgr(self, img):
+		# TODO - make settings a requirement.
+		## TODO - refactor the image processor to instead use the new filter mode logic
 		## 		  and the filter values for segmentation of images.
+		bgr = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 		try:
-			channels = self.split_channels(img)
+			channels = self.split_channels_bgr(bgr)
+			return [self.preprocess_image(channel) for channel in channels]
 		except Exception as e:
-			print('[ERROR] ImageProcessor.process_image: failed to split_channels on img: ', img)
-		indx = 0
-		for channel in channels[1:]:
-			channel = self.smooth(channel, blur_settings['k_size']) # k_size = 3 seems the most ideal..
-			# cv2.imshow('smooth', channel)
-			# cv2.waitKey(0)
-			# cv2.destroyAllWindows()
-			
-			channel = self.improve_contrast(channel, contrast_settings) 
-			# cv2.imshow('clahe', channel)
-			# cv2.waitKey(0)
-			# cv2.destroyAllWindows()
+			print('[ERROR] ImageProcessor.process_image_via_bgr: failed to split_channels_bgr on img: ', img)
+			print('Exception: ', e)
+			raise Exception # TODO - Specify this exception
 
-			channels[indx] = channel
-			indx += 1
-		return channels
+	def process_image_via_hsv(self, img):
+		try:
+			segmented = self.segment_via_hsv(img)
+			return self.preprocess_image(segmented)
+		except Exception as e:
+			print('[ERROR] ImageProcessor.process_image_via_hsv: Encountered exception: ', e)
+			raise Exception # TODO - Specify this exception
+		
+	def process_image_via_grayscale(self, img):
+		try:
+			return self.preprocess_image(img)
+		except Exception as e:
+			print('[ERROR] ImageProcessor.process_image_via_grayscale: Encountered exception: ', e)
+			raise Exception # TODO - Specify this exception
 
-	def test_show_img(self, img):
-		cv2.imshow('image', img)
-		cv2.waitKey(0)
-		cv2.destroyAllWindows()
+	def preprocess_image(self, channel):
+		if self.config:
+			contrast_settings = self.config['clahe']
+		if self.config:
+			blur_settings = self.config['blur']
+		try:
+			if blur_settings['on']:
+				channel = self.smooth(channel, blur_settings['k_size']) # k_size = 3 seems the most ideal..
+		except Exception as e:
+			print('[ERROR] ImageProcessor.preprocess_image encountered exception when smoothing:', e)
+			raise Exception # TODO - Specify this exception
+		# cv2.imshow('smooth', channel)
+		# cv2.waitKey(0)
+		# cv2.destroyAllWindows()
+		try:
+			if contrast_settings['on']:	
+				channel = self.improve_contrast(channel, contrast_settings) 
+		except Exception as e:
+			print('[ERROR] ImageProcessor.preprocess_image encountered exception when claheing:', e)
+			raise Exception # TODO - Specify this exception
+		# cv2.imshow('clahe', channel)
+		# cv2.waitKey(0)
+		# cv2.destroyAllWindows()
+		return channel
 
-
-	# Split the channels of the image into
-	def split_channels(self, img):
+	# Split the channels of the image into separate images 
+	def split_channels_bgr(self, img):
 		channels = []
 		try:
 			channels = cv2.split(img)
 		except Exception as e:
-			print('[ERROR] ImageProcessor.split_channels: Exception occurred: ', e)
-			raise Exception
+			print('[ERROR] ImageProcessor.split_channels_bgr: Exception occurred: ', e)
+			raise Exception # TODO - Specify this exception
 		return channels
+
+	# Segments the image via hsv
+	def segment_via_hsv(self, img):
+		try:
+			min = np.array(self.config['filter values']['min'])
+			max = np.array(self.config['filter values']['max'])
+			mask = cv2.inRange(img, min, max)
+			result = cv2.bitwise_and(img, img, mask=mask)
+			color = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+			gray = cv2.cvtColor(color, cv2.COLOR_BGR2GRAY)
+		except Exception as e:
+			print('[ERROR] ImageProcessor.segment_via_hsv: Exception ocurrred: ', e)
+			raise Exception # TODO - Specify this exception
+		return gray
 
 	# Apply a laplacian convolution 
 	def highlight_edges(self, img):		
@@ -72,6 +116,10 @@ class ImageProcessor():
 			return None
 		return edges
 
+	# Apply a gaussian blur
+	def smooth(self, img, ksize):
+		return cv2.blur(img, (ksize, ksize))
+
 	def improve_contrast(self, img, contrast_settings=None):
 		clip_limit = 3.0
 		k_size = (5,5)
@@ -81,32 +129,52 @@ class ImageProcessor():
 		try:
 			clahe = cv2.createCLAHE(clipLimit=clip_limit, tileGridSize=k_size)
 			temp = clahe.apply(img)
-		except:
+		except Exception as e:
+			print(e)
+			print(type(e))
 			print("[ERROR] ImageProcessor.improve_contrast: Couldn't improve the contrast.")
 			return None
 		return temp
-		
-	def threshold_image(self, image, threshold_settings):
-		if threshold_settings['min'] > 255:
-			threshold_settings['min'] = 255
-		if threshold_settings['max'] > 255:
-			threshold_settings['max'] = 255
-		if threshold_settings['min'] < 0:
-			threshold_settings['min'] = 0
-		if threshold_settings['max'] < 0:
-			threshold_settings['max'] = 0
+			
+	def threshold_hsv(self, hsv_img, threshold_settings):
+		if hsv_img is None:
+			print('[ERROR] ImageProcessor.threshold_hsv: None type image was provided.')
+			raise Exception # TODO - Specify this exception
+		try:
+			
+			mask = cv2.inRange(hsv_img, lower, upper)
+			result = cv2.bitwise_and(hsv_img, hsv_img, mask=mask)
+			color = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
+			gray = cv2.cvtColor(color, cv2.COLOR_BGR2GRAY)
+			return gray
+		except Exception as e:
+			print(type(e)) 
+			print("[ERROR] ImageProcessor.threshold_hsv: Ran into exception:", e)
 
-		ret, thet = cv2.threshold(image, threshold_settings['min'], threshold_settings['max'], cv2.THRESH_OTSU)
-		return thet
+	def threshold_grayscale(self, channel, threshold_settings):
+		if channel is None:
+			print('[ERROR] ImageProcessor.threshold_grayscale: None type channel supplied as argument.')
+			raise Exception # TODO - Specify this exception
+		try:
+			ret, thet = cv2.threshold(channel, threshold_settings['min'], threshold_settings['max'], cv2.THRESH_OTSU)
+			return thet
+		except Exception as e:
+			print(type(e)) 
+			print("[ERROR] ImageProcessor.threshold_grayscale: Ran into exception:", e)
+			raise Exception
 		
 
 	def normalize_image(self, img):
 		cv2.normalize(img, img, 0, 255, norm_type=cv2.NORM_MINMAX)
 		return img
 
-	# Apply a gaussian blur
-	def smooth(self, img, ksize):
-		return cv2.blur(img, (ksize, ksize))
+	def update_config(self, new_config):
+		self.config = new_config
 
+	def update_mode(self, new_mode):
+		self.mode = new_mode
 
-
+	def test_show_img(self, img, title='image'):
+		cv2.imshow(title, img)
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
