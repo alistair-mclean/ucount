@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<title>uCounter - 0.01 (prealpha)</title>
+<!-- <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}" > -->
+<link rel="stylesheet" href="../static/base.css" >
+<link rel="stylesheet" href="../static/organismPanel.css">
+<link rel="stylesheet" href="../static/configPanel.css">
+<script src="../controllers/imageTab.js"></script>
+<script src="../controllers/organismPanel.js"></script>
+<body class="main">
+    <header>
+        <nav>
+            <h1>uCounter - 0.01 (prealpha release)</h1>
+            <a href="index.html">Test</a>
+        </nav>
+    </header>
+    <div class="canvas">
+        <div class="content">
+            <!-- THE IMAGE TAB -->
+            <div class="tab">
+                <button class="tablinks" onclick="openImage(event, 'Original')">Original</button>
+                <button class="tablinks" onclick="openImage(event, 'Pre-processed')">Pre-processed</button>
+                <button class="tablinks" onclick="openImage(event, 'Post-processed')">Post-processed</button>
+                <button class="tablinks" onclick="openImage(event, 'Results')">Results</button>
+            </div>           
+            <!-- Tab links -->
+            <div id="Original" class="tabcontent">
+                <h3>The original image</h3>
+            </div>
+            
+            <div id="Pre-processed" class="tabcontent">
+                <h3>The Pre-processed image</h3> 
+            </div>
+
+            <div id="Post-processed" class="tabcontent">
+                <h3>The Post-processed image</h3> 
+            </div>
+            
+            <div id="Results" class="tabcontent">
+                <h3>The results image</h3>
+            </div>   
+        </div>
+
+        <div class="content">
+            <!-- THE ORGANISM TAB -->
+            <div id="myDIV" class="header">
+                    <h2>Organisms</h2>
+                    <input type="text" id="myInput" placeholder="Organism name">
+                    <span onclick="newElement()" class="addBtn">Add</span>
+                  </div>
+                  
+                  <ul id="myUL">
+                  </ul>
+        </div>
+
+        <div class="content">
+            <h1>Results summary</h1>
+            <p>Summary</p>
+        </div>
+
+        <div class="content">
+            <h1>Configuration</h1>
+            <div class="config">
+                    <div class="section">
+                        <form class="options">
+                            <h2>Filtering:</h2>
+                                <div class="dropdown">
+                                        Filter mode:
+                                        <span>RGB</span>
+                                        <div class="dropdown-content">
+                                            <p>RGB</p>
+                                            <p>HSV</p>
+                                            <p>grayscale</p>
+                                        </div>
+                                    </div>
+                                    <br>
+                                Filter Values:
+                                <form class="array">
+                                    <input type="number" name="R_filter_value">
+                                    <input type="number" name="G_filter_value">
+                                    <input type="number" name="B_filter_value">
+                                </form>
+                        </form>
+                    </div>
+                    <div class="section">
+                            <form class="options">
+                                <h2>Preprocessing:</h2>
+                                <h3>Gaussian Blur</h3>
+                                    Kernel size:<input type="number" name="gaussian_blur_kernel_size">
+                                <h3>CLAHE Settings</h3>
+                                    Clip Limit:<input type="number" name="CLAHE_clip_limit">
+                                    Kernel size:<input type="number" name="CLAHE_kernel_size">
+                            </form>
+                    </div>
+                    <div class="section">
+                            <form class="options">
+                                <h2>Post processing:</h2>
+                                Minimum Values:
+                                <form class="array">
+                                    <input type="number" name="R_min_threshold_value">
+                                    <input type="number" name="G_min_threshold_value">
+                                    <input type="number" name="B_min_threshold_value">
+                                </form>
+                                Maximum Values:
+                                <form class="array">
+                                    <input type="number" name="R_max_threshold_value">
+                                    <input type="number" name="G_max_threshold_value">
+                                    <input type="number" name="B_max_threshold_value">
+                                </form>
+                            </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+
+  
