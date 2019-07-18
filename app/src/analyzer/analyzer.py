@@ -69,7 +69,6 @@ class Analyzer(object):
 		"""
 		for subdir, dirs, file_names in os.walk(dir_to_analyze):
 			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
-
 			summaries = []
 			# Iterate over all tif files in the directory that isn't the results dir.  
 			if len(files) > 0 and '__RESULTS__' not in subdir:
@@ -82,7 +81,7 @@ class Analyzer(object):
 						except Exception as e:
 							print(e)
 
-				self.output_dir = '%s__RESULTS__%s/' % (dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
+				self.output_dir = '%s__RESULTS__%s' % (dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
 				for file_name in files:
 					try:
 						os.mkdir(self.output_dir)
@@ -130,14 +129,15 @@ class Analyzer(object):
 		# the settings and returns a summary object
 		threshold_settings = organism['config']['analysis']['threshold']
 		thresholds = [self.img_processor.threshold_grayscale(channel, threshold_settings) for channel in channels]
-		calculated_results = [self.calculate_results(threshold) for threshold in thresholds]
+		calculated_results = [self.calculate_results(threshold) for threshold in thresholds] 
 		summary = {
-				'settings' : organism['config'],
+				'config' : organism['config'],
   			    'original image' : self.original_image,
   			    'original file_name' : self.base_file_name,
   			    'output directory' : self.output_dir,
 		}
 		index = 0
+		organism_summaries = []
 		for threshold in thresholds:
 			channel_summary = {
 				'name': organism['name'],
@@ -145,8 +145,9 @@ class Analyzer(object):
 				'threshold image' : threshold,
 				'results' : calculated_results[index]
 			}
-			summary.update({index : channel_summary})
+			organism_summaries.append(channel_summary)
 			index += 1
+		summary.update({'organisms': organism_summaries})
 		return summary
 
 
@@ -215,7 +216,6 @@ class Analyzer(object):
 		for organism in self.config['organisms']:
 			print('---------------------------------------------------------------------')
 			print('Analyzing for %s in %s with configuration: ' % (organism['name'],file_name))
-			pprint(organism)
 
 			filter_mode = organism['config']['filter mode']
 			self.img_processor.update_config(organism['config']['preprocessing'])
@@ -224,15 +224,12 @@ class Analyzer(object):
 			if filter_mode == 'HSV':
 				image = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2HSV)
 			channels = self.img_processor.process_image(image)
-			# Generate results seems to be where all the magic happens 
 			results = self.generate_results(channels, organism)
 			print('---------------------------------------------------------------------')
 	
 
-			print('Results: ')
-			pprint(results)
 			print('====================================================================')
-			# make_dirs_for_channels_and_save_results(results)
+			make_dirs_for_channels_and_save_results(results) # TODO - This should be moved....
 
 	def extract_metadata(self, file_name):
 		"""Summary
