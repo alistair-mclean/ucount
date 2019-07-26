@@ -4,6 +4,7 @@ from src.analyzer.image_processing.imageProcessor import ImageProcessor
 from src.analyzer.image_processing.preprocessor import preprocess_all_images_in_dir
 from src.analyzer.image_processing.meta_data_extractor import read_metadata
 from src.analyzer.utils import make_dirs_for_channels_and_save_results
+from src.analyzer.math_utils import compute_coverage
 import numpy as np
 import json
 import sklearn
@@ -69,7 +70,7 @@ class Analyzer(object):
 		"""
 		for subdir, dirs, file_names in os.walk(dir_to_analyze):
 			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
-			summaries = []
+			
 			# Iterate over all tif files in the directory that isn't the results dir.  
 			if len(files) > 0 and '__RESULTS__' not in subdir:
 				# If there is a settings file in the directory use that as the settings
@@ -90,11 +91,14 @@ class Analyzer(object):
 					self.base_file_name = file_name
 					path = os.path.join(dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
 					file_to_read = os.path.join(subdir, file_name)
-					self.analyze_image(file_to_read)
-					# summary = self.analyze_image(file_to_read)
-					# summaries.append(summary)
-					# self.output_path = os.path.join(self.output_dir, file_name)
-				
+					list_of_results = self.analyze_image(file_to_read)
+					results = {
+						'organisms': list_of_results,
+						'original filename': self.base_file_name,
+						'config': self.config,
+						'output directory': self.output_dir
+					}
+					make_dirs_for_channels_and_save_results(results)
 
 	def test_preprocessor(self, directory):
 		""" 
@@ -117,7 +121,7 @@ class Analyzer(object):
 		cv2.waitKey(0)
 		cv2.destroyAllWindows()
 
-	def generate_results(self, channels, organism):
+	def generate_results(self, img, organism):
 		""" 
 		Generates a result dict to then be saved in a _RESULTS_.txt file
 		in the directory being analyzed. 
@@ -128,51 +132,17 @@ class Analyzer(object):
 		# Takes some channels and applies a threshold based on 
 		# the settings and returns a summary object
 		threshold_settings = organism['config']['analysis']['threshold']
-		thresholds = [self.img_processor.threshold_grayscale(channel, threshold_settings) for channel in channels]
-		calculated_results = [self.calculate_results(threshold) for threshold in thresholds] 
-		summary = {
-				'config' : organism['config'],
-  			    'original image' : self.original_image,
-  			    'original file_name' : self.base_file_name,
-  			    'output directory' : self.output_dir,
+		threshold = self.img_processor.threshold_grayscale(img, threshold_settings)
+		calculated_results = compute_coverage(threshold) 
+		image_summary = {
+			'name': organism['name'],
+			'preprocessed image' : img,
+			'threshold image' : threshold,
+			'results' : calculated_results,
+			'config': organism['config']
 		}
-		index = 0
-		organism_summaries = []
-		for threshold in thresholds:
-			channel_summary = {
-				'name': organism['name'],
-				'preprocessed image' : channels[index],
-				'threshold image' : threshold,
-				'results' : calculated_results[index]
-			}
-			organism_summaries.append(channel_summary)
-			index += 1
-		summary.update({'organisms': organism_summaries})
-		return summary
+		return image_summary
 
-
-	def calculate_results(self, image):
-		"""
-		
-		Args:
-		    image (TYPE): Description
-		
-		Returns:
-		    TYPE: Description
-		"""
-		height, width = np.shape(image)
-		area = height * width
-		sum_of_pixels = 0 
-		for row in image:
-			for px in row:
-				if px > 245:
-					sum_of_pixels += 1
-		percent_covered = float(sum_of_pixels) / float(area) * 100.0
-		results = {
-			'Percent coverage' : float('%.2f' % percent_covered),
-			'Image resolution' : [height, width],
-		}
-		return results
 
 	def generate_base_dir_and_file_name_from_file_path(self):
 		"""
@@ -202,6 +172,8 @@ class Analyzer(object):
 		    file_name (TYPE): Description
 		"""
 		results = {}
+		list_of_results = []
+		organism_results = {}
 		if self.output_dir is None:
 			# If an output directory has not been established, create one.
 			self.base_file_name = file_name
@@ -215,7 +187,7 @@ class Analyzer(object):
 			print(e)
 		for organism in self.config['organisms']:
 			print('---------------------------------------------------------------------')
-			print('Analyzing for %s in %s with configuration: ' % (organism['name'],file_name))
+			print('\tAnalyzing for %s in %s. ' % (organism['name'],file_name))
 
 			filter_mode = organism['config']['filter mode']
 			self.img_processor.update_config(organism['config']['preprocessing'])
@@ -225,11 +197,11 @@ class Analyzer(object):
 				image = cv2.cvtColor(self.original_image, cv2.COLOR_BGR2HSV)
 			channels = self.img_processor.process_image(image)
 			results = self.generate_results(channels, organism)
+			list_of_results.append(results)
 			print('---------------------------------------------------------------------')
-	
-
 			print('====================================================================')
-			make_dirs_for_channels_and_save_results(results) # TODO - This should be moved....
+		
+		return list_of_results
 
 	def extract_metadata(self, file_name):
 		"""Summary

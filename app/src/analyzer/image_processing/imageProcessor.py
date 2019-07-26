@@ -12,7 +12,6 @@ class ImageProcessor():
 			self.config = settings
 
 	def process_image(self, img):
-		print('Type of img', type(img))
 		self.original = img
 		return self.process_image_using_mode(img)
 
@@ -23,9 +22,9 @@ class ImageProcessor():
 		if self.mode == 'BGR':
 			return self.process_image_via_bgr(img)
 		elif self.mode == 'HSV':
-			return [self.process_image_via_hsv(img)]
+			return self.process_image_via_hsv(img)
 		elif self.mode == 'GRY':
-			return [self.process_image_via_grayscale(img)]
+			return self.process_image_via_grayscale(img)
 		else:
 			print("[WARNING] ImageProcessor.process_image_using_mode: Couldn't determine which settings to use. Defaulting to grayscale.")
 			return self.process_image_via_grayscale(img)
@@ -37,7 +36,9 @@ class ImageProcessor():
 		bgr = cv2.cvtColor(img, cv2.COLOR_HSV2BGR)
 		try:
 			channels = self.split_channels_bgr(bgr)
-			return [self.preprocess_image(channel) for channel in channels]
+			preprocessed = [self.preprocess_image(channel) for channel in channels]
+			index = self.get_bgr_index()
+			return preprocessed[index]
 		except Exception as e:
 			print('[ERROR] ImageProcessor.process_image_via_bgr: failed to split_channels_bgr on img: ', img)
 			print('Exception: ', e)
@@ -167,6 +168,20 @@ class ImageProcessor():
 	def normalize_image(self, img):
 		cv2.normalize(img, img, 0, 255, norm_type=cv2.NORM_MINMAX)
 		return img
+
+	def get_bgr_index(self):
+		# This method should be removed when the UI is finished...
+		max_value_array = self.config['filter values']['max']
+		max = 0
+		return_index = 0
+		current_index = 0 
+		for value in max_value_array:
+			if value > max:
+				max = value
+				return_index = current_index
+			current_index += 1
+		return return_index
+
 
 	def update_config(self, new_config):
 		self.config = new_config
