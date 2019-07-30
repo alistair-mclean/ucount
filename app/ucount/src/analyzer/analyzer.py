@@ -1,10 +1,10 @@
 """Summary
 """
-from src.analyzer.image_processing.imageProcessor import ImageProcessor
-from src.analyzer.image_processing.preprocessor import preprocess_all_images_in_dir
-from src.analyzer.image_processing.meta_data_extractor import read_metadata
-from src.analyzer.utils import make_dirs_for_channels_and_save_results
-from src.analyzer.math_utils import compute_coverage
+from .image_processing.imageProcessor import ImageProcessor
+from .image_processing.preprocessor import preprocess_all_images_in_dir
+from .image_processing.meta_data_extractor import read_metadata
+from .utils import make_dirs_for_channels_and_save_results
+from .math_utils import compute_coverage
 import numpy as np
 import json
 import sklearn

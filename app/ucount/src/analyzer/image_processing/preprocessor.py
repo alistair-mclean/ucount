@@ -1,4 +1,4 @@
-from src.analyzer.image_processing.imageProcessor import ImageProcessor
+from .imageProcessor import ImageProcessor
 import sys
 import cv2
 import os

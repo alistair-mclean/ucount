@@ -1,4 +1,4 @@
-from src.analyzer.analyzer import Analyzer
+from .src.analyzer.analyzer import Analyzer
 import argparse
 import json
 import sys
