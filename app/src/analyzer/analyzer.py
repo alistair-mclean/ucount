@@ -138,7 +138,9 @@ class Analyzer(object):
 		# the settings and returns a summary object
 		threshold_settings = organism['config']['analysis']['threshold']
 		threshold = self.img_processor.threshold_grayscale(img, threshold_settings)
-		calculated_results = compute_coverage(threshold) 
+		image_settings = self.config['image settings']
+		calculated_results = compute_coverage(threshold, image_settings)
+
 		image_summary = {
 			'name': organism['name'],
 			'preprocessed image' : img,

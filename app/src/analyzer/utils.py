@@ -63,7 +63,7 @@ def write_summary(results):
 
 	with open(output_summary_path, 'w') as csvFile:
 		csv_writer = None
-		headers = ['Name', 'Percent coverage', 'Image resolution']
+		headers = ['Name', 'Percent coverage', 'Approximate coverage', 'Coverage units', 'Image resolution']
 		csv_writer = csv.DictWriter(csvFile, fieldnames=headers)
 		csv_writer.writeheader()
 
@@ -75,6 +75,9 @@ def write_summary(results):
 			csv_writer.writerow({
 				'Name': organism,
 				'Percent coverage': organism_results[organism]['Percent coverage'],
+				'Approximate coverage': organism_results[organism]['Approximate coverage'],
+				'Coverage units': organism_results[organism]['Coverage units'],
 				'Image resolution': organism_results[organism]['Image resolution'],
+				
 			})
 		
