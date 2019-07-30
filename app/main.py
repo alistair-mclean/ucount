@@ -8,9 +8,9 @@ def parse_arguments():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("--filename", help="The filename to analyze.")
 	parser.add_argument("--directory", help="The directory to analyze.")
-	parser.add_argument("--settings", help="A settings file for custom execution.")
+	parser.add_argument("--config", help="A config file for custom execution.")
 	args = parser.parse_args()
-	settings = {
+	config = {
 		"preprocessing" : {
 			"clahe" : {
 				"clip_limit": 1.5,
@@ -28,22 +28,22 @@ def parse_arguments():
 		}
 	}
 
-	# If settings were supplied, try to assign the settings.
-	if args.settings:
+	# If config were supplied, try to assign the settings.
+	if args.config:
 		try:
-			json_data = open(args.settings).read()
-			settings = json.loads(json_data)
+			json_data = open(args.config).read()
+			config = json.loads(json_data)
 		except Exception as e:
 			print('[WARNING] Improper settings file, using defaults.')
 			print(e)
 
 	# Initialize the Analyzer
-	analyzer = Analyzer(settings)
+	analyzer = Analyzer(config)
 
 	if args.filename:
 		# If the user entered a filename then analyze the file
 		try:
-			analyzer.analyze_image(args.filename)
+			analyzer.analyze_image_single(args.filename)
 		except Exception as e:
 			print(e)
 	else:
