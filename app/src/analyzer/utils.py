@@ -44,7 +44,6 @@ def make_dirs_for_channels_and_save_results(results):
 
 def write_summary(results):
 	organism_results = {}
-	# print([key for key in results['organisms']])
 
 	for organism in results['organisms']:
 		organism_results.update({organism['name'] : organism['results']})
@@ -73,7 +72,6 @@ def write_summary(results):
 			full_keys = ['Name']
 			full_keys.extend(result_keys)
 
-			print('full keys:', full_keys)
 			csv_writer.writerow({
 				'Name': organism,
 				'Percent coverage': organism_results[organism]['Percent coverage'],

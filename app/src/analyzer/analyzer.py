@@ -13,6 +13,9 @@ import sys
 import os
 from pprint import pprint
 
+
+
+
 class Analyzer(object):
 
 	"""
@@ -89,7 +92,6 @@ class Analyzer(object):
 					except FileExistsError:
 						pass
 					self.base_file_name = file_name
-					path = os.path.join(dir_to_analyze, subdir[len(dir_to_analyze) - 1:])
 					file_to_read = os.path.join(subdir, file_name)
 					list_of_results = self.analyze_image(file_to_read)
 					results = {
@@ -98,7 +100,10 @@ class Analyzer(object):
 						'config': self.config,
 						'output directory': self.output_dir
 					}
+					print('\t\t\t\tSAVING RESULTS')
+					print('====================================================================')
 					make_dirs_for_channels_and_save_results(results)
+					print('Done.')
 
 	def test_preprocessor(self, directory):
 		""" 
@@ -157,9 +162,6 @@ class Analyzer(object):
 			split_up_children = path_without_extension[0].split('\\')
 			self.base_file_name = self.base_file_name.split('\\')[-1]
 
-		pprint(path_without_extension)
-		pprint(split_up_children)
-		print(path_without_extension[:len(path_without_extension) - len(split_up_children[-1]) - 1])	
 		base_directory = path_without_extension[0][:len(path_without_extension[0]) - len(split_up_children[-1])]
 		self.base_file_name = self.base_file_name.split('/')[-1]
 		self.output_dir = base_directory
@@ -185,8 +187,10 @@ class Analyzer(object):
 		except Exception as e:
 			print('[ERROR] Analyzer had an issue reading: ', file_name)
 			print(e)
+		print('\t\t\t\tANALYZING')
+		print('====================================================================')
 		for organism in self.config['organisms']:
-			print('---------------------------------------------------------------------')
+			print('--------------------------------------------------------------------')
 			print('\tAnalyzing for %s in %s. ' % (organism['name'],file_name))
 
 			filter_mode = organism['config']['filter mode']
@@ -198,10 +202,29 @@ class Analyzer(object):
 			channels = self.img_processor.process_image(image)
 			results = self.generate_results(channels, organism)
 			list_of_results.append(results)
-			print('---------------------------------------------------------------------')
-			print('====================================================================')
-		
+			print('--------------------------------------------------------------------')
+
+		print('====================================================================')		
 		return list_of_results
+
+	def analyze_image_single(self, filename):
+		list_of_results = self.analyze_image(filename)
+		self.output_dir = '%s__RESULTS__' % self.output_dir
+		try:
+			os.mkdir(self.output_dir)
+		except FileExistsError:
+			pass
+		results = {
+			'organisms': list_of_results,
+			'original filename': self.base_file_name,
+			'config': self.config,
+			'output directory': self.output_dir
+		}
+		print('\t\t\t\tSAVING RESULTS')
+		print('====================================================================')
+		make_dirs_for_channels_and_save_results(results)
+		print('Done.')
+
 
 	def extract_metadata(self, file_name):
 		"""Summary
