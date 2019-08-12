@@ -1,0 +1,15 @@
+.organism {
+    background-color: #edf2f2;
+    padding: 1em;
+}
+.organism-selected {
+    background-color: #346eeb;
+    padding: 1em;
+}
+.organism:hover {
+    background-color: #4495a6;
+}
+
+.remove {
+    background-color: #eb7373;
+}
