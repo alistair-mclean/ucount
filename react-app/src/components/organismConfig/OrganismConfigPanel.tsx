@@ -1,5 +1,6 @@
 import React from 'react';
-import Organism from './Organism';
+import Organism from './Organism/Organism';
+import ConfigForm from './ConfigForm/ConfigForm';
 
 type OrganismConfigPanelProps = {
     organisms: Array<string>, 
@@ -82,6 +83,7 @@ class OrganismConfigPanel extends React.Component<any, OrganismConfigPanelProps>
                         ))
                     }
                 </div>
+                <ConfigForm />
             </div>
         )
     }
