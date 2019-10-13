@@ -54,7 +54,8 @@ class ImageProcessor():
 		
 	def process_image_via_grayscale(self, img):
 		try:
-			return self.preprocess_image(img)
+			gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+			return self.preprocess_image(gray)
 		except Exception as e:
 			print('[ERROR] ImageProcessor.process_image_via_grayscale: Encountered exception: ', e)
 			raise Exception # TODO - Specify this exception
@@ -70,9 +71,7 @@ class ImageProcessor():
 		except Exception as e:
 			print('[ERROR] ImageProcessor.preprocess_image encountered exception when smoothing:', e)
 			raise Exception # TODO - Specify this exception
-		# cv2.imshow('smooth', channel)
-		# cv2.waitKey(0)
-		# cv2.destroyAllWindows()
+			
 		try:
 			if contrast_settings['on']:	
 				channel = self.improve_contrast(channel, contrast_settings) 
