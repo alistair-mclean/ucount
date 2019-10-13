@@ -10,9 +10,9 @@ instance/
 .coverage
 htmlcov/
 
-.idea/
+*.idea/
 build/
-.vscode/
+*.vscode/
 
 *.egg-info/
 *.exe
