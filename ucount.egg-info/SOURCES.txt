@@ -1,0 +1,7 @@
+ucount/__init__.py
+ucount/__main__.py
+ucount.egg-info/PKG-INFO
+ucount.egg-info/SOURCES.txt
+ucount.egg-info/dependency_links.txt
+ucount.egg-info/entry_points.txt
+ucount.egg-info/top_level.txt

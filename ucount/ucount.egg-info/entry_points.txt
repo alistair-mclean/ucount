@@ -1,0 +1,3 @@
+[console_scripts]
+ucount = __main__:main
+
