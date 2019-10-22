@@ -1,8 +1,10 @@
 from .src.analyzer.analyzer import Analyzer
+from .src.utility import CONFIG
 import argparse
 import json
 import sys
 import os
+
 
 def parse_arguments():
 	parser = argparse.ArgumentParser()
@@ -10,23 +12,8 @@ def parse_arguments():
 	parser.add_argument("--directory", help="The directory to analyze.")
 	parser.add_argument("--config", help="A config file for custom execution.")
 	args = parser.parse_args()
-	config = {
-		"preprocessing" : {
-			"clahe" : {
-				"clip_limit": 1.5,
-				"k_size": 10
-			},
-			"blur" : {
-				"k_size": 3
-			}
-		},
-		"analysis" : {
-			"threshold" : {
-				"max": 255,
-				"min": 35
-			}
-		}
-	}
+
+	config = None
 
 	# If config were supplied, try to assign the settings.
 	if args.config:
@@ -34,10 +21,13 @@ def parse_arguments():
 			json_data = open(args.config).read()
 			config = json.loads(json_data)
 		except Exception as e:
+			# config = CONFIG
 			print('[WARNING] Improper settings file, using defaults.')
 			print(e)
-
+	
 	# Initialize the Analyzer
+	if config == None:
+		config = CONFIG
 	analyzer = Analyzer(config)
 
 	if args.filename:
