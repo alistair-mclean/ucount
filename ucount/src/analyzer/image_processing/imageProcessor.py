@@ -141,7 +141,6 @@ class ImageProcessor():
 			print('[ERROR] ImageProcessor.threshold_hsv: None type image was provided.')
 			raise Exception # TODO - Specify this exception
 		try:
-			
 			mask = cv2.inRange(hsv_img, lower, upper)
 			result = cv2.bitwise_and(hsv_img, hsv_img, mask=mask)
 			color = cv2.cvtColor(result, cv2.COLOR_HSV2BGR)
@@ -181,6 +180,18 @@ class ImageProcessor():
 			current_index += 1
 		return return_index
 
+
+	def threshold_img(self, img, threshold_settings):
+		result = []
+		for row in img:
+			res_pxs = []
+			for px in row:
+				val = 0
+				if px > threshold_settings['min'] and px < threshold_settings['max']:
+					val = px
+				res_pxs.append(val)
+			result.append(res_pxs)
+		return np.asarray(result)
 
 	def update_config(self, new_config):
 		self.config = new_config

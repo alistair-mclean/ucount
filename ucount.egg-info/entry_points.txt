@@ -1,3 +1,0 @@
-[console_scripts]
-ucount = ucount.__main__:parse_arguments
-
