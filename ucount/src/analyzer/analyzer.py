@@ -137,7 +137,7 @@ class Analyzer(object):
 		# Takes some channels and applies a threshold based on 
 		# the settings and returns a summary object
 		threshold_settings = organism['config']['analysis']['threshold']
-		threshold = self.img_processor.threshold_grayscale(img, threshold_settings)
+		threshold = self.img_processor.threshold_img(img, threshold_settings)
 		image_settings = self.config['image settings']
 		calculated_results = compute_coverage(threshold, image_settings)
 
