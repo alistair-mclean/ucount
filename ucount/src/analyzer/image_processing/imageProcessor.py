@@ -188,7 +188,7 @@ class ImageProcessor():
 			for px in row:
 				val = 0
 				if px > threshold_settings['min'] and px < threshold_settings['max']:
-					val = px
+					val = 255
 				res_pxs.append(val)
 			result.append(res_pxs)
 		return np.asarray(result)
