@@ -183,7 +183,6 @@ class Analyzer(object):
 			self.generate_base_dir_and_file_name_from_file_path()
 		
 		try:
-			print('The file trying to be openned is: ' + file_name)
 			self.original_image = cv2.imread(file_name)
 		except Exception as e:
 			print('[ERROR] Analyzer had an issue reading: ', file_name)
