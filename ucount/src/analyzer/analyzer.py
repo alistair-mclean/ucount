@@ -2,8 +2,7 @@
 """
 from .image_processing.imageProcessor import ImageProcessor
 from .image_processing.preprocessor import preprocess_all_images_in_dir
-from .image_processing.meta_data_extractor import read_metadata
-from .utils import make_dirs_for_channels_and_save_results
+from .utils import make_dirs_for_channels_and_save_results, ALLOWED_EXTENSIONS
 from .math_utils import compute_coverage
 import numpy as np
 import json
@@ -36,7 +35,6 @@ class Analyzer(object):
 		Args:
 		    config (dict): The config for the analyzer and img_processor
 		"""
-		self.metadata = {}
 		self.config = config
 		self.img_processor = ImageProcessor()
 
@@ -72,9 +70,10 @@ class Analyzer(object):
 		    dir_to_analyze (TYPE): Description
 		"""
 		for subdir, dirs, file_names in os.walk(dir_to_analyze):
-			files = [file_name for file_name in file_names if file_name.endswith('.tif')]
+			# Only add the files of allowed extensions to the list of files to be parsed.
+			files = [file_name for file_name in file_names if file_name.split('.')[1] in ALLOWED_EXTENSIONS]
 			
-			# Iterate over all tif files in the directory that isn't the results dir.  
+			# Iterate over all files in the directory that isn't the results dir.  
 			if len(files) > 0 and '__RESULTS__' not in subdir:
 				# If there is a settings file in the directory use that as the settings
 				# for the Analyzer 
@@ -184,7 +183,6 @@ class Analyzer(object):
 			self.generate_base_dir_and_file_name_from_file_path()
 		
 		try:
-			self.metadata = read_metadata(file_name)
 			self.original_image = cv2.imread(file_name)
 		except Exception as e:
 			print('[ERROR] Analyzer had an issue reading: ', file_name)

@@ -8,6 +8,7 @@ import os
 IMAGE_EXTENSION = '.png'
 SUMMARY_EXTENSION = '.csv'
 CONFIG_EXTENSION = '.json'
+ALLOWED_EXTENSIONS = set(['jpg', 'png', 'tif'])
 
 def make_dirs_for_channels_and_save_results(results):
 	# This method creates both of the directories for the separate files 
